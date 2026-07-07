@@ -1,0 +1,41 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+	scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+}
+
+body {
+	margin: 0;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+	min-height: 100vh;
+}
+
+:focus-visible {
+	outline: 2px solid #7c3aed;
+	outline-offset: 2px;
+}
+
+button {
+	appearance: none;
+	background: none;
+	color: inherit;
+}
+
+button:focus:not(:focus-visible) {
+	outline: none;
+}

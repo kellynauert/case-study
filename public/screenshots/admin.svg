@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 700" fill="none">
+  <rect width="1400" height="700" fill="#111113"/>
+  <rect x="60" y="40" width="1280" height="620" rx="12" fill="#18181B" stroke="#27272A"/>
+  <rect x="90" y="70" width="200" height="14" rx="3" fill="#EDEDEF" opacity="0.85"/>
+  <rect x="90" y="100" width="300" height="10" rx="2" fill="#71717A"/>
+  <rect x="90" y="140" width="280" height="140" rx="8" fill="#111113" stroke="#27272A"/>
+  <rect x="110" y="165" width="100" height="8" rx="2" fill="#71717A"/>
+  <rect x="110" y="190" width="120" height="32" rx="4" fill="#EDEDEF" opacity="0.9"/>
+  <rect x="110" y="240" width="200" height="8" rx="2" fill="#22C55E"/>
+  <rect x="390" y="140" width="280" height="140" rx="8" fill="#111113" stroke="#27272A"/>
+  <rect x="410" y="165" width="120" height="8" rx="2" fill="#71717A"/>
+  <rect x="410" y="190" width="100" height="32" rx="4" fill="#EDEDEF" opacity="0.9"/>
+  <rect x="410" y="240" width="180" height="8" rx="2" fill="#3F3F46"/>
+  <rect x="690" y="140" width="280" height="140" rx="8" fill="#111113" stroke="#27272A"/>
+  <rect x="710" y="165" width="140" height="8" rx="2" fill="#71717A"/>
+  <rect x="710" y="190" width="80" height="32" rx="4" fill="#EDEDEF" opacity="0.9"/>
+  <rect x="710" y="240" width="160" height="8" rx="2" fill="#3F3F46"/>
+  <rect x="990" y="140" width="320" height="140" rx="8" fill="#111113" stroke="#27272A"/>
+  <rect x="1010" y="165" width="110" height="8" rx="2" fill="#71717A"/>
+  <rect x="1010" y="190" width="140" height="32" rx="4" fill="#6B7FE8" opacity="0.85"/>
+  <rect x="1010" y="240" width="200" height="8" rx="2" fill="#22C55E"/>
+  <rect x="90" y="310" width="1220" height="320" rx="8" fill="#111113" stroke="#27272A"/>
+  <rect x="110" y="335" width="160" height="10" rx="2" fill="#EDEDEF" opacity="0.6"/>
+  <rect x="110" y="370" width="1180" height="220" rx="6" fill="#18181B" stroke="#27272A"/>
+  <polyline points="140,550 240,480 340,500 440,420 540,440 640,380 740,400 840,350 940,370 1040,320 1140,340 1240,300" stroke="#6B7FE8" stroke-width="2" fill="none" opacity="0.6"/>
+  <circle cx="140" cy="550" r="4" fill="#6B7FE8"/>
+  <circle cx="640" cy="380" r="4" fill="#6B7FE8"/>
+  <circle cx="1240" cy="300" r="4" fill="#6B7FE8"/>
+</svg>

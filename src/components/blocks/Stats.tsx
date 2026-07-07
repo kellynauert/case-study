@@ -1,0 +1,44 @@
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import type { StatItem } from '../../lib/parseMarkdown';
+import { tokens } from '../../theme/theme';
+
+interface StatsProps {
+	items: StatItem[];
+}
+
+export function Stats({ items }: StatsProps) {
+	return (
+		<Box
+			sx={{
+				display: 'grid',
+				gridTemplateColumns: { xs: '1fr 1fr', md: `repeat(${Math.min(items.length, 4)}, 1fr)` },
+				gap: 1.5,
+				my: 3,
+			}}>
+			{items.map((stat) => (
+				<Box
+					key={stat.label}
+					sx={{
+						p: 2,
+						borderRadius: 1.5,
+						border: `1px solid ${tokens.border}`,
+						bgcolor: tokens.surfaceRaised,
+					}}>
+					<Typography
+						sx={{
+							fontSize: '2.25rem',
+							fontWeight: 600,
+							letterSpacing: '-0.03em',
+							lineHeight: 1,
+							mb: 0.75,
+							color: tokens.textPrimary,
+						}}>
+						{stat.value}
+					</Typography>
+					<Typography sx={{ fontSize: '0.8125rem', color: tokens.textMuted, m: 0 }}>{stat.label}</Typography>
+				</Box>
+			))}
+		</Box>
+	);
+}
