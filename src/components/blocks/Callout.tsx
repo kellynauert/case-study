@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { alpha } from '@mui/material/styles';
+import { bodyTextSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 interface CalloutProps {
@@ -19,7 +20,7 @@ export function Callout({ text }: CalloutProps) {
 				borderLeft: `3px solid ${tokens.accent}`,
 				background: tokens.gradientSoft,
 			}}>
-			<Typography sx={{ fontSize: '1rem', lineHeight: 1.65, color: tokens.textPrimary, fontWeight: 500, m: 0 }}>{text}</Typography>
+			<Typography sx={{ ...bodyTextSx, color: tokens.textPrimary, fontWeight: 500, m: 0 }}>{text}</Typography>
 		</Box>
 	);
 }

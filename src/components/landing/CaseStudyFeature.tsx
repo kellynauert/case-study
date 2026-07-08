@@ -12,7 +12,7 @@ interface CaseStudyFeatureProps {
 }
 
 export function CaseStudyFeature({ study, index }: CaseStudyFeatureProps) {
-	const label = `Case Study ${String(index + 1).padStart(2, '0')}`;
+	const label = `Showcase ${String(index + 1).padStart(2, '0')}`;
 	const preview = study.hero ? imageSrc(study.hero) : null;
 
 	return (
@@ -118,7 +118,7 @@ export function CaseStudyFeature({ study, index }: CaseStudyFeatureProps) {
 						color: tokens.accent,
 						transition: 'color 200ms ease, gap 200ms ease',
 					}}>
-					Read Case Study →
+					View Showcase →
 				</Typography>
 			</Box>
 		</FadeIn>

@@ -6,6 +6,8 @@ const caseStudyFiles = import.meta.glob('../../content/case-studies/*.md', {
 	import: 'default',
 }) as Record<string, string>;
 
+const WORDS_PER_MINUTE = 220;
+
 export interface CaseStudyMeta {
 	slug: string;
 	title: string;
@@ -17,6 +19,7 @@ export interface CaseStudyMeta {
 	hero?: string;
 	theme?: string;
 	order: number;
+	readingMinutes: number;
 }
 
 function slugFromPath(path: string): string {
@@ -28,6 +31,20 @@ function parseOrder(value: string | undefined): number {
 	if (!value) return 100;
 	const parsed = Number(value);
 	return Number.isFinite(parsed) ? parsed : 100;
+}
+
+function estimateReadingMinutes(markdown: string): number {
+	const plain = markdown
+		.replace(/```[\s\S]*?```/g, ' ')
+		.replace(/:::[\s\S]*?:::/g, ' ')
+		.replace(/!\[[^\]]*]\([^)]*\)/g, ' ')
+		.replace(/\[[^\]]*]\([^)]*\)/g, ' ')
+		.replace(/[#>*_`~\-|]/g, ' ')
+		.replace(/\s+/g, ' ')
+		.trim();
+
+	const words = plain ? plain.split(' ').length : 0;
+	return Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
 }
 
 function buildMeta(slug: string, raw: string): CaseStudyMeta {
@@ -44,6 +61,7 @@ function buildMeta(slug: string, raw: string): CaseStudyMeta {
 		problem: frontmatter?.problem ?? extractSectionParagraph(content, 'The Problem'),
 		outcome: frontmatter?.outcome ?? extractSectionParagraph(content, 'Outcome'),
 		order: parseOrder(frontmatter?.order),
+		readingMinutes: estimateReadingMinutes(content),
 	};
 }
 
@@ -60,4 +78,22 @@ export function getCaseStudyBySlug(slug: string): { meta: CaseStudyMeta; raw: st
 
 	const [, raw] = entry;
 	return { meta: buildMeta(slug, raw), raw };
+}
+
+export function getAdjacentCaseStudies(slug: string): {
+	previous: CaseStudyMeta | null;
+	next: CaseStudyMeta | null;
+} {
+	const studies = getAllCaseStudies();
+	const index = studies.findIndex((study) => study.slug === slug);
+	if (index === -1) return { previous: null, next: null };
+
+	return {
+		previous: index > 0 ? studies[index - 1] : null,
+		next: index < studies.length - 1 ? studies[index + 1] : null,
+	};
+}
+
+export function formatReadingTime(minutes: number): string {
+	return `${minutes} min read`;
 }

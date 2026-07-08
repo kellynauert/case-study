@@ -1,161 +1,46 @@
 ---
 title: Course Authoring Platform
-subtitle: Streamlining the course creation experience.
-summary: Canvas gave educators almost unlimited flexibility, but that flexibility came at the cost of consistency. I designed a course authoring platform that standardized presentation, simplified course creation, and let instructors focus on teaching instead of formatting.
+subtitle: Custom authoring tools built around our curriculum and content model.
+summary: I designed and built the platform MathTrack uses to author every course, replacing Canvas with a structured workflow for content authors, instructors, and students.
 years: 2020–Present
-hero: /images/section-overviews.jpg
+hero: /images/course-structure.jpg
 order: 2
 ---
 
-# Course Authoring
+## Context
 
-## Designing a platform educators actually enjoy using
+MathTrack originally authored curriculum in Canvas, a widely used learning management system built to support many kinds of institutions. That flexibility means course authors inherit decisions about page layout, typography, navigation, and third-party integrations alongside the work of writing instructional content. Our authors are subject matter experts, not designers or LMS administrators, and a noticeable share of their time went into configuring the tool rather than developing curriculum.
 
-### Overview
+Students and instructors felt the same inconsistency on the other side. When each course could be organized differently, instructors regularly fielded questions about where to find homework, grades, submissions, and course materials.
 
-Over six years, I designed and built the course authoring platform that powers every course at MathTrack. Rather than extending an existing LMS, we developed a platform tailored to the way our instructors create and deliver content.
+I designed and built a custom authoring platform that separates content creation from presentation. Authors assemble lessons from predefined content items while the platform controls layout, typography, navigation, and the student-facing interaction patterns used across every course.
 
-My responsibilities spanned product design, information architecture, interaction design, front-end development, back-end architecture, and long-term product evolution. As the sole design engineer, I worked directly with course authors, instructors, and students to continuously refine both the authoring experience and the learning platform itself.
+The platform has supported course authoring since 2020 and is used for more than 160 courses today. Authors spend less time on page layout and tool configuration than they did in Canvas, instructors report fewer repetitive navigation questions, and new content types continue to ship on the same underlying model without requiring authors to relearn the workflow.
 
-The result is a system that educators consistently prefer over Canvas, while giving students a more predictable and intuitive learning experience.
+## Content Model
 
-## The Problem
+Lessons are composed of discrete content items rather than a single rich text document. Each item corresponds to a specific learning activity and has its own editor, validation rules, and runtime behavior, but all items follow the same authoring workflow at the course and lesson level.
 
-When the project began, our curriculum was authored in Canvas.
+Item types include display content (text, equations, images, video, tables, code, and accordions), assessments (question types, rubrics, attempts, due dates, scoring, and AI-assisted grading), discussions (threading, participation tracking, and moderation), file uploads (submission requirements, accepted formats, and grading), reflections (long-form written responses with instructor feedback), and announcements (scheduled delivery to students). Each editor exposes only the settings relevant to that activity, which helped keep the interface approachable as we added more item types over time.
 
-Canvas is designed to support virtually any educational institution, which makes it extremely flexible. That same flexibility also creates inconsistency. Every course can have a different navigation structure, organization, and workflow depending on who built it.
+## Course Structure and Editing
 
-For students, this meant every course required relearning the interface. Assignments, grades, and course resources were scattered across independently managed courses, making simple tasks harder than they needed to be.
+Authors can edit course metadata (title, course number, image, description, availability, and related settings) and lesson content from the same environment. Sections, lessons, and items can be reordered with drag-and-drop when curriculum changes between terms or cohorts, and entire courses can be cloned to create variations without rebuilding structure from scratch.
 
-For course authors, creating content often felt like configuring software rather than writing educational material. The platform imposed workflows that didn't match how our instructors thought about building courses.
+## Linked Content
 
-Because every course at MathTrack was developed internally, we weren't constrained by the same requirements as a general-purpose LMS. Rather than optimizing for every possible teaching style, we could optimize for one consistent authoring workflow and one consistent student experience.
+Items can be inserted into multiple lessons as linked references or as independent copies. A linked item points back to a single source, so an update to the original propagates to every lesson that references it. That pattern works well for shared explanations, assessments, or other content that should stay aligned across courses. When a lesson needs its own version, the author unlinks the item and the platform creates a standalone copy that can be edited without affecting other references.
 
-That became the foundation for every design decision that followed.
+## Item Versioning
 
-> **Screenshot:** Comparison of Canvas authoring vs. MathTrack authoring (optional)
+Every content item carries major and minor version numbers. When an author saves changes, the platform infers whether the edit should be treated as minor or major, though that classification can be overridden on a per-item basis when the default does not match the author's intent. Minor changes, such as typo fixes, formatting adjustments, or corrections to an answer key, propagate everywhere and update what students see regardless of whether they have already viewed or submitted the item. Major changes, such as rewriting a prompt or restructuring an assessment, apply only on new submissions; students who already completed the item continue to see the version they originally worked with.
 
----
+## Gallery
 
-## Design Principles
-
-Instead of recreating Canvas with a different visual design, I established several principles that guided the product.
-
-### Consistency over unlimited customization
-
-Authors should be able to customize educational content without reinventing the interface.
-
-Every course follows the same structural conventions, navigation patterns, and organizational hierarchy. Students learn the platform once instead of learning every individual course.
-
-:::image
-file: course-structure.jpg
-caption: Navigation structure
-alt: Course Structure
+:::gallery
+course-structure.jpg
+item-creation-1.jpg
+item-creation.jpg
+test-creation.jpg
+section-overviews.jpg
 :::
-
-### The platform should disappear
-
-Creating educational content should feel like writing a lesson, not configuring software.
-
-Administrative tasks, navigation, publishing, and organization should require as little cognitive effort as possible so authors can focus on teaching.
-
-:::image
-file: item-creation-1.jpg
-caption: An example of different item types
-alt: Item Creation Example
-:::
-
-### Build for subject matter experts
-
-Our users were professors, K–12 educators, and curriculum specialists—not software experts.
-
-Whenever possible, the interface should expose educational concepts rather than technical ones. Features were designed around how instructors naturally organize lessons instead of how data happens to be stored internally.
-
----
-
-## Designing the Authoring Experience
-
-One of the earliest decisions I made was to separate content from presentation.
-
-Traditional rich text editors give authors complete control over typography. They can choose fonts, change font sizes, adjust spacing, and create whatever visual hierarchy they want. That flexibility sounds useful, but in practice it meant every course looked different depending on who created it.
-
-Our instructors weren't designers—they were educators. There was no reason to expect every course author to make good typographic decisions, and there was even less reason for students to experience a different visual language in every course.
-
-Instead, I removed most formatting controls. Authors write using semantic elements like headings, paragraphs, lists, and equations while the platform owns the presentation. When content is pasted from Word or Google Docs, the editor preserves the document's structure but rebuilds it using the platform's typography and spacing.
-
-That decision traded flexibility for consistency, but it also made authoring faster. Instructors stopped thinking about formatting and focused on writing lessons instead.
-
----
-
-I eventually realized that lessons weren't really documents—they were sequences of learning activities.
-
-Sometimes an instructor wants to explain a concept. Sometimes they want students to answer a question, upload a file, participate in a discussion, or watch a video. Treating an entire lesson as one rich text document made those transitions awkward.
-
-I redesigned the editor around modular content items instead. The most common is a **Display Item**, which handles instructional content like text, equations, images, tables, videos, accordions, and code snippets. Interactive elements such as multiple-choice questions, discussions, file uploads, and true/false questions exist alongside those Display Items rather than inside them.
-
-This made lessons feel more like assembled learning experiences than formatted documents. It also had an unexpected benefit: because Display Items are independent pieces of content, they can be reused throughout the curriculum. A single explanation can appear in multiple lessons while remaining a single source of truth.
-
-> **Screenshot:** Lesson editor showing Display Items mixed with assessments and interactive activities.
-
----
-
-The modular approach extended beyond lesson content.
-
-Rather than creating a different workflow for every activity type, authors build every lesson using the same editing experience. New content types become additional building blocks instead of entirely new authoring tools, allowing the platform to grow without increasing complexity for instructors.
-
-> **Screenshot:** Item picker showing the available lesson components.
-> :::image
-> file: item-creation.jpg
-> caption: Display item creation
-> alt: Display Item Creation
-> :::
-
----
-
-Because Display Items are reusable, common instructional content can be maintained from a single location instead of being copied throughout the curriculum. This reduced duplication, simplified maintenance, and made large-scale curriculum updates significantly easier.
-
-> **Screenshot:** Reusing an existing Display Item from the content library.
-
----
-
-## Designing for Scale
-
-One of the biggest architectural decisions was separating the educational content from the presentation of that content.
-
-Instead of designing isolated pages, I designed reusable content components that could be combined into complete lessons. This allowed course authors to build rich instructional experiences while maintaining visual and behavioral consistency throughout the platform.
-
-That consistency also made future improvements significantly easier. As new capabilities were introduced, they became available across the platform without requiring every course to be redesigned individually.
-
-The product evolved as a coherent system instead of a collection of independent pages.
-
-> **Screenshot:** Course hierarchy showing reusable content and lesson organization.
-
----
-
-## Outcome
-
-Today, every course at MathTrack is authored within this platform.
-
-The most meaningful measure of success wasn't a quantitative metric—it was a change in the conversations instructors had with students.
-
-Under Canvas, instructors regularly answered questions about navigation:
-
-- Where is my homework?
-- Where do I find my grades?
-- Where is this assignment?
-
-After moving to the new platform, those questions largely disappeared. Student questions shifted from navigating the software to engaging with the course material itself.
-
-Course authors also consistently report preferring the authoring experience over Canvas, allowing them to spend more time developing curriculum instead of working around the limitations of the platform.
-
-> **Screenshot:** Completed lesson as seen by a student.
-
----
-
-## Reflection
-
-Looking back, the most important design decision wasn't adding features. It was recognizing that we didn't need to build another general-purpose learning management system.
-
-By designing around the specific workflows of our educators and enforcing a consistent interaction model across every course, we created a platform that is easier to author, easier to teach with, and easier to learn from.
-
-That principle continued to influence every major feature added over the following six years.

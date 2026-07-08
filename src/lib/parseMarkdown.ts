@@ -304,13 +304,17 @@ function splitH2Chapters(content: string): { heroIntro: string; chapters: Chapte
 		.map((section) => section.trim())
 		.filter(Boolean);
 
+	const startsWithSection = /^##\s+/m.test(withoutTitle.trim());
 	const heroIntro =
-		sections[0]
-			?.replace(/^[^\n]+\n+/, '')
-			.replace(/\n---\s*$/, '')
-			.trim() ?? '';
+		startsWithSection ? '' : (
+			(sections[0]
+				?.replace(/^[^\n]+\n+/, '')
+				.replace(/\n---\s*$/, '')
+				.trim() ?? '')
+		);
+	const chapterSections = startsWithSection ? sections : sections.slice(1);
 
-	const chapters = sections.slice(1).map((chunk) => {
+	const chapters = chapterSections.map((chunk) => {
 		const newlineIndex = chunk.indexOf('\n');
 		const title = (newlineIndex === -1 ? chunk : chunk.slice(0, newlineIndex)).trim();
 		const body = (newlineIndex === -1 ? '' : chunk.slice(newlineIndex + 1)).trim();

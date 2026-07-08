@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
-import { Nav } from './Nav';
 import { Footer } from './Footer';
+import { GlobalNav } from './GlobalNav';
 import { tokens } from '../../theme/theme';
 
 interface SiteLayoutProps {
@@ -11,7 +11,7 @@ interface SiteLayoutProps {
 
 export function SiteLayout({ children, showFooter = true }: SiteLayoutProps) {
 	return (
-		<Box sx={{ minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
+		<Box sx={{ minHeight: '100vh', position: 'relative' }}>
 			<Box
 				aria-hidden
 				sx={{
@@ -28,32 +28,52 @@ export function SiteLayout({ children, showFooter = true }: SiteLayoutProps) {
 				}}
 			/>
 
-			<Box sx={{ position: 'relative', zIndex: 1 }}>
+			<Box
+				sx={{
+					position: 'relative',
+					zIndex: 1,
+					display: 'flex',
+					minHeight: '100vh',
+					width: '100%',
+					maxWidth: { md: tokens.layout.navWidth + tokens.layout.pageMaxWidth + 40 },
+					mx: { md: 'auto' },
+					gap: { md: 5 },
+				}}>
 				<Box
-					component='a'
-					href='#main-content'
+					aria-hidden
 					sx={{
-						position: 'absolute',
-						left: -9999,
-						zIndex: 9999,
-						p: 2,
-						bgcolor: tokens.accent,
-						color: '#fff',
-						textDecoration: 'none',
-						borderRadius: 1,
-						fontWeight: 600,
-						'&:focus': { left: 16, top: 16 },
-					}}>
-					Skip to content
+						display: { xs: 'none', md: 'block' },
+						width: tokens.layout.navWidth,
+						flexShrink: 0,
+					}}
+				/>
+				<GlobalNav />
+
+				<Box sx={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+					<Box
+						component='a'
+						href='#main-content'
+						sx={{
+							position: 'absolute',
+							left: -9999,
+							zIndex: 9999,
+							p: 2,
+							bgcolor: tokens.accent,
+							color: '#fff',
+							textDecoration: 'none',
+							borderRadius: 1,
+							fontWeight: 600,
+							'&:focus': { left: 16, top: 16 },
+						}}>
+						Skip to content
+					</Box>
+
+					<Box component='main' id='main-content' sx={{ flex: 1 }}>
+						{children}
+					</Box>
+
+					{showFooter && <Footer />}
 				</Box>
-
-				<Nav />
-
-				<Box component='main' id='main-content'>
-					{children}
-				</Box>
-
-				{showFooter && <Footer />}
 			</Box>
 		</Box>
 	);

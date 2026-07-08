@@ -1,131 +1,56 @@
 ---
 title: Assessment & Grading Platform
-subtitle: Engineering faster, fairer grading workflows.
-summary: Grading is where instructors spend most of their time. I designed an assessment platform that combines better workflows, automatic grading, and AI-assisted evaluation to reduce repetitive work without taking control away from instructors.
+subtitle: Queue, gradebooks, scoring options, and AI-assisted review.
+summary: Grading is where instructors spend most of their time. I designed assessment and grading workflows that surface what needs review, reduce repetitive work through automatic grading, and use AI as a starting point without taking judgment away from instructors.
 years: 2020–Present
-hero: /images/grading-queue.svg
-theme: project
+hero: /images/grading-queue.jpg
 order: 4
 ---
 
-# Designing a Faster, Fairer Grading Workflow
+## Context
 
-## Overview
+For many instructors, grading is the most time-consuming part of teaching. It is repetitive, mentally demanding, and often takes more time than course preparation or classroom instruction. At MathTrack, instructors teach multiple courses at once while balancing other responsibilities, and every extra click or page transition compounds over hundreds or thousands of submissions.
 
-For many instructors, grading is the most time-consuming part of teaching. It's repetitive, mentally demanding, and often consumes far more time than course preparation or classroom instruction. As the platform grew, I wanted grading to feel less like managing paperwork and more like evaluating student learning.
+Different grading tasks call for different starting points. Sometimes the priority is working through everything that needs attention, sometimes it is reviewing one course, and sometimes it is following one student across several courses. No single view handled all of those well on its own.
 
-Rather than designing grading around individual assignments, I designed the platform around the instructor's workflow. Every decision—from assessment creation to grading queues and AI-assisted feedback—was intended to reduce unnecessary work while helping instructors move through submissions quickly and consistently.
+I built three grading workflows graders can switch between depending on what they need that day, supported automatically graded question types where manual review is unnecessary, and integrated AI-assisted grading that suggests scores and feedback instructors can accept, change, or ignore before submitting a final grade.
 
-The result is a grading experience that scales from automatically graded quizzes to complex written assessments without forcing instructors into different workflows.
+Instructors now spend less time figuring out where to start and more time on evaluation and feedback. Automatic grading handles work that does not need manual review, and AI assistance speeds up written responses without removing instructor oversight.
 
-> **Screenshot:** Grading queue overview
+## Grading Queue
 
----
+The grading queue is for working through everything that needs attention without deciding what to open first. Submissions are organized by assignment rather than by student, so graders can stay in one mode of evaluation and build momentum on similar work. By default, the queue is chronological so older submissions are graded first, and assignments can be starred or prioritized when they block students from progressing through a course.
 
-## The Problem
+Graders can also filter the queue by program or by the courses assigned to them, and expand that view when covering for someone else. Live indicators show when another grader already has an assignment open, which helps prevent conflicting saves when multiple people are working through the same submission pool.
 
-Canvas provides tools for grading individual assignments, but the workflow remains centered around individual courses and individual submissions. As instructors teach more courses and students, grading quickly becomes difficult to manage.
+## Course and Student Gradebooks
 
-Instead of asking, "What needs my attention today?", instructors often have to navigate between courses, assignments, and gradebooks before they can begin grading.
+The course gradebook shows all students in a single course with their grades and submission status. Graders use it when they want to focus on one class.
 
-The mechanics of grading become another task to manage.
+The student gradebook shows one student's grades and submissions across every course they are enrolled in. Graders use it when they need to review or grade multiple assignments for the same student at once.
 
-At MathTrack, our instructors spend a significant portion of their time grading student work. Many teach multiple courses simultaneously while balancing other responsibilities. Every unnecessary click, page transition, or repetitive task compounds over hundreds or thousands of submissions.
+Both views use the same underlying data and open into the same grading interface.
 
-I wanted grading to become a continuous workflow rather than a collection of disconnected tasks.
+## Scoring and Automatic Grading
 
----
+Authors set how many points each item is worth, which supports weighted grading across an assignment. Any item can be set to zero points so it counts as submission-only: the student passes as long as they complete it. Page-level grading can also be enabled when instructors want to assign a single grade for every question on a page instead of grading each item individually.
 
-## Design Principles
+The assessment authoring tools also support automatically graded question types for work that has clear right and wrong answers, reserving manual grading for responses that benefit from instructor feedback.
 
-Instead of designing around assignments, I designed around the instructor's workload.
+## AI-Assisted Grading
 
-### Remove unnecessary decisions
+For assignments that still need manual evaluation, AI-assisted grading is integrated into the same workflow. Authors configure a prompt when creating the item that defines how the AI should evaluate responses. The prompt can be rewritten entirely or extended with additional context specific to that assignment. During grading, the system generates suggested scores and feedback based on that prompt, and instructors can accept, modify, or discard those suggestions before assigning the final grade.
 
-Instructors shouldn't have to decide what to grade next. The platform should surface the work that needs attention and let them begin immediately.
+## Grader Notes
 
-### Encourage automation where appropriate
+Authors can add grader notes to an item during authoring. Those notes are visible to graders while they review submissions but are never shown to students, which is useful for rubric reminders, edge cases, or context that should not appear in the assignment itself.
 
-Not every assessment requires manual grading. Course authoring should encourage automatically graded activities whenever possible, allowing instructors to spend their time where human feedback provides the most value.
+## Gallery
 
-### Keep instructors in control
-
-Automation and AI should accelerate grading, not replace instructor judgment.
-
----
-
-## Designing the Grading Experience
-
-One of the first decisions I made was to replace the idea of grading individual assignments with a unified grading queue.
-
-Rather than asking instructors to navigate into each course and assignment before they could begin grading, the platform presents every submission that requires attention in a single workflow.
-
-By default, submissions are organized chronologically so older work is graded first. Instructors can also **star** assignments that require immediate attention, automatically moving those submissions to the top of the queue.
-
-Instead of deciding what to grade next, instructors simply work through the queue.
-
-> **Screenshot:** Grading queue showing chronological ordering and starred assignments.
-
----
-
-The grading queue wasn't intended to replace other workflows.
-
-Some instructors prefer grading everything for a single assignment before moving on. Others think about grading by student or by course.
-
-Rather than forcing everyone into one approach, the platform supports multiple entry points into the same grading system. Instructors can work from the grading queue, grade directly from the course gradebook, or review an individual student's work while remaining within a consistent grading experience.
-
-The workflow adapts to different teaching styles without requiring instructors to learn different interfaces.
-
-> **Screenshot:** Gradebook views showing grading by assignment, student, and course.
-
----
-
-The fastest way to improve grading wasn't always making grading itself faster.
-
-It was reducing how much manual grading needed to happen in the first place.
-
-The assessment authoring tools encourage instructors to use automatically graded question types whenever appropriate, reserving manual grading for work that benefits from instructor feedback. This reduces grading workload without limiting the types of assessments instructors can create.
-
-For assignments that still require manual evaluation, I integrated AI-assisted grading directly into the workflow. Instead of replacing instructors, AI provides a starting point by evaluating student responses against the grading criteria and generating suggested feedback. Instructors can accept, modify, or completely ignore those suggestions before assigning the final grade.
-
-The goal wasn't to automate grading decisions. It was to eliminate repetitive work while keeping instructors in complete control of the evaluation process.
-
-> **Screenshot:** AI-assisted grading suggesting a score and feedback for a written response.
-
----
-
-## Designing for Scale
-
-The assessment system was designed to support a wide variety of question types without changing the grading experience.
-
-Whether an instructor is grading a multiple-choice quiz, reviewing a written response, evaluating a file upload, or using AI-assisted feedback, the workflow remains familiar. New assessment types become additional capabilities within the same system instead of introducing entirely new grading interfaces.
-
-Because the grading workflow was built around reusable patterns rather than individual assessment types, new capabilities could be introduced without disrupting the experience instructors had already learned.
-
-As the platform expanded, this consistency made it possible to add new assessment features while keeping the grading workflow simple and predictable.
-
-> **Screenshot:** Assessment editor or multiple assessment types.
-
----
-
-## Outcome
-
-Today, instructors spend less time managing grading and more time providing meaningful feedback to students.
-
-The grading queue eliminates much of the overhead involved in deciding what needs attention next. Automatic grading reduces repetitive work, while AI-assisted grading accelerates manual evaluation without removing instructor oversight.
-
-Rather than treating grading as a collection of disconnected tools, the platform presents it as a single, continuous workflow that scales across courses, assignments, and assessment types.
-
-> **Screenshot:** Completed grading workflow or instructor dashboard.
-
----
-
-## Reflection
-
-Looking back, the biggest lesson wasn't about automation or AI.
-
-It was recognizing that grading is fundamentally a workflow problem.
-
-By designing around the instructor's day instead of individual assignments, I was able to remove much of the friction that traditionally surrounds grading. Automation and AI became valuable because they supported that workflow rather than trying to replace it.
-
-The result is a platform that helps instructors spend less time managing assessments and more time engaging with student learning.
+:::gallery
+grading-queue.jpg
+grading.jpg
+studentgradebook.jpg
+evaluation.jpg
+test-creation.jpg
+:::

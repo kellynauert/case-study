@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useLightbox, type LightboxImage } from '../../context/LightboxContext';
 import { imageSrc } from '../../lib/parseMarkdown';
+import { captionTextSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 interface ImageBlockProps {
@@ -57,7 +58,7 @@ export function ImageBlock({ file, caption, alt, gallery, galleryIndex = 0, comp
 				}}>
 				<Box component='img' src={src} alt={label} loading='lazy' decoding='async' sx={{ display: 'block', width: '100%', height: 'auto' }} />
 			</Box>
-			{caption && <Typography sx={{ display: 'block', mt: 1.25, fontSize: '0.8125rem', color: tokens.textMuted }}>{caption}</Typography>}
+			{caption && <Typography sx={{ display: 'block', mt: 1.25, ...captionTextSx }}>{caption}</Typography>}
 		</Box>
 	);
 }

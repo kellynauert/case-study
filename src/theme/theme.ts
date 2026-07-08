@@ -11,6 +11,8 @@ export const borderHover = alpha('#7C3AED', 0.28);
 export const textPrimary = '#1E1033';
 export const textSecondary = '#5B4A6F';
 export const textMuted = '#9B8AAF';
+/** Inactive nav links — between muted and secondary */
+export const textNav = '#5B4A6F';
 export const gradient = `linear-gradient(135deg, ${accent} 0%, ${accentPink} 100%)`;
 export const gradientSoft = `linear-gradient(135deg, ${alpha(accent, 0.1)} 0%, ${alpha(accentPink, 0.08)} 100%)`;
 export const gradientText = {
@@ -26,7 +28,7 @@ export const fontDisplay = '"Fraunces", Georgia, "Times New Roman", serif';
 export const fontBody = '"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
 export const layout = {
-	navWidth: 200,
+	navWidth: 360,
 	contentMaxWidth: 640,
 	pageMaxWidth: 1160,
 	sectionSpacing: { xs: 8, md: 12 },
@@ -62,26 +64,26 @@ export const theme = createTheme({
 			color: textPrimary,
 		},
 		h3: {
-			fontFamily: fontBody,
+			fontFamily: fontDisplay,
 			fontSize: '1.0625rem',
 			fontWeight: 600,
 			letterSpacing: '-0.015em',
-			lineHeight: 1.35,
+			lineHeight: 1.3,
 			color: textPrimary,
 		},
 		body1: {
-			fontSize: '1.0625rem',
-			lineHeight: 1.75,
+			fontSize: '0.875rem',
+			lineHeight: 1.7,
 			color: textSecondary,
 		},
 		body2: {
-			fontSize: '0.9375rem',
+			fontSize: '0.8125rem',
 			lineHeight: 1.65,
 			color: textSecondary,
 		},
 		subtitle1: {
-			fontSize: '1.1875rem',
-			lineHeight: 1.6,
+			fontSize: '0.875rem',
+			lineHeight: 1.55,
 			color: textSecondary,
 			fontWeight: 400,
 		},
@@ -120,6 +122,7 @@ export const tokens = {
 	textPrimary,
 	textSecondary,
 	textMuted,
+	textNav,
 	gradient,
 	gradientSoft,
 	gradientText,

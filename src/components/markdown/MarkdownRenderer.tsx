@@ -5,34 +5,34 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { alpha } from '@mui/material/styles';
 import { slugify } from '../../lib/slugify';
+import { bodyTextSx, scrollMarginTop, sectionHeadingSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 interface MarkdownRendererProps {
 	content: string;
 	isHero?: boolean;
-	columns?: boolean;
+	wide?: boolean;
+	columnFlow?: boolean;
 }
 
-function buildProseSx(columns: boolean) {
+function buildProseSx(wide: boolean) {
 	return {
 		'& p': {
-			fontSize: '1.0625rem',
-			lineHeight: 1.7,
-			color: tokens.textSecondary,
+			...bodyTextSx,
 			mb: 2,
-			maxWidth: columns ? 'none' : tokens.layout.readableWidth,
+			maxWidth: wide ? 'none' : tokens.layout.readableWidth,
 			breakInside: 'avoid',
 		},
 		'& p:last-child': { mb: 0 },
 		'& ul, & ol': {
 			pl: 2,
 			mb: 2,
-			maxWidth: columns ? 'none' : tokens.layout.readableWidth,
+			maxWidth: wide ? 'none' : tokens.layout.readableWidth,
 			color: tokens.textSecondary,
 			breakInside: 'avoid',
 		},
 		'& li': {
-			fontSize: '1.0625rem',
+			fontSize: bodyTextSx.fontSize,
 			lineHeight: 1.65,
 			mb: 0.5,
 		},
@@ -41,21 +41,19 @@ function buildProseSx(columns: boolean) {
 			border: 'none',
 			borderTop: `1px solid ${tokens.border}`,
 			my: 2,
-			columnSpan: 'all',
 		},
 		'& blockquote': {
 			m: 0,
 			my: 3,
 			p: 0,
 			border: 'none',
-			columnSpan: 'all',
 			'& p': {
-				fontSize: { xs: '1.125rem', md: '1.25rem' },
+				fontSize: { xs: '0.875rem', md: '0.9375rem' },
 				fontStyle: 'italic',
 				color: tokens.textPrimary,
 				lineHeight: 1.6,
 				mb: 0,
-				maxWidth: columns ? 'none' : tokens.layout.readableWidth,
+				maxWidth: wide ? 'none' : tokens.layout.readableWidth,
 			},
 		},
 		'& a': {
@@ -74,14 +72,8 @@ function buildProseSx(columns: boolean) {
 	};
 }
 
-export const caseStudyColumnSx = {
-	columnCount: { xs: 1, md: 2 },
-	columnGap: { md: 5 },
-	...buildProseSx(true),
-};
-
-export function MarkdownRenderer({ content, isHero = false, columns = false }: MarkdownRendererProps) {
-	const proseSx = useMemo(() => buildProseSx(columns), [columns]);
+export function MarkdownRenderer({ content, isHero = false, wide = false, columnFlow = false }: MarkdownRendererProps) {
+	const proseSx = useMemo(() => buildProseSx(wide || columnFlow), [wide, columnFlow]);
 
 	const components = useMemo(
 		() => ({
@@ -90,15 +82,8 @@ export function MarkdownRenderer({ content, isHero = false, columns = false }: M
 				const text = String(children);
 				const id = slugify(text);
 				return (
-					<Box
-						id={id}
-						sx={{
-							mt: 4,
-							mb: 2,
-							scrollMarginTop: '1.5rem',
-							...(columns ? { columnSpan: 'all' } : {}),
-						}}>
-						<Typography variant='h3' component='h3' sx={{ fontSize: '1.125rem', mb: 0 }}>
+					<Box id={id} sx={{ mt: 3, mb: 1.5, scrollMarginTop }}>
+						<Typography component='h3' sx={{ ...sectionHeadingSx, mb: 0 }}>
 							{text}
 						</Typography>
 					</Box>
@@ -106,13 +91,15 @@ export function MarkdownRenderer({ content, isHero = false, columns = false }: M
 			},
 			h3: ({ children }: { children?: ReactNode }) => (
 				<Typography
-					variant='h3'
 					component='h4'
 					sx={{
-						mt: 2.5,
+						mt: 2,
 						mb: 1,
-						fontSize: '1rem',
-						...(columns ? { columnSpan: 'all' } : {}),
+						fontFamily: tokens.fontBody,
+						fontSize: { xs: '0.8125rem', md: '0.875rem' },
+						fontWeight: 600,
+						lineHeight: 1.4,
+						color: tokens.textPrimary,
 					}}>
 					{children}
 				</Typography>
@@ -123,13 +110,23 @@ export function MarkdownRenderer({ content, isHero = false, columns = false }: M
 				</Box>
 			),
 		}),
-		[columns, proseSx]
+		[proseSx]
 	);
 
 	if (!content.trim()) return null;
 
 	return (
-		<Box sx={columns ? { display: 'contents' } : { ...proseSx, '& blockquote': { ...proseSx['& blockquote'], my: isHero ? 2 : 3 } }}>
+		<Box
+			sx={{
+				...proseSx,
+				'& blockquote': { ...proseSx['& blockquote'], my: isHero ? 2 : 3 },
+				...(columnFlow ?
+					{
+						columnCount: { xs: 1, md: 2 },
+						columnGap: { md: 3 },
+					}
+				:	{}),
+			}}>
 			<ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
 				{content}
 			</ReactMarkdown>

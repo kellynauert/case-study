@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { bodyTextSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 interface HighlightGridProps {
@@ -35,9 +36,7 @@ export function HighlightGrid({ items }: HighlightGridProps) {
 							color: tokens.textMuted,
 						},
 					}}>
-					<Typography variant='body2' sx={{ color: tokens.textPrimary, mb: 0, pr: 4, fontWeight: 500 }}>
-						{item}
-					</Typography>
+					<Typography sx={{ ...bodyTextSx, color: tokens.textPrimary, mb: 0, pr: 4, fontWeight: 500 }}>{item}</Typography>
 				</Box>
 			))}
 		</Box>

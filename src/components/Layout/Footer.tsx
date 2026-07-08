@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { author } from '../../lib/site';
+import { captionTextSx, pagePaddingX } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 export function Footer() {
@@ -15,10 +16,10 @@ export function Footer() {
 				sx={{
 					maxWidth: tokens.layout.pageMaxWidth,
 					mx: 'auto',
-					px: { xs: 2, sm: 3 },
+					px: pagePaddingX,
 					py: 4,
 				}}>
-				<Typography sx={{ m: 0, fontSize: '0.875rem', color: tokens.textMuted }}>
+				<Typography sx={{ m: 0, ...captionTextSx }}>
 					{author.name} · {author.role}
 				</Typography>
 			</Box>

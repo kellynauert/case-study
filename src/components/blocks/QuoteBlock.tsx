@@ -22,11 +22,11 @@ export function QuoteBlock({ text }: QuoteBlockProps) {
 			}}>
 			<Typography
 				sx={{
-					fontSize: { xs: '1.125rem', md: '1.25rem' },
+					fontSize: { xs: '0.875rem', md: '0.9375rem' },
 					fontStyle: 'italic',
 					fontWeight: 400,
 					color: tokens.textPrimary,
-					lineHeight: 1.55,
+					lineHeight: 1.6,
 					m: 0,
 				}}>
 				&ldquo;{text}&rdquo;

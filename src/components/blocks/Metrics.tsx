@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import type { MetricItem } from '../../lib/parseMarkdown';
+import { bodyTextSx, captionTextSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 interface MetricsProps {
@@ -27,7 +28,7 @@ export function Metrics({ items }: MetricsProps) {
 					}}>
 					<Typography
 						sx={{
-							fontSize: '1.75rem',
+							fontSize: '1.5rem',
 							fontWeight: 600,
 							letterSpacing: '-0.03em',
 							lineHeight: 1,
@@ -38,7 +39,7 @@ export function Metrics({ items }: MetricsProps) {
 					</Typography>
 					<Typography
 						sx={{
-							fontSize: '0.8125rem',
+							...captionTextSx,
 							fontWeight: 600,
 							color: tokens.textPrimary,
 							mb: 0.5,
@@ -46,7 +47,7 @@ export function Metrics({ items }: MetricsProps) {
 						}}>
 						{metric.label}
 					</Typography>
-					<Typography sx={{ fontSize: '0.8125rem', color: tokens.textMuted, lineHeight: 1.5, m: 0 }}>{metric.description}</Typography>
+					<Typography sx={{ ...bodyTextSx, m: 0 }}>{metric.description}</Typography>
 				</Box>
 			))}
 		</Box>

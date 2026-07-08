@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import CheckIcon from '@mui/icons-material/Check';
+import { bodyTextSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 interface ResultsGridProps {
@@ -43,9 +44,7 @@ export function ResultsGrid({ items }: ResultsGridProps) {
 						}}>
 						<CheckIcon sx={{ fontSize: 16 }} />
 					</Box>
-					<Typography variant='body2' sx={{ color: tokens.textPrimary, mb: 0, fontWeight: 500 }}>
-						{item}
-					</Typography>
+					<Typography sx={{ ...bodyTextSx, color: tokens.textPrimary, mb: 0, fontWeight: 500 }}>{item}</Typography>
 				</Box>
 			))}
 		</Box>

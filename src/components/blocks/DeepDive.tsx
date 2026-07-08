@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { bodyTextSx, captionTextSx, panelHeadingSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 interface DeepDiveProps {
@@ -18,22 +19,22 @@ export function DeepDive({ title, body }: DeepDiveProps) {
 				bgcolor: tokens.surfaceRaised,
 			}}>
 			<Typography
-				variant='caption'
 				sx={{
 					display: 'block',
 					mb: 1,
-					color: tokens.textMuted,
+					...captionTextSx,
+					fontWeight: 500,
+					letterSpacing: '0.02em',
+					textTransform: 'uppercase',
 				}}>
 				Deep dive
 			</Typography>
 			{title && (
-				<Typography variant='h3' component='h4' sx={{ fontSize: '1rem', mb: 1 }}>
+				<Typography component='h4' sx={{ ...panelHeadingSx, mb: 1 }}>
 					{title}
 				</Typography>
 			)}
-			<Typography variant='body2' sx={{ mb: 0, color: tokens.textSecondary }}>
-				{body}
-			</Typography>
+			<Typography sx={{ ...bodyTextSx, mb: 0 }}>{body}</Typography>
 		</Box>
 	);
 }

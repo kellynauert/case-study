@@ -9,6 +9,7 @@ import CloudOutlinedIcon from '@mui/icons-material/CloudOutlined';
 import LanOutlinedIcon from '@mui/icons-material/LanOutlined';
 import RocketLaunchOutlinedIcon from '@mui/icons-material/RocketLaunchOutlined';
 import type { CardItem } from '../../lib/parseMarkdown';
+import { bodyTextSx, panelHeadingSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 const iconMap: Record<string, ReactNode> = {
@@ -63,12 +64,8 @@ export function ArchitectureCards({ items }: ArchitectureCardsProps) {
 						}}>
 						{getIcon(card.title)}
 					</Box>
-					<Typography variant='h3' sx={{ fontSize: '1rem', mb: 0.75 }}>
-						{card.title}
-					</Typography>
-					<Typography variant='body2' sx={{ mb: 0 }}>
-						{card.description}
-					</Typography>
+					<Typography sx={{ ...panelHeadingSx, mb: 0.75 }}>{card.title}</Typography>
+					<Typography sx={{ ...bodyTextSx, mb: 0 }}>{card.description}</Typography>
 				</Box>
 			))}
 		</Box>

@@ -45,7 +45,7 @@ function NavLinks({ headings, activeId, onNavigate }: { headings: HeadingItem[];
 							borderLeft: `2px solid ${isActive ? tokens.accent : 'transparent'}`,
 							fontSize: item.level === 2 ? '0.75rem' : '0.8125rem',
 							fontWeight: isActive ? 600 : 400,
-							color: isActive ? tokens.accent : tokens.textMuted,
+							color: isActive ? tokens.accent : tokens.textNav,
 							lineHeight: 1.45,
 							transition: 'color 200ms ease',
 							'&:hover': { color: tokens.accent },
@@ -66,7 +66,7 @@ export function TableOfContents({ headings, activeId, studyTitle }: TableOfConte
 	const [mobileOpen, setMobileOpen] = useState(false);
 
 	const navContent = (
-		<Box component='nav' aria-label='Case study sections' sx={{ px: 1.5, py: 2 }}>
+		<Box component='nav' aria-label='Showcase sections' sx={{ px: 1.5, py: 2 }}>
 			<Box
 				component={Link}
 				to='/#case-studies'
@@ -76,7 +76,7 @@ export function TableOfContents({ headings, activeId, studyTitle }: TableOfConte
 					px: 1,
 					mb: 2,
 					fontSize: '0.8125rem',
-					color: tokens.textMuted,
+					color: tokens.textNav,
 					textDecoration: 'none',
 					'&:hover': { color: tokens.textPrimary },
 					'&:focus-visible': {
@@ -84,7 +84,7 @@ export function TableOfContents({ headings, activeId, studyTitle }: TableOfConte
 						outlineOffset: 2,
 					},
 				}}>
-				← Case studies
+				← Showcase
 			</Box>
 			{studyTitle && (
 				<Typography
@@ -144,7 +144,7 @@ export function TableOfContents({ headings, activeId, studyTitle }: TableOfConte
 			</Drawer>
 
 			<Box
-				aria-label='Case study navigation'
+				aria-label='Showcase navigation'
 				sx={{
 					display: { xs: 'none', md: 'block' },
 					position: 'sticky',

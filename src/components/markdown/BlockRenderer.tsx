@@ -1,4 +1,5 @@
 import type { CustomBlock } from '../../lib/parseMarkdown';
+import { sections } from '../../lib/site';
 import { Stats } from '../blocks/Stats';
 import { Metrics } from '../blocks/Metrics';
 import { HighlightGrid } from '../blocks/HighlightGrid';
@@ -14,9 +15,11 @@ import { Gallery } from '../blocks/Gallery';
 interface BlockRendererProps {
 	block: CustomBlock;
 	compact?: boolean;
+	galleryTitle?: string;
+	galleryHeaderId?: string;
 }
 
-export function BlockRenderer({ block, compact }: BlockRendererProps) {
+export function BlockRenderer({ block, compact, galleryTitle, galleryHeaderId }: BlockRendererProps) {
 	switch (block.type) {
 		case 'stats':
 			return <Stats items={block.items} />;
@@ -39,7 +42,7 @@ export function BlockRenderer({ block, compact }: BlockRendererProps) {
 		case 'image':
 			return <ImageBlock file={block.data.file} caption={block.data.caption} alt={block.data.alt} compact={compact} />;
 		case 'gallery':
-			return <Gallery images={block.images} compact={compact} />;
+			return <Gallery images={block.images} compact={compact} title={galleryTitle ?? sections.screens} headerId={galleryHeaderId} />;
 		default:
 			return null;
 	}

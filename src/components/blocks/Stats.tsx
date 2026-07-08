@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import type { StatItem } from '../../lib/parseMarkdown';
+import { captionTextSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 interface StatsProps {
@@ -27,7 +28,7 @@ export function Stats({ items }: StatsProps) {
 					}}>
 					<Typography
 						sx={{
-							fontSize: '2.25rem',
+							fontSize: '1.875rem',
 							fontWeight: 600,
 							letterSpacing: '-0.03em',
 							lineHeight: 1,
@@ -36,7 +37,7 @@ export function Stats({ items }: StatsProps) {
 						}}>
 						{stat.value}
 					</Typography>
-					<Typography sx={{ fontSize: '0.8125rem', color: tokens.textMuted, m: 0 }}>{stat.label}</Typography>
+					<Typography sx={{ ...captionTextSx, m: 0 }}>{stat.label}</Typography>
 				</Box>
 			))}
 		</Box>
