@@ -9,31 +9,39 @@ order: 2
 
 ## Context
 
-MathTrack originally authored curriculum in Canvas, a widely used learning management system built to support many kinds of institutions. That flexibility means course authors inherit decisions about page layout, typography, navigation, and third-party integrations alongside the work of writing instructional content. Our authors are subject matter experts, not designers or LMS administrators, and a noticeable share of their time went into configuring the tool rather than developing curriculum.
+MathTrack originally authored curriculum in Canvas, a common application used to create and manage online coursework. Course authors are subject matter experts, not designers or LMS administrators, yet Canvas asks them to make decisions about page layout, typography, navigation, and integrations alongside writing instructional content. A noticeable share of author time went into configuring assignments and designing pages rather than developing curriculum.
 
-Students and instructors felt the same inconsistency on the other side. When each course could be organized differently, instructors regularly fielded questions about where to find homework, grades, submissions, and course materials.
+Students and instructors experienced the same inconsistency. When each course could be organized differently, instructors repeatedly fielded questions about where to find homework, grades, submissions, and course materials.
 
-I designed and built a custom authoring platform that separates content creation from presentation. Authors assemble lessons from predefined content items while the platform controls layout, typography, navigation, and the student-facing interaction patterns used across every course.
+I designed and built a custom authoring platform that separates content creation from presentation. Authors build lessons from predefined content items; the platform controls layout, typography, navigation, and student-facing interaction patterns across every course.
 
-The platform has supported course authoring since 2020 and is used for more than 160 courses today. Authors spend less time on page layout and tool configuration than they did in Canvas, instructors report fewer repetitive navigation questions, and new content types continue to ship on the same underlying model without requiring authors to relearn the workflow.
+The platform has been used to create more than 160 courses. Authors spend less time on layout and tool configuration than they did in previous systems, and content looks consistent and intenionally designed with no extra effort on the author's end.
 
 ## Content Model
 
-Lessons are composed of discrete content items rather than a single rich text document. Each item corresponds to a specific learning activity and has its own editor, validation rules, and runtime behavior, but all items follow the same authoring workflow at the course and lesson level.
+Courses are composed from reusable content items. Authors work in a structured item editor that supports a consistent editing workflow across presentations, assessments, discussions, file uploads, reflections, and announcements.
 
-Item types include display content (text, equations, images, video, tables, code, and accordions), assessments (question types, rubrics, attempts, due dates, scoring, and AI-assisted grading), discussions (threading, participation tracking, and moderation), file uploads (submission requirements, accepted formats, and grading), reflections (long-form written responses with instructor feedback), and announcements (scheduled delivery to students). Each editor exposes only the settings relevant to that activity, which helped keep the interface approachable as we added more item types over time.
+This model also supports the edge cases authors care about. Multiple-choice questions can enforce a checkbox or radio presentation even when only one answer is correct, and scramble behavior is controlled with a preview so options can be set confidently before students see them. Written responses support both manual grading and AI-assisted suggestions, with the AI grading prompt configurable for the specific item. Discussions include required interaction rules, and peer responses can be hidden until students have completed the required interactions.
 
 ## Course Structure and Editing
 
-Authors can edit course metadata (title, course number, image, description, availability, and related settings) and lesson content from the same environment. Sections, lessons, and items can be reordered with drag-and-drop when curriculum changes between terms or cohorts, and entire courses can be cloned to create variations without rebuilding structure from scratch.
+Navigation uses a three-layer model: sections, lessons, and pages. Authors can hide lessons or sections from navigation when numbering should skip (for example, introduction pages at the start of a course or feedback pages at the end). This keeps student navigation predictable while still letting authors structure courses the way they teach.
+
+When curriculum changes between terms or across programs, authors reorder content and edit course metadata in the same environment. Courses can also be cloned for variants across states and programs, with explicit choices about whether to reuse original item IDs or create new IDs.
 
 ## Linked Content
 
-Items can be inserted into multiple lessons as linked references or as independent copies. A linked item points back to a single source, so an update to the original propagates to every lesson that references it. That pattern works well for shared explanations, assessments, or other content that should stay aligned across courses. When a lesson needs its own version, the author unlinks the item and the platform creates a standalone copy that can be edited without affecting other references.
+Reusable items can be used across multiple lessons. Stable IDs let the platform update shared content wherever it appears. When viewing an item, authors can see where it is used and disconnect it to create a new ID so edits no longer propagate to every linked page.
+
+The same idea applies when cloning a course. If a clone reuses item IDs, updates propagate across linked pages. If a clone creates new IDs, authors can edit independently.
 
 ## Item Versioning
 
-Every content item carries major and minor version numbers. When an author saves changes, the platform infers whether the edit should be treated as minor or major, though that classification can be overridden on a per-item basis when the default does not match the author's intent. Minor changes, such as typo fixes, formatting adjustments, or corrections to an answer key, propagate everywhere and update what students see regardless of whether they have already viewed or submitted the item. Major changes, such as rewriting a prompt or restructuring an assessment, apply only on new submissions; students who already completed the item continue to see the version they originally worked with.
+Every content item carries major and minor version numbers. Major and minor changes are designed to match how students experience content over time.
+
+Major changes create a new version for new submissions, while students who already completed an item keep the version they originally worked with. Minor changes (typo fixes, formatting adjustments, and answer-key clarifications) propagate to items already in use so students see the updated content when they return.
+
+Authors can override the default classification when the edit intent differs from the platform's auto-detection.
 
 ## Gallery
 

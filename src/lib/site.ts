@@ -13,7 +13,7 @@ export const project = {
 
 export const links = {
 	github: 'https://github.com/kellynauert',
-	resume: '/resume.pdf',
+	resume: `${import.meta.env.BASE_URL}resume.pdf`,
 } as const;
 
 export const hero = {

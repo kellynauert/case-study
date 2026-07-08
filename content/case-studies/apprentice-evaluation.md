@@ -9,27 +9,35 @@ order: 6
 
 ## Context
 
-As the organization expanded into teacher apprenticeship programs, mentors needed a structured way to observe apprentices, document progress, provide feedback, and verify completion of state-required competencies. Different programs required different competencies, evaluation schedules, scoring methods, and documentation, and the platform needed to support those variations without custom development for every program.
+As MathTrack expanded into teacher apprenticeship programs, mentors needed a structured way to observe apprentices, document progress, provide feedback, and verify state-required competencies. Programs differed in competencies, evaluation schedules, scoring methods, and documentation, and the platform had to support those variations without custom builds per program.
 
-Mentors also needed an interface that made completing evaluations straightforward while giving administrators visibility into apprentice progress. Rather than treating evaluations, progress tracking, and reflections as separate tools, I designed them as a connected workflow that follows an apprentice throughout the program. I architected the data model and built the feature end to end as the sole software engineer on the project.
-
-The evaluation system replaced disconnected spreadsheets, email exchanges, and paper documentation with a centralized workflow for mentoring and assessment. Configurable templates tied directly into apprentice progress tracking let the platform support multiple programs while remaining adaptable as requirements continue to change.
+Mentors also needed an experience with minimal friction. The evaluation page was designed mobile-first so mentors can complete observations and scoring easily from phones or iPads. Where login is not convenient, mentors can access evaluation pages via unique links with an optional-auth flow that includes clear warnings and an audit trail.
 
 ## Configurable Evaluation Forms
 
-Evaluation templates can be customized to match the requirements of different apprenticeship programs. Administrators can create templates, define competency categories, add custom questions, configure scoring methods, mark required observations, and reuse templates across multiple programs.
+Competencies are configured in a competency table that administrators maintain. Each competency can include codes (when relevant to standardized lists) and is organized through groups that control what mentors see on the evaluation page.
+
+Groups also customize language so the experience matches each organization. If a program uses different terminology (for example, calling mentors something other than "mentor"), the UI adapts to keep the workflow consistent.
+
+Evaluation scales support multiple rating levels and can be enabled or disabled per competency so programs only show what they need.
 
 ## Reflection Journals
 
-Apprentices regularly complete guided reflections throughout their placement. Reflection prompts can be scheduled throughout the program, and responses are stored as part of each apprentice's record. Mentors can review submissions and incorporate them into coaching conversations.
+Reflections are scheduled across the program. Prompts and instructions can be configured by administrators, and responses are attached to each apprentice's record for mentor review.
+
+The system supports both daily and weekly reflections. Weekly reflections can use micro-narratives: short entries made a few times per week that are then included in the weekly comment flow. To keep the daily reflection simple without complex automatic detection, mentors see an unlock button reminding them to complete micro-narratives.
+
+To handle holidays and scheduling realities, "weeks to run" limits how many reflections a learner can submit based on the number of reflection entries rather than exact calendar weeks.
 
 ## Progress Tracker
 
-Each apprentice has a centralized progress dashboard that combines evaluations, completed reflections, required observations, coursework, and outstanding requirements. Instead of searching through multiple systems, mentors can quickly see completed evaluations, missing requirements, upcoming milestones, areas needing improvement, and overall program completion.
+Each apprentice has a centralized progress dashboard that aggregates evaluations, reflections, required observations, coursework, and outstanding requirements. It also includes evaluation history so mentors and administrators can see who rated changes and when ratings moved from one level to another.
 
 ## Mentor Workflow
 
-The system guides mentors through the evaluation process. Mentors can select an apprentice, complete observation forms, leave written feedback, score competencies, save drafts, and submit finalized evaluations. Historical evaluations remain accessible, allowing mentors and administrators to review growth across the duration of the apprenticeship.
+Mentors follow a guided workflow: select an apprentice, complete observation forms, leave written feedback, score competencies, save drafts, and submit finalized evaluations. Historical evaluations remain accessible for growth review.
+
+For optional-auth access via unique links, the authorization flow can still run without login. When a mentor is not signed in, the front end shows a clear private-information warning and requires entering their name so rating history can be tied to the correct reviewer.
 
 ## Gallery
 

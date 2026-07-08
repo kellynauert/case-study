@@ -209,8 +209,12 @@ export function parseMarkdown(raw: string): ContentSegment[] {
 	return segments;
 }
 
+function stripBom(text: string): string {
+	return text.charCodeAt(0) === 0xfeff ? text.slice(1) : text;
+}
+
 export function parseFrontmatter(raw: string): { frontmatter: Frontmatter | null; content: string } {
-	const match = raw.match(FRONTMATTER_REGEX);
+	const match = stripBom(raw).match(FRONTMATTER_REGEX);
 	if (!match) return { frontmatter: null, content: raw };
 
 	const fields = parseKeyValueLines(match[1]);
@@ -345,7 +349,8 @@ export function splitDocument(raw: string): {
 }
 
 export function imageSrc(filename: string): string {
+	const base = import.meta.env.BASE_URL;
 	let clean = filename.trim().replace(/^\//, '');
-	if (clean.startsWith('images/')) return `/${clean}`;
-	return `/images/${clean}`;
+	if (clean.startsWith('images/')) return `${base}${clean}`;
+	return `${base}images/${clean}`;
 }

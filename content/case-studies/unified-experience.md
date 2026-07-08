@@ -9,25 +9,29 @@ order: 3
 
 ## Context
 
-Most learning management systems, including Canvas, treat each course as its own destination. Students move between isolated course sites with their own navigation, organization, and terminology. As both a former Canvas student and the person building MathTrack's platform, I had seen how much time went into figuring out where things lived instead of working on the material.
+Most learning management systems treat each course as its own destination with separate navigation, organization, and terminology. Students move between isolated course sites, and even small differences compound into repeated questions about where homework, grades, submissions, and the next action live.
 
-Assignments, grades, and announcements are tied to individual courses in systems like Canvas, and each course can present that information differently. Reading pages, assignments, and downloadable resources often live in separate areas of the course site, which makes even simple questions about what to work on next harder to answer than they should be.
+In systems like Canvas, reading pages, assignments, and downloadable resources often sit in different areas. That separation makes it harder to answer the most common workflow questions: what to do next, and where to find it.
 
-I designed a consistent student experience where every course uses the same structure, typography, and layout. Students still move through courses one at a time, but progress and grades are visible from the courses page, a Continue card takes them back into their learning path with one click, and the in-course navigation shows the full structure including pending work, locked items, and failed assignments at a glance.
-
-Students now spend less time navigating the platform and more time on course content. Questions about where homework lives, where grades are, or which assignment to work on next come up far less often than they did in Canvas, and the interface remains easier to read across mobile and desktop as new features ship on the same model.
+I designed MathTrack so every course uses one consistent structure, typography, and layout. Progress and status are visible from the courses page, and in-course navigation reflects the full structure without changing between courses.
 
 ## Courses Page and Navigation
 
-The courses page shows progress and grades for each course at a glance. A Continue card at the top of the dashboard or courses page takes students back to the next page in their learning path with one click, so they do not have to remember which course or lesson they were on. Students who want to browse can still open any course and move through it on their own.
+The courses page surfaces progress and grades for each enrollment. A Continue card returns students to their learning path without requiring them to remember which course or lesson they left off.
 
-Inside a course, the navigation bar shows the full structure at once, including pending assignments, locked items, failed work, and where they left off. Students still enter courses one at a time, but the important information is visible immediately and organized the same way in every course.
+Reading pages are tracked without grading them. If a student stays on a reading page for at least three seconds, the page is marked as read so progress can still reflect what they reviewed. This also makes it easy to spot suspicious patterns where learners skip reading and move straight to quizzes.
+
+Progress is also communicated through milestones. Milestones are keystone assignments that gate what a student can do next. Assignments can be locked behind other courses or behind specific completion requirements, and managers can configure milestone triggers based on page completion, item completion, or other completion signals using trigger IDs.
+
+Because students do not start on the exact same date, due dates are calculated relative to each student's program start date. This produces personalized timelines even when the overall program schedule stays consistent.
+
+Inside a course, the navigation bar shows the full structure at once: pending assignments, locked items, failed work, and where the student left off.
 
 ## Presentation and Course Structure
 
-The student interface uses the same typography and layout across every course because the authoring platform controls presentation. That consistency makes the experience easier to read and use on both mobile and desktop, without layout or formatting changing from one course to the next.
+Typography and layout are consistent across courses because the authoring platform controls presentation. Course content is organized in the order students work through it, not split across separate areas for pages, assignments, and downloads. An assignment appears in context with the lesson it belongs to.
 
-Course content is organized in the order students work through it rather than split across separate areas for pages, assignments, and downloadable resources the way Canvas does. Reading material, assignments, and other activities live together in the course navigation, so an assignment appears in context with the lesson it belongs to instead of in a separate list students have to hunt through.
+The student navigation follows the same section/lesson/page model. When lessons or sections are hidden from navigation by the author, numbering skips in a predictable way so introductions and feedback pages do not disrupt the course flow.
 
 ## Gallery
 
