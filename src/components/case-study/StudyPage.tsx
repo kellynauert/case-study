@@ -5,7 +5,6 @@ import { useScrollSpy } from '../../hooks/useScrollSpy';
 import { PageShell } from '../Layout/PageShell';
 import { TableOfContents } from '../Layout/TableOfContents';
 import type { StudySectionItem, TocHeading } from '../../lib/caseStudyTypes';
-import { bodyTextSx, displayTitleSx, secondaryTextSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 import { CaseStudyPager } from './CaseStudyPager';
 
@@ -32,13 +31,19 @@ export function StudyPage({ slug, title, subtitle, intro, sections, children }: 
 			<TableOfContents headings={headings} activeId={activeId} studyTitle={title} mobileOnly />
 			<PageShell footer={<CaseStudyPager slug={slug} currentTitle={title} />}>
 				<Box sx={{ mb: { xs: 2.5, md: 3 } }}>
-					<Typography component='h1' sx={{ ...displayTitleSx, mb: subtitle ? 1.25 : 0 }}>
+					<Typography variant='displayTitle' sx={{ mb: subtitle ? 1.25 : 0 }}>
 						{title}
 					</Typography>
 					{subtitle && (
-						<Typography sx={{ maxWidth: tokens.layout.readableWidth, mb: intro ? 1.5 : 0, ...secondaryTextSx }}>{subtitle}</Typography>
+						<Typography variant='subtitle1' sx={{ maxWidth: tokens.layout.readableWidth, mb: intro ? 1.5 : 0 }}>
+							{subtitle}
+						</Typography>
 					)}
-					{intro && <Typography sx={{ maxWidth: tokens.layout.readableWidth, ...bodyTextSx }}>{intro}</Typography>}
+					{intro && (
+						<Typography variant='body1' sx={{ maxWidth: tokens.layout.readableWidth }}>
+							{intro}
+						</Typography>
+					)}
 				</Box>
 				{children}
 			</PageShell>

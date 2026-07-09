@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import type { StatItem } from '../../lib/caseStudyTypes';
-import { captionTextSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 interface StatsProps {
@@ -38,7 +37,7 @@ export function Stats({ items, compact = false }: StatsProps) {
 						}}>
 						{stat.value}
 					</Typography>
-					<Typography sx={{ ...captionTextSx, m: 0 }}>{stat.label}</Typography>
+					<Typography variant='caption' sx={{ m: 0 }}>{stat.label}</Typography>
 				</Box>
 			))}
 		</Box>

@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { formatReadingTime, type CaseStudyMeta } from '../../lib/caseStudyTypes';
-import { captionTextSx, displayTitleSx, scrollMarginTop, secondaryTextSx } from '../../lib/styles';
+import { scrollMarginTop } from '../../lib/styles';
 import { useViewedShowcases } from '../../hooks/useViewedShowcases';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { isShowcaseViewed } from '../../lib/viewedShowcases';
@@ -110,35 +110,16 @@ export function FeatureShowcaseList({ studies, nested = false }: FeatureShowcase
 								gap: 1,
 								mb: 0.75,
 							}}>
-							<Typography
-								sx={{
-									flexShrink: 0,
-									...displayTitleSx,
-									color: tokens.accent,
-								}}>
+							<Typography variant='displayTitle' sx={{ flexShrink: 0, color: tokens.accent }}>
 								{number}
 							</Typography>
 
-							<Typography
-								className='feature-title'
-								component='h3'
-								sx={{
-									flex: 1,
-									minWidth: 0,
-									...displayTitleSx,
-									transition: 'color 200ms ease',
-								}}>
+							<Typography className='feature-title' variant='displayTitle' sx={{ flex: 1, minWidth: 0, transition: 'color 200ms ease' }}>
 								{study.title}
 							</Typography>
 						</Box>
 
-						<Typography
-							sx={{
-								m: 0,
-								mb: 1.25,
-								flex: 1,
-								...secondaryTextSx,
-							}}>
+						<Typography variant='subtitle1' sx={{ m: 0, mb: 1.25, flex: 1 }}>
 							{study.subtitle}
 						</Typography>
 
@@ -151,13 +132,7 @@ export function FeatureShowcaseList({ studies, nested = false }: FeatureShowcase
 								mt: 'auto',
 								pt: 1.25,
 							}}>
-							<Typography
-								sx={{
-									m: 0,
-									...captionTextSx,
-									fontWeight: 500,
-									letterSpacing: '0.02em',
-								}}>
+							<Typography variant='caption' sx={{ m: 0 }}>
 								{readingTime}
 							</Typography>
 

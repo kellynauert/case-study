@@ -8,7 +8,6 @@ import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { alpha } from '@mui/material/styles';
 import { imageSrc } from '../../lib/images';
-import { captionTextSx, sectionHeadingSx } from '../../lib/styles';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { tokens } from '../../theme/theme';
 
@@ -127,7 +126,7 @@ export function Gallery({ images, compact = false, title, header, headerId }: Ga
 	const heading =
 		header ??
 		(title ?
-			<Typography id={headerId} component='h2' sx={{ ...sectionHeadingSx, mb: 0 }}>
+			<Typography id={headerId} variant='sectionHeading' sx={{ mb: 0 }}>
 				{title}
 			</Typography>
 		:	null);
@@ -212,7 +211,7 @@ export function Gallery({ images, compact = false, title, header, headerId }: Ga
 					</Box>
 				)}
 				<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexShrink: 0 }}>
-					<Typography sx={{ ...captionTextSx, flexShrink: 0, minWidth: '3.5rem', textAlign: 'center' }}>
+					<Typography variant='caption' sx={{ flexShrink: 0, minWidth: '3.5rem', textAlign: 'center' }}>
 						{index + 1} / {count}
 					</Typography>
 					<IconButton onClick={prev} aria-label='Previous screenshot' sx={controlButtonSx}>
@@ -300,7 +299,7 @@ export function Gallery({ images, compact = false, title, header, headerId }: Ga
 						animation: reducedMotion ? 'none' : 'gallery-image-enter 1100ms ease-out',
 					}}
 				/>
-				<Typography sx={{ display: 'block', mt: 1.25, ...captionTextSx }}>{label}</Typography>
+				<Typography variant='caption' sx={{ display: 'block', mt: 1.25 }}>{label}</Typography>
 			</Box>
 		</Box>
 	);

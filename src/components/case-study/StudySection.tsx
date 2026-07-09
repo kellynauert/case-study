@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import type { ReactNode } from 'react';
-import { scrollMarginTop, sectionHeadingSx } from '../../lib/styles';
+import { scrollMarginTop } from '../../lib/styles';
 
 interface StudySectionProps {
 	id: string;
@@ -12,7 +12,7 @@ interface StudySectionProps {
 export function StudySection({ id, title, children }: StudySectionProps) {
 	return (
 		<Box id={id} sx={{ scrollMarginTop, py: { xs: 2, md: 3 } }}>
-			<Typography component='h2' sx={{ ...sectionHeadingSx, mb: { xs: 2, md: 2.5 } }}>
+			<Typography variant='sectionHeading' sx={{ mb: { xs: 2, md: 2.5 } }}>
 				{title}
 			</Typography>
 			{children}

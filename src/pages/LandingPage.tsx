@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { getAllCaseStudies } from '../lib/caseStudyRegistry';
 import { hero, platformStory, platformStats, sections, allScreenshots } from '../lib/site';
-import { bodyTextSx, pagePaddingX, panelHeadingSx, scrollMarginTop, sectionHeadingSx } from '../lib/styles';
+import { pagePaddingX, scrollMarginTop } from '../lib/styles';
 import { SiteLayout } from '../components/Layout/SiteLayout';
 import { SiteHeroIntro } from '../components/Layout/SiteHeroIntro';
 import { FadeIn } from '../components/Layout/FadeIn';
@@ -29,7 +29,7 @@ export function LandingPage() {
 					pb: { xs: 2, md: 3 },
 				}}>
 				<Box aria-labelledby='showcase-heading' sx={{ scrollMarginTop, mb: 0 }}>
-					<Typography id='showcase-heading' component='h2' sx={{ ...sectionHeadingSx, mb: { xs: 2, md: 2.5 } }}>
+					<Typography id='showcase-heading' variant='sectionHeading' sx={{ mb: { xs: 2, md: 2.5 } }}>
 						{hero.title}
 					</Typography>
 
@@ -48,20 +48,14 @@ export function LandingPage() {
 							py: { xs: 2.5, md: 3 },
 							scrollMarginTop,
 						}}>
-						<Typography
-							id='platform-story-heading'
-							component='h3'
-							sx={{
-								...panelHeadingSx,
-								mb: { xs: 2, md: 2.25 },
-							}}>
+						<Typography id='platform-story-heading' variant='panelHeading' sx={{ mb: { xs: 2, md: 2.25 } }}>
 							{platformStory.heading}
 						</Typography>
 
 						<Grid container spacing={3} sx={{ alignItems: 'start' }}>
 							{platformStory.paragraphs.map((paragraph) => (
 								<Grid key={paragraph.slice(0, 40)} size={{ xs: 12, md: 6 }}>
-									<Typography sx={{ m: 0, ...bodyTextSx }}>{paragraph}</Typography>
+									<Typography variant='body1' sx={{ m: 0 }}>{paragraph}</Typography>
 								</Grid>
 							))}
 						</Grid>

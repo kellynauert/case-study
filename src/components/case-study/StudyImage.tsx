@@ -2,7 +2,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useLightbox, type LightboxImage } from '../../context/LightboxContext';
 import { imageSrc } from '../../lib/images';
-import { captionTextSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 interface StudyImageProps {
@@ -63,7 +62,7 @@ export function StudyImage({ src, alt, caption, gallery, galleryIndex = 0, fullW
 					}}
 				/>
 			</Box>
-			{caption && <Typography sx={{ display: 'block', mt: 1.25, ...captionTextSx }}>{caption}</Typography>}
+			{caption && <Typography variant='caption' sx={{ display: 'block', mt: 1.25 }}>{caption}</Typography>}
 		</Box>
 	);
 }

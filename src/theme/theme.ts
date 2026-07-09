@@ -67,16 +67,51 @@ export const theme = createTheme({
 		},
 		h3: {
 			fontFamily: fontDisplay,
-			fontSize: '1.1875rem',
+			fontSize: '1.0625rem',
 			fontWeight: 600,
 			letterSpacing: '-0.015em',
+			lineHeight: 1.35,
+			color: textPrimary,
+			'@media (min-width:900px)': {
+				fontSize: '1.125rem',
+			},
+		},
+		sectionHeading: {
+			fontFamily: fontBody,
+			fontSize: '0.875rem',
+			fontWeight: 600,
+			letterSpacing: '0.14em',
+			textTransform: 'uppercase',
+			color: textSecondary,
+			lineHeight: 1.4,
+			'@media (min-width:900px)': {
+				fontSize: '0.9375rem',
+			},
+		},
+		panelHeading: {
+			fontFamily: fontDisplay,
+			fontSize: '1.125rem',
+			fontWeight: 600,
 			lineHeight: 1.3,
 			color: textPrimary,
 		},
+		displayTitle: {
+			fontFamily: fontDisplay,
+			fontSize: '1.1875rem',
+			fontWeight: 600,
+			lineHeight: 1.3,
+			color: textPrimary,
+			'@media (min-width:900px)': {
+				fontSize: '1.25rem',
+			},
+		},
 		body1: {
-			fontSize: '1rem',
+			fontSize: '0.9375rem',
 			lineHeight: 1.7,
 			color: textSecondary,
+			'@media (min-width:900px)': {
+				fontSize: '1rem',
+			},
 		},
 		body2: {
 			fontSize: '0.9375rem',
@@ -109,6 +144,15 @@ export const theme = createTheme({
 			},
 		},
 		MuiButtonBase: { defaultProps: { disableRipple: true } },
+		MuiTypography: {
+			defaultProps: {
+				variantMapping: {
+					sectionHeading: 'h2',
+					panelHeading: 'h3',
+					displayTitle: 'h1',
+				},
+			},
+		},
 	},
 });
 

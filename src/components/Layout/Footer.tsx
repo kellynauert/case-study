@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { author } from '../../lib/site';
-import { captionTextSx, pagePaddingX } from '../../lib/styles';
+import { pagePaddingX } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 export function Footer() {
@@ -19,7 +19,7 @@ export function Footer() {
 					px: pagePaddingX,
 					py: 4,
 				}}>
-				<Typography sx={{ m: 0, ...captionTextSx }}>
+				<Typography variant='caption' sx={{ m: 0 }}>
 					{author.name} · {author.role}
 				</Typography>
 			</Box>

@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { bodyTextSx } from '../../lib/styles';
 
 interface StudyBulletListProps {
 	items: string[];
@@ -16,16 +15,13 @@ export function StudyBulletList({ items }: StudyBulletListProps) {
 				pl: 2.5,
 				'&:last-child': { mb: 0 },
 				'& li': {
-					...bodyTextSx,
 					mb: 0.75,
 					'&:last-child': { mb: 0 },
 				},
 			}}>
 			{items.map((item) => (
 				<Box component='li' key={item.slice(0, 48)}>
-					<Typography component='span' sx={bodyTextSx}>
-						{item}
-					</Typography>
+					<Typography variant='body1'>{item}</Typography>
 				</Box>
 			))}
 		</Box>

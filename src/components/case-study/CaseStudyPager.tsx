@@ -5,7 +5,6 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { getAdjacentCaseStudies } from '../../lib/caseStudyRegistry';
 import type { CaseStudyMeta } from '../../lib/caseStudyTypes';
-import { captionTextSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 interface CaseStudyPagerProps {
@@ -49,11 +48,10 @@ function PagerLink({ study, direction }: { study: CaseStudyMeta; direction: 'pre
 				<ChevronLeftIcon sx={{ fontSize: '0.875rem', flexShrink: 0 }} />
 			:	<ChevronRightIcon sx={{ fontSize: '0.875rem', flexShrink: 0 }} />}
 			<Typography
+				variant='caption'
 				sx={{
-					...captionTextSx,
 					m: 0,
 					minWidth: 0,
-					fontWeight: 500,
 					color: 'inherit',
 					overflow: 'hidden',
 					textOverflow: 'ellipsis',
@@ -79,7 +77,9 @@ export function CaseStudyPager({ slug, currentTitle }: CaseStudyPagerProps) {
 			<Box sx={{ justifySelf: { xs: 'stretch', sm: 'start' }, minWidth: 0 }}>
 				{previous && <PagerLink study={previous} direction='previous' />}
 			</Box>
-			<Typography sx={{ ...captionTextSx, m: 0, textAlign: 'center', fontWeight: 500, color: tokens.textSecondary }}>{currentTitle}</Typography>
+			<Typography variant='caption' sx={{ m: 0, textAlign: 'center', color: tokens.textSecondary }}>
+				{currentTitle}
+			</Typography>
 			<Box
 				sx={{
 					justifySelf: { xs: 'stretch', sm: 'end' },
