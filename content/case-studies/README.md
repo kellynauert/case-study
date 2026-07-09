@@ -78,4 +78,21 @@ What I learned.
 - `###` — subsections within a section
 - `---` — optional dividers between sections
 
-Place images in `public/images/`. Screenshot placeholders: `> **Screenshot:** Description`
+Place images in `public/images/`. Inline screenshots use a block with an optional caption and column span:
+
+```markdown
+:::image
+file: grading-queue.jpg
+columns: 2
+:::
+
+:::image-row
+columns: 2
+course_gradebook.gif
+student_gradebook.gif
+:::
+```
+
+`columns` controls how many chapter grid columns the media spans on desktop (`1` = half width, `2` = full width). Defaults to `1`. On mobile, all media is full width. When `columns: 1`, an image placed after a paragraph renders beside that text.
+
+Screenshot placeholders: `> **Screenshot:** Description` or `<!-- Screenshot: Description -->`

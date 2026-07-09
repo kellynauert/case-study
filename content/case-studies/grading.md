@@ -1,4 +1,4 @@
----
+﻿---
 title: Assessment & Grading Platform
 subtitle: Queue, gradebooks, scoring options, and AI-assisted review.
 summary: Grading is where instructors spend most of their time. I designed assessment and grading workflows that surface what needs review, reduce repetitive work through automatic grading, and use AI as a starting point without taking judgment away from instructors.
@@ -7,7 +7,7 @@ hero: /images/grading-queue.jpg
 order: 4
 ---
 
-## Context
+## Grading Queue
 
 Grading is the most time-consuming part of teaching. At MathTrack, instructors and staff grade multiple courses while balancing other responsibilities, and every extra click compounds over hundreds or thousands of submissions.
 
@@ -15,9 +15,11 @@ Different grading tasks require different entry points. Sometimes the priority i
 
 I built grading workflows that support these modes, including automated paths for objective question types and an AI-assisted flow that provides suggestions instructors review before anything is final.
 
-## Grading Queue
-
 The grading queue is for working through all pending submissions without deciding what to open first. Submissions are grouped by assignment rather than by student, so graders can stay in one evaluation mode and build momentum across similar work.
+
+:::image
+file: grading-queue.jpg
+:::
 
 The default ordering is chronological (oldest submissions first). Starred assignments are always placed at the top of the queue so graders can unblock critical work quickly.
 
@@ -31,6 +33,11 @@ The course gradebook shows all students in a single course with grades and submi
 
 The student gradebook shows one student's grades and submissions across every enrolled course. It is used when graders need to focus on an individual student across multiple courses, including situations where a student completes a large amount of work at once and requests follow-up before the next deadline.
 
+:::image-row
+course_gradebook.gif
+student_gradebook.gif
+:::
+
 Both gradebooks restrict visibility to courses and students that are relevant to the current staff member, typically limited to assigned access.
 
 ## Scoring and Automatic Grading
@@ -39,9 +46,17 @@ Authors set how many points each item is worth, supporting weighted grading. Ite
 
 Automatically graded question types handle work with clear right and wrong answers. Manual grading remains for responses that benefit from instructor feedback.
 
+:::image
+file: test-creation.jpg
+:::
+
 ## AI-Assisted Grading
 
 For assignments that need manual evaluation, authors configure how the AI should grade at item creation time. When grading, the UI provides a way to generate AI suggestions in bulk and review them alongside the original content.
+
+:::image
+file: ai_grading.gif
+:::
 
 A Generate All action sends AI-gradable item types to the GPT API along with the AI grading prompt and returns all suggestions in one pass. Graders can also toggle a single item type when they only need to review one part.
 
@@ -50,13 +65,3 @@ AI suggestions include color-coded highlights that show what parts of the origin
 ## Grader Notes
 
 Authors can attach grader notes during authoring. Notes are visible to graders during review but never shown to students, which helps preserve rubric context, edge cases, and information that should not appear to learners.
-
-## Gallery
-
-:::gallery
-grading-queue.jpg
-grading.jpg
-studentgradebook.jpg
-evaluation.jpg
-test-creation.jpg
-:::

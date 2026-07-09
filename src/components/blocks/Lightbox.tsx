@@ -136,7 +136,6 @@ export function Lightbox() {
 						maxWidth: '100%',
 						maxHeight: { xs: 'calc(100vh - 160px)', sm: '78vh' },
 						borderRadius: 1,
-						boxShadow: `0 24px 80px ${alpha('#000', 0.5)}`,
 						objectFit: 'contain',
 					}}
 				/>

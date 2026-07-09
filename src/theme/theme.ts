@@ -21,9 +21,9 @@ export const gradientText = {
 	WebkitTextFillColor: 'transparent',
 	backgroundClip: 'text',
 };
-export const shadowSubtle = `0 2px 8px ${alpha('#7C3AED', 0.08)}`;
-export const shadowElevated = `0 8px 24px ${alpha('#7C3AED', 0.12)}`;
-export const shadowImage = `0 12px 40px ${alpha('#7C3AED', 0.14)}`;
+export const shadowSubtle = 'none';
+export const shadowElevated = 'none';
+export const shadowImage = 'none';
 export const fontDisplay = '"Fraunces", Georgia, "Times New Roman", serif';
 export const fontBody = '"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
@@ -49,7 +49,7 @@ export const theme = createTheme({
 		fontFamily: fontBody,
 		h1: {
 			fontFamily: fontDisplay,
-			fontSize: 'clamp(2.25rem, 5vw, 3.25rem)',
+			fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
 			fontWeight: 600,
 			letterSpacing: '-0.035em',
 			lineHeight: 1.08,
@@ -57,7 +57,7 @@ export const theme = createTheme({
 		},
 		h2: {
 			fontFamily: fontDisplay,
-			fontSize: 'clamp(1.5rem, 3vw, 1.875rem)',
+			fontSize: 'clamp(1.625rem, 3vw, 2rem)',
 			fontWeight: 600,
 			letterSpacing: '-0.025em',
 			lineHeight: 1.2,
@@ -65,30 +65,30 @@ export const theme = createTheme({
 		},
 		h3: {
 			fontFamily: fontDisplay,
-			fontSize: '1.0625rem',
+			fontSize: '1.1875rem',
 			fontWeight: 600,
 			letterSpacing: '-0.015em',
 			lineHeight: 1.3,
 			color: textPrimary,
 		},
 		body1: {
-			fontSize: '0.875rem',
+			fontSize: '1rem',
 			lineHeight: 1.7,
 			color: textSecondary,
 		},
 		body2: {
-			fontSize: '0.8125rem',
+			fontSize: '0.9375rem',
 			lineHeight: 1.65,
 			color: textSecondary,
 		},
 		subtitle1: {
-			fontSize: '0.875rem',
+			fontSize: '1rem',
 			lineHeight: 1.55,
 			color: textSecondary,
 			fontWeight: 400,
 		},
 		caption: {
-			fontSize: '0.8125rem',
+			fontSize: '0.875rem',
 			letterSpacing: '0.02em',
 			color: textMuted,
 			fontWeight: 500,

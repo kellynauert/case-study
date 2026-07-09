@@ -1,4 +1,5 @@
 import { slugify } from './slugify';
+import { parseMediaColumns } from './mediaLayout';
 
 const BLOCK_REGEX = /:::(\w[\w-]*)\s*\n([\s\S]*?):::/g;
 const FRONTMATTER_REGEX = /^---\s*\n([\s\S]*?)\n---\s*\n/;
@@ -35,6 +36,8 @@ export interface ImageBlockData {
 	file: string;
 	caption?: string;
 	alt?: string;
+	/** How many chapter grid columns this media spans (1 or 2). Defaults to 1. */
+	columns?: number;
 }
 
 export interface Chapter {
@@ -54,6 +57,7 @@ export type CustomBlock =
 	| { type: 'deep-dive'; title: string; body: string }
 	| { type: 'screenshot'; label: string }
 	| { type: 'image'; data: ImageBlockData }
+	| { type: 'image-row'; items: ImageBlockData[]; columns: number }
 	| { type: 'gallery'; images: string[] };
 
 export type ContentSegment = { kind: 'markdown'; content: string } | { kind: 'block'; block: CustomBlock };
@@ -106,6 +110,35 @@ function parseDeepDive(body: string): { title: string; body: string } {
 	const bodyStart = titleLine ? lines.indexOf(titleLine) + 1 : 0;
 	const diveBody = lines.slice(bodyStart).join('\n').trim();
 	return { title, body: diveBody };
+}
+
+function parseImageRowBody(body: string): { columns: number; items: ImageBlockData[] } {
+	const lines = body
+		.trim()
+		.split('\n')
+		.map((line) => line.trim())
+		.filter(Boolean);
+
+	let columns = 1;
+	let start = 0;
+
+	if (lines[0]?.toLowerCase().startsWith('columns:')) {
+		columns = parseMediaColumns(lines[0].slice(lines[0].indexOf(':') + 1));
+		start = 1;
+	}
+
+	return {
+		columns,
+		items: lines.slice(start).map((line) => {
+			const [file, ...captionParts] = line.split('|');
+			const caption = captionParts.join('|').trim();
+			return {
+				file: file.trim(),
+				caption: caption || undefined,
+				alt: caption || undefined,
+			};
+		}),
+	};
 }
 
 function preprocessMarkdown(content: string): string {
@@ -168,7 +201,16 @@ function parseBlock(type: string, body: string): CustomBlock {
 					file: fields.file ?? '',
 					caption: fields.caption,
 					alt: fields.alt ?? fields.caption,
+					columns: parseMediaColumns(fields.columns),
 				},
+			};
+		}
+		case 'image-row': {
+			const parsed = parseImageRowBody(body);
+			return {
+				type: 'image-row',
+				items: parsed.items,
+				columns: parsed.columns,
 			};
 		}
 		case 'gallery':

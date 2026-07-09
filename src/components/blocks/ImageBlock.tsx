@@ -12,9 +12,10 @@ interface ImageBlockProps {
 	gallery?: LightboxImage[];
 	galleryIndex?: number;
 	compact?: boolean;
+	inline?: boolean;
 }
 
-export function ImageBlock({ file, caption, alt, gallery, galleryIndex = 0, compact = false }: ImageBlockProps) {
+export function ImageBlock({ file, caption, alt, gallery, galleryIndex = 0, compact = false, inline = false }: ImageBlockProps) {
 	const { open } = useLightbox();
 	const src = imageSrc(file);
 	const label = alt ?? caption ?? file;
@@ -27,9 +28,11 @@ export function ImageBlock({ file, caption, alt, gallery, galleryIndex = 0, comp
 	return (
 		<Box
 			sx={{
-				my: compact ? 0 : 4,
+				my: compact || inline ? 0 : 4,
 				width: '100%',
-				maxWidth: '100%',
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: inline ? 'stretch' : 'center',
 			}}>
 			<Box
 				component='button'
@@ -38,7 +41,8 @@ export function ImageBlock({ file, caption, alt, gallery, galleryIndex = 0, comp
 				aria-label={`View fullscreen: ${label}`}
 				sx={{
 					display: 'block',
-					width: '100%',
+					width: inline ? '100%' : 'fit-content',
+					maxWidth: '100%',
 					m: 0,
 					p: 0,
 					border: `1px solid ${tokens.border}`,
@@ -46,19 +50,32 @@ export function ImageBlock({ file, caption, alt, gallery, galleryIndex = 0, comp
 					overflow: 'hidden',
 					cursor: 'zoom-in',
 					bgcolor: tokens.surfaceRaised,
-					boxShadow: tokens.shadowImage,
 					font: 'inherit',
 					textAlign: 'inherit',
-					transition: 'box-shadow 200ms ease',
-					'&:hover': { boxShadow: tokens.shadowElevated },
 					'&:focus-visible': {
 						outline: `2px solid ${tokens.accent}`,
 						outlineOffset: 3,
 					},
 				}}>
-				<Box component='img' src={src} alt={label} loading='lazy' decoding='async' sx={{ display: 'block', width: '100%', height: 'auto' }} />
+				<Box
+					component='img'
+					src={src}
+					alt={label}
+					loading='lazy'
+					decoding='async'
+					sx={{
+						display: 'block',
+						width: inline ? '100%' : 'auto',
+						maxWidth: '100%',
+						height: 'auto',
+					}}
+				/>
 			</Box>
-			{caption && <Typography sx={{ display: 'block', mt: 1.25, ...captionTextSx }}>{caption}</Typography>}
+			{caption && (
+				<Typography sx={{ display: 'block', mt: 1.25, width: '100%', maxWidth: tokens.layout.wideWidth, ...captionTextSx }}>
+					{caption}
+				</Typography>
+			)}
 		</Box>
 	);
 }

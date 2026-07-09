@@ -66,7 +66,7 @@ const navGroupLabelSx = {
 	mb: 0.75,
 	mt: 0.25,
 	fontFamily: tokens.fontBody,
-	fontSize: '0.6875rem',
+	fontSize: '0.75rem',
 	fontWeight: 600,
 	letterSpacing: '0.1em',
 	textTransform: 'uppercase',
@@ -83,7 +83,7 @@ function navLinkSx(active: boolean, level: 'primary' | 'sub' = 'primary') {
 		minHeight: 44,
 		textDecoration: 'none',
 		borderLeft: `2px solid ${active ? tokens.accent : 'transparent'}`,
-		fontSize: level === 'sub' ? '0.75rem' : '0.8125rem',
+		fontSize: level === 'sub' ? '0.8125rem' : '0.9375rem',
 		fontWeight:
 			active ? 600
 			: level === 'primary' ? 500
@@ -173,7 +173,7 @@ function NavContent({ onNavigate, showHeroIntro = true }: { onNavigate?: () => v
 								className='global-nav-title'
 								sx={{
 									m: 0,
-									fontSize: '0.75rem',
+									fontSize: '0.8125rem',
 									fontWeight: isActive ? 600 : 400,
 									lineHeight: 1.45,
 									color: isActive ? tokens.accent : tokens.textNav,
@@ -240,7 +240,6 @@ function NavDrawerInternals({ open, onClose }: { open: boolean; onClose: () => v
 							maxWidth: '100vw',
 							bgcolor: alpha(tokens.background, 0.94),
 							backdropFilter: 'blur(10px)',
-							boxShadow: `4px 0 20px ${alpha(tokens.accent, 0.05)}`,
 						},
 					},
 				}}>

@@ -6,16 +6,17 @@ import { tokens } from '../../theme/theme';
 
 interface StatsProps {
 	items: StatItem[];
+	compact?: boolean;
 }
 
-export function Stats({ items }: StatsProps) {
+export function Stats({ items, compact = false }: StatsProps) {
 	return (
 		<Box
 			sx={{
 				display: 'grid',
-				gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: `repeat(${Math.min(items.length, 4)}, 1fr)` },
+				gridTemplateColumns: { xs: '1fr 1fr', md: `repeat(${Math.min(items.length, 4)}, 1fr)` },
 				gap: 1.5,
-				my: 3,
+				my: compact ? 0 : 3,
 			}}>
 			{items.map((stat) => (
 				<Box

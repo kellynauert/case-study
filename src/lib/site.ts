@@ -35,6 +35,14 @@ export const platformStory = {
 	continuation: [] as const,
 } as const;
 
+/** Production scale — shown on the landing page */
+export const platformStats = [
+	{ value: '400+', label: 'Active users on the platform' },
+	{ value: '160+', label: 'Content courses in the library' },
+	{ value: '250K+', label: 'Activity records per year' },
+	{ value: '4+', label: 'CMS, SIS, EMS, and evaluations in one LMS' },
+] as const;
+
 /** Short homepage teasers — not full feature showcase summaries */
 export const caseStudyTeasers = {
 	'course-authoring': 'Custom authoring tools that replaced a generic LMS, with a shared content model for every course.',

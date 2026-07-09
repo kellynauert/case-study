@@ -48,7 +48,7 @@ function buildProseSx(wide: boolean) {
 			p: 0,
 			border: 'none',
 			'& p': {
-				fontSize: { xs: '0.875rem', md: '0.9375rem' },
+				fontSize: { xs: '0.9375rem', md: '1rem' },
 				fontStyle: 'italic',
 				color: tokens.textPrimary,
 				lineHeight: 1.6,
@@ -98,7 +98,7 @@ export function MarkdownRenderer({ content, isHero = false, wide = false, column
 						mt: 2,
 						mb: 1,
 						fontFamily: tokens.fontBody,
-						fontSize: { xs: '0.8125rem', md: '0.875rem' },
+						fontSize: { xs: '0.9375rem', md: '1rem' },
 						fontWeight: 600,
 						lineHeight: 1.4,
 						color: tokens.textPrimary,

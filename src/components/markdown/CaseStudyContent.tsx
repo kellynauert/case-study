@@ -8,6 +8,7 @@ import { PageShell } from '../Layout/PageShell';
 import { TableOfContents } from '../Layout/TableOfContents';
 import { Section } from '../blocks/Section';
 import { ChapterHeading } from '../blocks/ChapterHeading';
+import { ChapterSegments } from '../markdown/ChapterSegments';
 import { MarkdownRenderer } from '../markdown/MarkdownRenderer';
 import { BlockRenderer } from '../markdown/BlockRenderer';
 import { CaseStudyPager } from '../markdown/CaseStudyPager';
@@ -18,8 +19,18 @@ interface CaseStudyContentProps {
 	slug: string;
 }
 
+function chapterContainsVisual(chapter: Chapter): boolean {
+	return chapter.segments.some(
+		(segment) =>
+			segment.kind === 'block' && (segment.block.type === 'image' || segment.block.type === 'image-row' || segment.block.type === 'gallery')
+	);
+}
+
 function chapterSpansFullWidth(chapter: Chapter): boolean {
-	return chapter.segments.length > 0 && chapter.segments.every((segment) => segment.kind === 'block');
+	if (chapter.segments.length > 0 && chapter.segments.every((segment) => segment.kind === 'block')) {
+		return true;
+	}
+	return chapterContainsVisual(chapter);
 }
 
 function isGalleryOnlyChapter(chapter: Chapter): boolean {
@@ -32,15 +43,14 @@ function isGalleryOnlyChapter(chapter: Chapter): boolean {
 }
 
 function renderChapterSegments(chapter: Chapter, options: { columnFlow?: boolean; wide?: boolean; galleryTitle?: string; galleryHeaderId?: string }) {
-	return chapter.segments.map((segment, index) =>
-		segment.kind === 'block' ?
-			<BlockRenderer
-				key={`${chapter.id}-block-${index}`}
-				block={segment.block}
-				galleryTitle={segment.block.type === 'gallery' ? options.galleryTitle : undefined}
-				galleryHeaderId={segment.block.type === 'gallery' ? options.galleryHeaderId : undefined}
-			/>
-		:	<MarkdownRenderer key={`${chapter.id}-md-${index}`} content={segment.content} columnFlow={options.columnFlow} wide={options.wide} />
+	return (
+		<ChapterSegments
+			chapter={chapter}
+			columnFlow={options.columnFlow}
+			wide={options.wide}
+			galleryTitle={options.galleryTitle}
+			galleryHeaderId={options.galleryHeaderId}
+		/>
 	);
 }
 
@@ -49,9 +59,7 @@ export function CaseStudyContent({ raw, slug }: CaseStudyContentProps) {
 	const headings = useMemo(() => extractHeadings(chapters), [chapters]);
 	const sectionIds = useMemo(() => headings.map((heading) => heading.id), [headings]);
 	const activeId = useScrollSpy(sectionIds);
-	const hasContextIntro = chapters[0]?.title === 'Context';
-	const introChapter = hasContextIntro ? chapters[0] : undefined;
-	const bodyChapters = hasContextIntro ? chapters.slice(1) : chapters;
+	const bodyChapters = chapters;
 
 	const title = frontmatter?.title ?? 'Showcase';
 	const subtitle = frontmatter?.subtitle ?? '';
@@ -74,13 +82,6 @@ export function CaseStudyContent({ raw, slug }: CaseStudyContentProps) {
 								<BlockRenderer key={`intro-block-${index}`} block={segment.block} />
 							:	<MarkdownRenderer key={`intro-md-${index}`} content={segment.content} columnFlow />
 						)}
-					</Section>
-				)}
-
-				{introChapter && (
-					<Section>
-						<ChapterHeading id={introChapter.id} title={introChapter.title} />
-						{renderChapterSegments(introChapter, { columnFlow: true })}
 					</Section>
 				)}
 

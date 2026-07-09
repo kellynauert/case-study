@@ -1,10 +1,11 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useId, useState } from 'react';
-import { platformStory } from '../../lib/site';
+import { platformStory, platformStats } from '../../lib/site';
 import type { CaseStudyMeta } from '../../lib/caseStudies';
 import { bodyTextSx, contentGridGap, panelHeadingSx, scrollMarginTop } from '../../lib/styles';
 import { FeatureShowcaseList } from './FeatureShowcaseList';
+import { Stats } from '../blocks/Stats';
 import { tokens } from '../../theme/theme';
 
 type StoryBlock = { type: 'paragraph'; text: string } | { type: 'list'; items: string[] };
@@ -213,6 +214,10 @@ export function ContextPanel({ studies }: { studies: CaseStudyMeta[] }) {
 						</Typography>
 					:	<StoryBlocks key={`blocks-${index}`} blocks={[block]} storyTextSx={contextStoryTextSx} />
 				)}
+			</Box>
+
+			<Box sx={{ mt: { xs: 2.5, md: 3 } }}>
+				<Stats items={[...platformStats]} compact />
 			</Box>
 
 			<Box sx={{ mt: { xs: 3, md: 3.5 } }}>

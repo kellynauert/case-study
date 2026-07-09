@@ -10,16 +10,18 @@ import { Callout } from '../blocks/Callout';
 import { DeepDive } from '../blocks/DeepDive';
 import { ScreenshotPlaceholder } from '../blocks/ScreenshotPlaceholder';
 import { ImageBlock } from '../blocks/ImageBlock';
+import { ImageRow } from '../blocks/ImageRow';
 import { Gallery } from '../blocks/Gallery';
 
 interface BlockRendererProps {
 	block: CustomBlock;
 	compact?: boolean;
+	inline?: boolean;
 	galleryTitle?: string;
 	galleryHeaderId?: string;
 }
 
-export function BlockRenderer({ block, compact, galleryTitle, galleryHeaderId }: BlockRendererProps) {
+export function BlockRenderer({ block, compact, inline, galleryTitle, galleryHeaderId }: BlockRendererProps) {
 	switch (block.type) {
 		case 'stats':
 			return <Stats items={block.items} />;
@@ -40,7 +42,9 @@ export function BlockRenderer({ block, compact, galleryTitle, galleryHeaderId }:
 		case 'screenshot':
 			return <ScreenshotPlaceholder label={block.label} compact={compact} />;
 		case 'image':
-			return <ImageBlock file={block.data.file} caption={block.data.caption} alt={block.data.alt} compact={compact} />;
+			return <ImageBlock file={block.data.file} caption={block.data.caption} alt={block.data.alt} compact={compact} inline={inline} />;
+		case 'image-row':
+			return <ImageRow items={block.items} compact={compact} inline={inline} />;
 		case 'gallery':
 			return <Gallery images={block.images} compact={compact} title={galleryTitle ?? sections.screens} headerId={galleryHeaderId} />;
 		default:
