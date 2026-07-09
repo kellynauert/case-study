@@ -1,16 +1,18 @@
-import type { CSSProperties } from 'react';
+import type { CSSObject } from '@mui/material/styles';
 
 declare module '@mui/material/styles' {
 	interface TypographyVariants {
-		sectionHeading: CSSProperties;
-		panelHeading: CSSProperties;
-		displayTitle: CSSProperties;
+		sectionHeading: CSSObject;
+		panelHeading: CSSObject;
+		displayTitle: CSSObject;
+		pageTitle: CSSObject;
 	}
 
 	interface TypographyVariantsOptions {
-		sectionHeading?: CSSProperties;
-		panelHeading?: CSSProperties;
-		displayTitle?: CSSProperties;
+		sectionHeading?: CSSObject;
+		panelHeading?: CSSObject;
+		displayTitle?: CSSObject;
+		pageTitle?: CSSObject;
 	}
 }
 
@@ -19,6 +21,7 @@ declare module '@mui/material/Typography' {
 		sectionHeading: true;
 		panelHeading: true;
 		displayTitle: true;
+		pageTitle: true;
 	}
 }
 

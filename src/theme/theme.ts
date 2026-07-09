@@ -105,6 +105,16 @@ export const theme = createTheme({
 				fontSize: '1.25rem',
 			},
 		},
+		pageTitle: {
+			fontFamily: fontDisplay,
+			fontSize: '1.1875rem',
+			fontWeight: 600,
+			lineHeight: 1.3,
+			color: textPrimary,
+			'@media (min-width:900px)': {
+				fontSize: '1.25rem',
+			},
+		},
 		body1: {
 			fontSize: '0.9375rem',
 			lineHeight: 1.7,
@@ -149,7 +159,8 @@ export const theme = createTheme({
 				variantMapping: {
 					sectionHeading: 'h2',
 					panelHeading: 'h3',
-					displayTitle: 'h1',
+					displayTitle: 'h3',
+					pageTitle: 'h1',
 				},
 			},
 		},

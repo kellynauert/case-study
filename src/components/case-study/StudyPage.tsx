@@ -31,7 +31,7 @@ export function StudyPage({ slug, title, subtitle, intro, sections, children }: 
 			<TableOfContents headings={headings} activeId={activeId} studyTitle={title} mobileOnly />
 			<PageShell footer={<CaseStudyPager slug={slug} currentTitle={title} />}>
 				<Box sx={{ mb: { xs: 2.5, md: 3 } }}>
-					<Typography variant='displayTitle' sx={{ mb: subtitle ? 1.25 : 0 }}>
+					<Typography variant='pageTitle' sx={{ mb: subtitle ? 1.25 : 0 }}>
 						{title}
 					</Typography>
 					{subtitle && (
