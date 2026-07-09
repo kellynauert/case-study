@@ -7,12 +7,12 @@ import Typography from '@mui/material/Typography';
 import ListIcon from '@mui/icons-material/List';
 import CloseIcon from '@mui/icons-material/Close';
 import { alpha } from '@mui/material/styles';
-import type { HeadingItem } from '../../lib/parseMarkdown';
+import type { TocHeading } from '../../lib/caseStudyTypes';
 import { mobileHeaderHeight } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 interface TableOfContentsProps {
-	headings: HeadingItem[];
+	headings: TocHeading[];
 	activeId: string;
 	studyTitle?: string;
 	/** Hide the desktop sticky sidebar — use on pages that already have GlobalNav */
@@ -24,7 +24,7 @@ function scrollToSection(id: string) {
 	if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function NavLinks({ headings, activeId, onNavigate }: { headings: HeadingItem[]; activeId: string; onNavigate?: () => void }) {
+function NavLinks({ headings, activeId, onNavigate }: { headings: TocHeading[]; activeId: string; onNavigate?: () => void }) {
 	return (
 		<Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.25 }}>
 			{headings.map((item) => {

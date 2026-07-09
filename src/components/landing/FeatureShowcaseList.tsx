@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import { formatReadingTime, type CaseStudyMeta } from '../../lib/caseStudies';
+import { formatReadingTime, type CaseStudyMeta } from '../../lib/caseStudyTypes';
 import { captionTextSx, displayTitleSx, scrollMarginTop, secondaryTextSx } from '../../lib/styles';
 import { useViewedShowcases } from '../../hooks/useViewedShowcases';
 import { useReducedMotion } from '../../hooks/useReducedMotion';

@@ -1,7 +1,6 @@
 import { Navigate, useParams } from 'react-router-dom';
-import { getCaseStudyBySlug } from '../lib/caseStudies';
+import { getCaseStudyBySlug } from '../lib/caseStudyRegistry';
 import { useMarkShowcaseViewed } from '../hooks/useViewedShowcases';
-import { CaseStudyContent } from '../components/markdown/CaseStudyContent';
 import { SiteLayout } from '../components/Layout/SiteLayout';
 
 export function CaseStudyPage() {
@@ -12,9 +11,11 @@ export function CaseStudyPage() {
 
 	if (!study) return <Navigate to='/' replace />;
 
+	const Page = study.component;
+
 	return (
 		<SiteLayout showFooter={false}>
-			<CaseStudyContent raw={study.raw} slug={study.meta.slug} />
+			<Page />
 		</SiteLayout>
 	);
 }

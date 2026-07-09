@@ -1,3 +1,4 @@
+import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
 import { Footer } from './Footer';
@@ -29,27 +30,38 @@ export function SiteLayout({ children, showFooter = true }: SiteLayoutProps) {
 					}}
 				/>
 
-				<Box
+				<Grid
+					container
+					wrap='nowrap'
 					sx={{
 						position: 'relative',
 						zIndex: 1,
-						display: 'flex',
 						minHeight: '100vh',
 						width: '100%',
-						maxWidth: { md: tokens.layout.navWidth + tokens.layout.pageMaxWidth + 40 },
+						maxWidth: { md: tokens.layout.shellMaxWidth },
 						mx: { md: 'auto' },
-						gap: { md: 5 },
+						columnGap: { md: 5 },
 					}}>
-					<Box
+					<Grid
 						aria-hidden
 						sx={{
 							display: { xs: 'none', md: 'block' },
 							width: tokens.layout.navWidth,
+							minWidth: tokens.layout.navWidth,
+							maxWidth: tokens.layout.navWidth,
 							flexShrink: 0,
 						}}
 					/>
 
-					<Box sx={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', overflowX: 'clip' }}>
+					<Grid
+						sx={{
+							flex: 1,
+							minWidth: 0,
+							width: { xs: '100%', md: 'auto' },
+							display: 'flex',
+							flexDirection: 'column',
+							overflowX: 'clip',
+						}}>
 						<MobileStickyNavBar />
 
 						<Box
@@ -75,8 +87,8 @@ export function SiteLayout({ children, showFooter = true }: SiteLayoutProps) {
 						</Box>
 
 						{showFooter && <Footer />}
-					</Box>
-				</Box>
+					</Grid>
+				</Grid>
 			</Box>
 		</NavDrawerProvider>
 	);

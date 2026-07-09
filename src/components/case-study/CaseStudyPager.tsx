@@ -3,7 +3,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { getAdjacentCaseStudies, type CaseStudyMeta } from '../../lib/caseStudies';
+import { getAdjacentCaseStudies } from '../../lib/caseStudyRegistry';
+import type { CaseStudyMeta } from '../../lib/caseStudyTypes';
 import { captionTextSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
@@ -23,9 +24,7 @@ const pagerLinkSx = {
 	textDecoration: 'none',
 	color: tokens.textMuted,
 	transition: 'color 180ms ease',
-	'&:hover': {
-		color: tokens.accent,
-	},
+	'&:hover': { color: tokens.accent },
 	'&:focus-visible': {
 		outline: `2px solid ${tokens.accent}`,
 		outlineOffset: 3,
@@ -49,7 +48,6 @@ function PagerLink({ study, direction }: { study: CaseStudyMeta; direction: 'pre
 			{isPrevious ?
 				<ChevronLeftIcon sx={{ fontSize: '0.875rem', flexShrink: 0 }} />
 			:	<ChevronRightIcon sx={{ fontSize: '0.875rem', flexShrink: 0 }} />}
-
 			<Typography
 				sx={{
 					...captionTextSx,
@@ -78,29 +76,16 @@ export function CaseStudyPager({ slug, currentTitle }: CaseStudyPagerProps) {
 				gap: { xs: 1.5, sm: 2 },
 				alignItems: 'center',
 			}}>
-			<Box sx={{ justifySelf: { xs: 'stretch', sm: 'start' }, minWidth: 0, order: { xs: 1, sm: 0 } }}>
+			<Box sx={{ justifySelf: { xs: 'stretch', sm: 'start' }, minWidth: 0 }}>
 				{previous && <PagerLink study={previous} direction='previous' />}
 			</Box>
-
-			<Typography
-				sx={{
-					...captionTextSx,
-					m: 0,
-					textAlign: 'center',
-					fontWeight: 500,
-					color: tokens.textSecondary,
-					order: { xs: 0, sm: 0 },
-				}}>
-				{currentTitle}
-			</Typography>
-
+			<Typography sx={{ ...captionTextSx, m: 0, textAlign: 'center', fontWeight: 500, color: tokens.textSecondary }}>{currentTitle}</Typography>
 			<Box
 				sx={{
 					justifySelf: { xs: 'stretch', sm: 'end' },
 					minWidth: 0,
 					display: 'flex',
 					justifyContent: { xs: 'flex-start', sm: 'flex-end' },
-					order: { xs: 2, sm: 0 },
 				}}>
 				{next && <PagerLink study={next} direction='next' />}
 			</Box>

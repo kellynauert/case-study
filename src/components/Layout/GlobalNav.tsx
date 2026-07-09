@@ -8,7 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
 import { alpha } from '@mui/material/styles';
-import { getAllCaseStudies } from '../../lib/caseStudies';
+import { getAllCaseStudies } from '../../lib/caseStudyRegistry';
 import { isShowcaseViewed } from '../../lib/viewedShowcases';
 import { useViewedShowcases } from '../../hooks/useViewedShowcases';
 import { mobileHeaderHeight } from '../../lib/styles';
@@ -189,7 +189,7 @@ function NavContent({ onNavigate, showHeroIntro = true }: { onNavigate?: () => v
 	);
 }
 
-const shellMaxWidth = tokens.layout.navWidth + 1320;
+const shellMaxWidth = tokens.layout.shellMaxWidth;
 
 export function MobileStickyNavBar() {
 	const { openDrawer } = useNavDrawer();

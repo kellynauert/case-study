@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import type { StatItem } from '../../lib/parseMarkdown';
+import type { StatItem } from '../../lib/caseStudyTypes';
 import { captionTextSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 

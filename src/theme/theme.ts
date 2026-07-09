@@ -31,6 +31,8 @@ export const layout = {
 	navWidth: 360,
 	contentMaxWidth: 640,
 	pageMaxWidth: 1160,
+	/** Nav column + gap + main column — keeps fixed nav aligned with content shell */
+	shellMaxWidth: 360 + 1160 + 40,
 	sectionSpacing: { xs: 8, md: 12 },
 	readableWidth: '38rem',
 	wideWidth: '56rem',

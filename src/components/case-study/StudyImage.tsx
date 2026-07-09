@@ -1,39 +1,31 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useLightbox, type LightboxImage } from '../../context/LightboxContext';
-import { imageSrc } from '../../lib/parseMarkdown';
+import { imageSrc } from '../../lib/images';
 import { captionTextSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
-interface ImageBlockProps {
-	file: string;
-	caption?: string;
+interface StudyImageProps {
+	src: string;
 	alt?: string;
+	caption?: string;
 	gallery?: LightboxImage[];
 	galleryIndex?: number;
-	compact?: boolean;
-	inline?: boolean;
+	fullWidth?: boolean;
 }
 
-export function ImageBlock({ file, caption, alt, gallery, galleryIndex = 0, compact = false, inline = false }: ImageBlockProps) {
+export function StudyImage({ src, alt, caption, gallery, galleryIndex = 0, fullWidth = false }: StudyImageProps) {
 	const { open } = useLightbox();
-	const src = imageSrc(file);
-	const label = alt ?? caption ?? file;
+	const resolved = imageSrc(src);
+	const label = alt ?? caption ?? src;
 
 	const handleOpen = () => {
-		const images = gallery ?? [{ src, alt: label, caption }];
+		const images = gallery ?? [{ src: resolved, alt: label, caption }];
 		open(images, gallery ? galleryIndex : 0);
 	};
 
 	return (
-		<Box
-			sx={{
-				my: compact || inline ? 0 : 4,
-				width: '100%',
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: inline ? 'stretch' : 'center',
-			}}>
+		<Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: fullWidth ? 'center' : 'stretch' }}>
 			<Box
 				component='button'
 				type='button'
@@ -41,7 +33,7 @@ export function ImageBlock({ file, caption, alt, gallery, galleryIndex = 0, comp
 				aria-label={`View fullscreen: ${label}`}
 				sx={{
 					display: 'block',
-					width: inline ? '100%' : 'fit-content',
+					width: fullWidth ? 'fit-content' : '100%',
 					maxWidth: '100%',
 					m: 0,
 					p: 0,
@@ -59,23 +51,19 @@ export function ImageBlock({ file, caption, alt, gallery, galleryIndex = 0, comp
 				}}>
 				<Box
 					component='img'
-					src={src}
+					src={resolved}
 					alt={label}
 					loading='lazy'
 					decoding='async'
 					sx={{
 						display: 'block',
-						width: inline ? '100%' : 'auto',
+						width: fullWidth ? 'auto' : '100%',
 						maxWidth: '100%',
 						height: 'auto',
 					}}
 				/>
 			</Box>
-			{caption && (
-				<Typography sx={{ display: 'block', mt: 1.25, width: '100%', maxWidth: tokens.layout.wideWidth, ...captionTextSx }}>
-					{caption}
-				</Typography>
-			)}
+			{caption && <Typography sx={{ display: 'block', mt: 1.25, ...captionTextSx }}>{caption}</Typography>}
 		</Box>
 	);
 }

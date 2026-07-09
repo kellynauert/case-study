@@ -1,4 +1,4 @@
-import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import { pagePaddingX, pageTopPadding } from '../../lib/styles';
 import { ScrollToTopButton } from './ScrollToTopButton';
 import { tokens } from '../../theme/theme';
@@ -10,7 +10,8 @@ interface PageShellProps {
 
 export function PageShell({ footer, children }: PageShellProps) {
 	return (
-		<Box
+		<Grid
+			container
 			sx={{
 				width: '100%',
 				maxWidth: tokens.layout.pageMaxWidth,
@@ -18,11 +19,12 @@ export function PageShell({ footer, children }: PageShellProps) {
 				pt: { xs: 2, md: pageTopPadding.md },
 				pb: { xs: 6, md: 10 },
 			}}>
-			{children}
+			<Grid size={12}>{children}</Grid>
 
 			{footer && (
-				<Box
+				<Grid
 					component='footer'
+					size={12}
 					sx={{
 						pt: 6,
 						mt: 8,
@@ -30,8 +32,8 @@ export function PageShell({ footer, children }: PageShellProps) {
 					}}>
 					{footer}
 					<ScrollToTopButton />
-				</Box>
+				</Grid>
 			)}
-		</Box>
+		</Grid>
 	);
 }

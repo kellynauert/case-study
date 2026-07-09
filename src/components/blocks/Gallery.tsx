@@ -7,7 +7,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { alpha } from '@mui/material/styles';
-import { imageSrc } from '../../lib/parseMarkdown';
+import { imageSrc } from '../../lib/images';
 import { captionTextSx, sectionHeadingSx } from '../../lib/styles';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { tokens } from '../../theme/theme';
