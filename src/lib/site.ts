@@ -11,9 +11,11 @@ export const project = {
 	disciplines: ['UX Design', 'Product Design', 'React', 'TypeScript', 'Node.js', 'PostgreSQL'],
 } as const;
 
+export const resumeFilename = 'KellyNauert_Resume.pdf';
+
 export const links = {
 	github: 'https://github.com/kellynauert',
-	resume: `${import.meta.env.BASE_URL}resume.pdf`,
+	resume: `${import.meta.env.BASE_URL}${resumeFilename}`,
 } as const;
 
 export const hero = {
