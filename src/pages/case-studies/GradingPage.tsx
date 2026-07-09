@@ -1,8 +1,11 @@
 import { StudyPage } from '../../components/case-study/StudyPage';
 import { StudySection } from '../../components/case-study/StudySection';
 import { StudyCapability } from '../../components/case-study/StudyCapability';
+import { StudyGrid } from '../../components/case-study/StudyGrid';
+import { StudyCell } from '../../components/case-study/StudyCell';
 import { StudyBody } from '../../components/case-study/StudyBody';
-import { StudyScreens } from '../../components/case-study/StudyScreens';
+import { StudyImage } from '../../components/case-study/StudyImage';
+import { StudyImageRow } from '../../components/case-study/StudyImageRow';
 import type { StudySectionItem } from '../../lib/caseStudyTypes';
 
 export const gradingSections: StudySectionItem[] = [
@@ -15,7 +18,6 @@ export const gradingSections: StudySectionItem[] = [
 	{ id: 'grader-notes', title: 'Grader Notes', level: 2 },
 	{ id: 'technical-notes', title: 'Technical Notes' },
 	{ id: 'outcome', title: 'Outcome' },
-	{ id: 'screens', title: 'Screens' },
 ];
 
 export function GradingPage() {
@@ -70,6 +72,12 @@ export function GradingPage() {
 					<StudyBody>
 						Both gradebooks restrict visibility to courses and students relevant to the current staff member's assigned access.
 					</StudyBody>
+					<StudyImageRow
+						images={[
+							{ src: 'course_gradebook.gif', alt: 'Course gradebook with submission status per student' },
+							{ src: 'student_gradebook.gif', alt: 'Student gradebook across multiple course enrollments' },
+						]}
+					/>
 				</StudyCapability>
 
 				<StudyCapability id='scoring-and-automatic-grading' title='Scoring and Automatic Grading'>
@@ -84,16 +92,27 @@ export function GradingPage() {
 				</StudyCapability>
 
 				<StudyCapability id='ai-assisted-grading' title='AI-Assisted Grading'>
-					<StudyBody>
-						For items requiring manual evaluation, authors configure an AI grading prompt at item creation time. During review, graders
-						can generate AI suggestions in bulk or per item type. A Generate All action sends all AI-gradable items to the GPT API with
-						the configured prompt and returns suggestions in one pass.
-					</StudyBody>
-					<StudyBody>
-						AI suggestions include color-coded highlights showing which parts of the original text the model used and where it responds.
-						Extra or missing highlight colors indicate the model added unsupported content or missed source text—grounding designed to
-						surface hallucinations before graders accept a suggestion.
-					</StudyBody>
+					<StudyGrid>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyBody>
+								For items requiring manual evaluation, authors configure an AI grading prompt at item creation time. During review,
+								graders can generate AI suggestions in bulk or per item type. A Generate All action sends all AI-gradable items to the
+								GPT API with the configured prompt and returns suggestions in one pass.
+							</StudyBody>
+							<StudyBody>
+								AI suggestions include color-coded highlights showing which parts of the original text the model used and where it
+								responds. Extra or missing highlight colors indicate the model added unsupported content or missed source
+								text—grounding designed to surface hallucinations before graders accept a suggestion.
+							</StudyBody>
+						</StudyCell>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyImage
+								src='ai_grading.gif'
+								alt='AI-assisted grading with color-coded text grounding'
+								caption='AI-assisted grading with color-coded text grounding'
+							/>
+						</StudyCell>
+					</StudyGrid>
 				</StudyCapability>
 
 				<StudyCapability id='grader-notes' title='Grader Notes'>
@@ -121,16 +140,6 @@ export function GradingPage() {
 					instructor intervention. AI-assisted grading reduced time on written response review while keeping final scoring decisions with
 					instructors.
 				</StudyBody>
-			</StudySection>
-
-			<StudySection id='screens' title='Screens'>
-				<StudyScreens
-					images={[
-						{ src: 'ai_grading.gif', caption: 'AI-assisted grading with color-coded text grounding' },
-						{ src: 'course_gradebook.gif', caption: 'Course gradebook with submission status per student' },
-						{ src: 'student_gradebook.gif', caption: 'Student gradebook across multiple course enrollments' },
-					]}
-				/>
 			</StudySection>
 		</StudyPage>
 	);

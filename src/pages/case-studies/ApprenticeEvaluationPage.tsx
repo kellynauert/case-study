@@ -1,8 +1,10 @@
 import { StudyPage } from '../../components/case-study/StudyPage';
 import { StudySection } from '../../components/case-study/StudySection';
 import { StudyCapability } from '../../components/case-study/StudyCapability';
+import { StudyGrid } from '../../components/case-study/StudyGrid';
+import { StudyCell } from '../../components/case-study/StudyCell';
 import { StudyBody } from '../../components/case-study/StudyBody';
-import { StudyScreens } from '../../components/case-study/StudyScreens';
+import { StudyImage } from '../../components/case-study/StudyImage';
 import type { StudySectionItem } from '../../lib/caseStudyTypes';
 
 export const apprenticeEvaluationSections: StudySectionItem[] = [
@@ -13,7 +15,6 @@ export const apprenticeEvaluationSections: StudySectionItem[] = [
 	{ id: 'progress-tracker', title: 'Progress Tracker', level: 2 },
 	{ id: 'technical-notes', title: 'Technical Notes' },
 	{ id: 'outcome', title: 'Outcome' },
-	{ id: 'screens', title: 'Screens' },
 ];
 
 export function ApprenticeEvaluationPage() {
@@ -55,23 +56,46 @@ export function ApprenticeEvaluationPage() {
 				</StudyCapability>
 
 				<StudyCapability id='reflection-journals' title='Reflection Journals'>
-					<StudyBody>
-						Reflections are scheduled across the program with administrator-configured prompts and instructions. Responses attach to each
-						apprentice's record for mentor review. The system supports daily and weekly reflection schedules.
-					</StudyBody>
-					<StudyBody>
-						Weekly reflections support micro-narratives: short entries made several times per week that roll into the weekly comment flow.
-						Mentors see an unlock button reminding them to complete micro-narratives before the weekly reflection opens. A "weeks to run"
-						setting limits submissions based on reflection entry count rather than exact calendar weeks, accommodating holidays and
-						scheduling gaps.
-					</StudyBody>
+					<StudyGrid>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyBody>
+								Reflections are scheduled across the program with administrator-configured prompts and instructions. Responses attach
+								to each apprentice's record for mentor review. The system supports daily and weekly reflection schedules.
+							</StudyBody>
+							<StudyBody>
+								Weekly reflections support micro-narratives: short entries made several times per week that roll into the weekly
+								comment flow. Mentors see an unlock button reminding them to complete micro-narratives before the weekly reflection
+								opens. A "weeks to run" setting limits submissions based on reflection entry count rather than exact calendar weeks,
+								accommodating holidays and scheduling gaps.
+							</StudyBody>
+						</StudyCell>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyImage
+								src='reflection.gif'
+								alt='Apprentice reflection journal with scheduled prompts'
+								caption='Apprentice reflection journal with scheduled prompts'
+							/>
+						</StudyCell>
+					</StudyGrid>
 				</StudyCapability>
 
 				<StudyCapability id='progress-tracker' title='Progress Tracker'>
-					<StudyBody>
-						Each apprentice has a centralized progress dashboard aggregating evaluations, reflections, required observations, coursework,
-						and outstanding requirements. Evaluation history shows who rated changes and when ratings moved between levels.
-					</StudyBody>
+					<StudyGrid>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyBody>
+								Each apprentice has a centralized progress dashboard aggregating evaluations, reflections, required observations,
+								coursework, and outstanding requirements. Evaluation history shows who rated changes and when ratings moved between
+								levels.
+							</StudyBody>
+						</StudyCell>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyImage
+								src='evaluation_rating.gif'
+								alt='Evaluation rating history with level-change tracking'
+								caption='Evaluation rating history with level-change tracking'
+							/>
+						</StudyCell>
+					</StudyGrid>
 				</StudyCapability>
 			</StudySection>
 
@@ -92,15 +116,6 @@ export function ApprenticeEvaluationPage() {
 					Currently used across MathTrack teacher apprenticeship programs. Mentors complete field observations from mobile devices. Program
 					administrators configure competencies and reflection schedules per organization without custom development.
 				</StudyBody>
-			</StudySection>
-
-			<StudySection id='screens' title='Screens'>
-				<StudyScreens
-					images={[
-						{ src: 'reflection.gif', caption: 'Apprentice reflection journal with scheduled prompts' },
-						{ src: 'evaluation_rating.gif', caption: 'Evaluation rating history with level-change tracking' },
-					]}
-				/>
 			</StudySection>
 		</StudyPage>
 	);

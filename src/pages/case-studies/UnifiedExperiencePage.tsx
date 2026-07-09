@@ -1,8 +1,11 @@
 import { StudyPage } from '../../components/case-study/StudyPage';
 import { StudySection } from '../../components/case-study/StudySection';
 import { StudyCapability } from '../../components/case-study/StudyCapability';
+import { StudyGrid } from '../../components/case-study/StudyGrid';
+import { StudyCell } from '../../components/case-study/StudyCell';
 import { StudyBody } from '../../components/case-study/StudyBody';
-import { StudyScreens } from '../../components/case-study/StudyScreens';
+import { StudyImage } from '../../components/case-study/StudyImage';
+import { StudyImageRow } from '../../components/case-study/StudyImageRow';
 import type { StudySectionItem } from '../../lib/caseStudyTypes';
 
 export const unifiedExperienceSections: StudySectionItem[] = [
@@ -13,7 +16,6 @@ export const unifiedExperienceSections: StudySectionItem[] = [
 	{ id: 'progress-and-milestones', title: 'Progress and Milestones', level: 2 },
 	{ id: 'unified-presentation', title: 'Unified Presentation', level: 2 },
 	{ id: 'outcome', title: 'Outcome' },
-	{ id: 'screens', title: 'Screens' },
 ];
 
 export function UnifiedExperiencePage() {
@@ -42,25 +44,49 @@ export function UnifiedExperiencePage() {
 
 			<StudySection id='key-capabilities' title='Key Capabilities'>
 				<StudyCapability id='courses-dashboard' title='Courses Dashboard'>
-					<StudyBody>
-						The courses page lists all active enrollments with progress and grade summaries. A Continue card returns students to their
-						current position in the learning path without requiring them to remember which course or lesson they left off.
-					</StudyBody>
-					<StudyBody>
-						Due dates are calculated relative to each student's program start date, producing personalized timelines from a shared program
-						schedule. Students with different start dates see appropriate deadlines without manual per-student configuration.
-					</StudyBody>
+					<StudyGrid>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyBody>
+								The courses page lists all active enrollments with progress and grade summaries. A Continue card returns students to
+								their current position in the learning path without requiring them to remember which course or lesson they left off.
+							</StudyBody>
+							<StudyBody>
+								Due dates are calculated relative to each student's program start date, producing personalized timelines from a shared
+								program schedule. Students with different start dates see appropriate deadlines without manual per-student
+								configuration.
+							</StudyBody>
+						</StudyCell>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyImage
+								src='courses.gif'
+								alt='Courses page with progress summaries and Continue card'
+								caption='Courses page with progress summaries and Continue card'
+							/>
+						</StudyCell>
+					</StudyGrid>
 				</StudyCapability>
 
 				<StudyCapability id='course-navigation' title='Course Navigation'>
-					<StudyBody>
-						In-course navigation follows the section/lesson/page model defined in authoring. The navigation bar shows the full course
-						structure at once: pending assignments, locked items, failed work, and the student's last position.
-					</StudyBody>
-					<StudyBody>
-						When authors hide lessons or sections from navigation, numbering skips predictably so introduction and feedback pages do not
-						disrupt the course flow. Assignments appear in context with the lesson they belong to—not in a separate assignments area.
-					</StudyBody>
+					<StudyGrid>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyBody>
+								In-course navigation follows the section/lesson/page model defined in authoring. The navigation bar shows the full
+								course structure at once: pending assignments, locked items, failed work, and the student's last position.
+							</StudyBody>
+							<StudyBody>
+								When authors hide lessons or sections from navigation, numbering skips predictably so introduction and feedback pages
+								do not disrupt the course flow. Assignments appear in context with the lesson they belong to—not in a separate
+								assignments area.
+							</StudyBody>
+						</StudyCell>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyImage
+								src='course_nav.gif'
+								alt='In-course navigation with status indicators'
+								caption='In-course navigation with status indicators'
+							/>
+						</StudyCell>
+					</StudyGrid>
 				</StudyCapability>
 
 				<StudyCapability id='progress-and-milestones' title='Progress and Milestones'>
@@ -76,6 +102,12 @@ export function UnifiedExperiencePage() {
 					<StudyBody>
 						Completion feedback is shown inline when work is finished, so students know immediately when an item is complete.
 					</StudyBody>
+					<StudyImageRow
+						images={[
+							{ src: 'reading_page.gif', alt: 'Reading page with engagement tracking' },
+							{ src: 'quiz_retake.gif', alt: 'Inline quiz completion feedback' },
+						]}
+					/>
 				</StudyCapability>
 
 				<StudyCapability id='unified-presentation' title='Unified Presentation'>
@@ -97,17 +129,6 @@ export function UnifiedExperiencePage() {
 					the previous Canvas-based workflow. Progress and grade visibility from the courses page reduced the need for students to dig into
 					individual courses to find their status.
 				</StudyBody>
-			</StudySection>
-
-			<StudySection id='screens' title='Screens'>
-				<StudyScreens
-					images={[
-						{ src: 'courses.gif', caption: 'Courses page with progress summaries and Continue card' },
-						{ src: 'course_nav.gif', caption: 'In-course navigation with status indicators' },
-						{ src: 'reading_page.gif', caption: 'Reading page with engagement tracking' },
-						{ src: 'quiz_retake.gif', caption: 'Inline quiz completion feedback' },
-					]}
-				/>
 			</StudySection>
 		</StudyPage>
 	);

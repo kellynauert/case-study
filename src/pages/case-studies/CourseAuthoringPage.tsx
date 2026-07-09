@@ -1,9 +1,12 @@
 import { StudyPage } from '../../components/case-study/StudyPage';
 import { StudySection } from '../../components/case-study/StudySection';
 import { StudyCapability } from '../../components/case-study/StudyCapability';
+import { StudyGrid } from '../../components/case-study/StudyGrid';
+import { StudyCell } from '../../components/case-study/StudyCell';
 import { StudyBody } from '../../components/case-study/StudyBody';
 import { StudyBulletList } from '../../components/case-study/StudyBulletList';
-import { StudyScreens } from '../../components/case-study/StudyScreens';
+import { StudyImage } from '../../components/case-study/StudyImage';
+import { StudyImageRow } from '../../components/case-study/StudyImageRow';
 import type { StudySectionItem } from '../../lib/caseStudyTypes';
 
 export const courseAuthoringSections: StudySectionItem[] = [
@@ -16,7 +19,6 @@ export const courseAuthoringSections: StudySectionItem[] = [
 	{ id: 'item-versioning', title: 'Item Versioning', level: 2 },
 	{ id: 'technical-notes', title: 'Technical Notes' },
 	{ id: 'outcome', title: 'Outcome' },
-	{ id: 'screens', title: 'Screens' },
 ];
 
 export function CourseAuthoringPage() {
@@ -45,28 +47,52 @@ export function CourseAuthoringPage() {
 
 			<StudySection id='key-capabilities' title='Key Capabilities'>
 				<StudyCapability id='course-management' title='Course Management'>
-					<StudyBody>
-						Each course has metadata (course number, title, images, program associations) and a navigable structure organized into
-						sections, lessons, and pages. Authors edit course overviews, reorder content via drag-and-drop, and control which lessons
-						appear in student navigation.
-					</StudyBody>
-					<StudyBody>
-						Lessons and sections can be hidden from navigation when numbering should skip—for example, introduction pages at the start of
-						a course or feedback pages at the end. Courses can be cloned for variants across states and programs, with explicit choices
-						about whether cloned items reuse original IDs or receive new IDs.
-					</StudyBody>
+					<StudyGrid>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyBody>
+								Each course has metadata (course number, title, images, program associations) and a navigable structure organized into
+								sections, lessons, and pages. Authors edit course overviews, reorder content via drag-and-drop, and control which
+								lessons appear in student navigation.
+							</StudyBody>
+							<StudyBody>
+								Lessons and sections can be hidden from navigation when numbering should skip—for example, introduction pages at the
+								start of a course or feedback pages at the end. Courses can be cloned for variants across states and programs, with
+								explicit choices about whether cloned items reuse original IDs or receive new IDs.
+							</StudyBody>
+						</StudyCell>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyImage
+								src='course_overview_editing.png'
+								alt='Course metadata and overview editing'
+								caption='Course metadata and overview editing'
+							/>
+						</StudyCell>
+					</StudyGrid>
 				</StudyCapability>
 
 				<StudyCapability id='lesson-authoring' title='Lesson Authoring'>
-					<StudyBody>
-						Lessons are composed of reusable content items arranged in a hierarchy. Authors add, reorder, and configure items within a
-						structured editor that uses the same workflow regardless of item type. The three-layer model—sections, lessons, pages—keeps
-						navigation predictable for students while allowing authors to structure courses the way they teach.
-					</StudyBody>
-					<StudyBody>
-						Page-level settings support grading at the page level (one grade for all questions on a page) or per-item grading. Authors set
-						point values, completion-only behavior, and item-specific configuration without touching layout or typography.
-					</StudyBody>
+					<StudyGrid>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyBody>
+								Lessons are composed of reusable content items arranged in a hierarchy. Authors add, reorder, and configure items
+								within a structured editor that uses the same workflow regardless of item type. The three-layer model—sections,
+								lessons, pages—keeps navigation predictable for students while allowing authors to structure courses the way they
+								teach.
+							</StudyBody>
+							<StudyBody>
+								Page-level settings support grading at the page level (one grade for all questions on a page) or per-item grading.
+								Authors set point values, completion-only behavior, and item-specific configuration without touching layout or
+								typography.
+							</StudyBody>
+						</StudyCell>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyImage
+								src='editing_course_navigation.gif'
+								alt='Drag-and-drop course structure editor'
+								caption='Drag-and-drop course structure editor'
+							/>
+						</StudyCell>
+					</StudyGrid>
 				</StudyCapability>
 
 				<StudyCapability id='content-types' title='Content Types'>
@@ -83,31 +109,60 @@ export function CourseAuthoringPage() {
 							'Announcements — time-sensitive messaging within course context',
 						]}
 					/>
+					<StudyImageRow
+						images={[
+							{ src: 'reading_page.gif', alt: 'Display item editor with read-time tracking' },
+							{ src: 'fill-in-the-blank.png', alt: 'Fill-in-the-blank assessment configuration' },
+						]}
+					/>
 				</StudyCapability>
 
 				<StudyCapability id='content-reuse' title='Content Reuse'>
-					<StudyBody>
-						Content items carry stable IDs and can appear in multiple lessons. When an item is linked, edits propagate to every location
-						where it appears. Authors can view all usages from the item editor and disconnect an item to create a new ID when independent
-						editing is needed.
-					</StudyBody>
-					<StudyBody>
-						Course cloning follows the same model. Clones that reuse item IDs receive shared updates across linked pages. Clones that
-						generate new IDs allow independent curriculum maintenance. This supports both centralized curriculum updates and
-						program-specific variants.
-					</StudyBody>
+					<StudyGrid>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyBody>
+								Content items carry stable IDs and can appear in multiple lessons. When an item is linked, edits propagate to every
+								location where it appears. Authors can view all usages from the item editor and disconnect an item to create a new ID
+								when independent editing is needed.
+							</StudyBody>
+							<StudyBody>
+								Course cloning follows the same model. Clones that reuse item IDs receive shared updates across linked pages. Clones
+								that generate new IDs allow independent curriculum maintenance. This supports both centralized curriculum updates and
+								program-specific variants.
+							</StudyBody>
+						</StudyCell>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyImageRow
+								images={[
+									{ src: 'linked_item.gif', alt: 'Linked item indicator in the lesson editor' },
+									{ src: 'linked_drawer.gif', alt: 'Usage drawer showing all locations for a linked item' },
+								]}
+							/>
+						</StudyCell>
+					</StudyGrid>
 				</StudyCapability>
 
 				<StudyCapability id='item-versioning' title='Item Versioning'>
-					<StudyBody>
-						Every content item carries major and minor version numbers. Major changes create a new version for new submissions; students
-						who already completed an item retain the version they originally worked with. Minor changes—typo fixes, formatting
-						adjustments, answer-key clarifications—propagate to items already in use.
-					</StudyBody>
-					<StudyBody>
-						The platform auto-classifies edit severity. Authors can override the classification when the edit intent differs from the
-						default detection.
-					</StudyBody>
+					<StudyGrid>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyBody>
+								Every content item carries major and minor version numbers. Major changes create a new version for new submissions;
+								students who already completed an item retain the version they originally worked with. Minor changes—typo fixes,
+								formatting adjustments, answer-key clarifications—propagate to items already in use.
+							</StudyBody>
+							<StudyBody>
+								The platform auto-classifies edit severity. Authors can override the classification when the edit intent differs from
+								the default detection.
+							</StudyBody>
+						</StudyCell>
+						<StudyCell size={{ xs: 12, md: 6 }}>
+							<StudyImage
+								src='versioning.png'
+								alt='Major and minor version classification on save'
+								caption='Major and minor version classification on save'
+							/>
+						</StudyCell>
+					</StudyGrid>
 				</StudyCapability>
 			</StudySection>
 
@@ -127,20 +182,6 @@ export function CourseAuthoringPage() {
 					160+ production courses authored in the platform. Course authors report preferring it over Canvas for curriculum work. Content
 					presentation is consistent across all courses without per-author design effort.
 				</StudyBody>
-			</StudySection>
-
-			<StudySection id='screens' title='Screens'>
-				<StudyScreens
-					images={[
-						{ src: 'course_overview_editing.png', caption: 'Course metadata and overview editing' },
-						{ src: 'editing_course_navigation.gif', caption: 'Drag-and-drop course structure editor' },
-						{ src: 'reading_page.gif', caption: 'Display item editor with read-time tracking' },
-						{ src: 'fill-in-the-blank.png', caption: 'Fill-in-the-blank assessment configuration' },
-						{ src: 'linked_item.gif', caption: 'Linked item indicator in the lesson editor' },
-						{ src: 'linked_drawer.gif', caption: 'Usage drawer showing all locations for a linked item' },
-						{ src: 'versioning.png', caption: 'Major and minor version classification on save' },
-					]}
-				/>
 			</StudySection>
 		</StudyPage>
 	);
