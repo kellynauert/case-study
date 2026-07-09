@@ -20,7 +20,7 @@ export const links = {
 
 export const hero = {
 	headline: author.name,
-	title: 'Platform Systems',
+	title: 'Systems',
 	roleLine: `${author.role}`,
 	primaryCta: 'View Systems',
 	secondaryCta: 'Download Resume',
@@ -29,8 +29,8 @@ export const hero = {
 export const platformStory = {
 	heading: project.fullName,
 	paragraphs: [
-		'MathTrack is a production learning platform I designed, architected, and built over six years. It includes course authoring, student learning, grading, administration, and apprentice evaluation—each as a distinct system within a shared platform.',
-		'The platform currently supports teacher apprenticeship programs: coursework for college credit and licensure, plus tools for mentors to evaluate, support, and track apprentices through state-required competencies.',
+		'MathTrack Institute is an education startup whose offerings have changed a lot over the years, and I was the sole designer and engineer of our web application. As the company pivoted and introduced new programs, I adapted the platform alongside it, adding, redesigning, and retiring features to match what the business needed.',
+		'Today the work is focused on teacher apprenticeship programs: coursework for college credit and licensure, and tools that help mentors evaluate, support, and communicate with apprentices.This site showcases a small selection of features that I have built over the years, with a focus on the systems that support the teacher apprenticeship program.',
 	],
 	continuation: [] as const,
 } as const;
@@ -38,40 +38,17 @@ export const platformStory = {
 /** Production scale — shown on the landing page */
 export const platformStats = [
 	{ value: '400+', label: 'Active users on the platform' },
-	{ value: '160+', label: 'Content courses in the library' },
+	{ value: '160+', label: 'Courses created' },
 	{ value: '250K+', label: 'Activity records per year' },
-	{ value: '4+', label: 'CMS, SIS, EMS, and evaluations in one LMS' },
 ] as const;
 
 /** Short homepage teasers — system summaries for the platform index */
 export const caseStudyTeasers = {
-	'course-authoring': 'Structured curriculum authoring with a shared content model, item versioning, and linked content across 160+ courses.',
-	'unified-experience': 'Single student interface for course navigation, progress tracking, milestones, and grades across every enrollment.',
-	grading: 'Grading queue, course and student gradebooks, automatic scoring, and AI-assisted review with instructor-controlled final grades.',
-	admin: 'Staff interfaces for enrollment, documents, announcements, organizational structure, and operational debugging.',
-	'apprentice-evaluation': 'Configurable competency evaluations, reflection journals, and apprentice progress tracking for mentor programs.',
+	'course-authoring': 'Typed content blocks with shared presentation across 160+ courses created.',
+	'unified-experience': 'Consistent navigation, progress tracking, and grade visibility across every enrollment.',
+	grading: 'Assignment-first queue, course and student gradebooks, automatic scoring, and AI-assisted written response review.',
+	'apprentice-evaluation': 'Configurable competency evaluations, reflection journals, and apprentice progress tracking.',
 } as const;
-
-export const sections = {
-	caseStudies: 'Systems',
-	screens: 'Gallery',
-} as const;
-
-/** Every product screenshot available in public/images */
-export const allScreenshots = [
-	{ src: 'courses.gif', caption: 'Courses page with progress summaries' },
-	{ src: 'course_nav.gif', caption: 'In-course navigation with status indicators' },
-	{ src: 'editing_course_navigation.gif', caption: 'Drag-and-drop course structure editor' },
-	{ src: 'course_overview_editing.png', caption: 'Course metadata and overview editing' },
-	{ src: 'ai_grading.gif', caption: 'AI-assisted grading with text grounding' },
-	{ src: 'course_gradebook.gif', caption: 'Course gradebook view' },
-	{ src: 'student_gradebook.gif', caption: 'Student gradebook across enrollments' },
-	{ src: 'notifications.gif', caption: 'Targeted announcements' },
-	{ src: 'reflection.gif', caption: 'Apprentice reflection journal' },
-	{ src: 'evaluation_rating.gif', caption: 'Evaluation rating history' },
-	{ src: 'versioning.png', caption: 'Item version classification' },
-	{ src: 'linked_item.gif', caption: 'Linked content indicator' },
-] as const;
 
 export const site = {
 	headline: 'Platform',

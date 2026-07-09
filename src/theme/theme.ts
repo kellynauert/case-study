@@ -107,12 +107,20 @@ export const theme = createTheme({
 		},
 		pageTitle: {
 			fontFamily: fontDisplay,
-			fontSize: '1.1875rem',
+			fontSize: 'clamp(1.625rem, 3vw, 2rem)',
 			fontWeight: 600,
-			lineHeight: 1.3,
+			letterSpacing: '-0.025em',
+			lineHeight: 1.15,
 			color: textPrimary,
+		},
+		pageSubtitle: {
+			fontFamily: fontBody,
+			fontSize: '0.9375rem',
+			fontWeight: 500,
+			lineHeight: 1.5,
+			color: textMuted,
 			'@media (min-width:900px)': {
-				fontSize: '1.25rem',
+				fontSize: '1rem',
 			},
 		},
 		body1: {
@@ -161,6 +169,7 @@ export const theme = createTheme({
 					panelHeading: 'h3',
 					displayTitle: 'h3',
 					pageTitle: 'h1',
+					pageSubtitle: 'p',
 				},
 			},
 		},

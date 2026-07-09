@@ -31,11 +31,11 @@ export function StudyPage({ slug, title, subtitle, intro, sections, children }: 
 			<TableOfContents headings={headings} activeId={activeId} studyTitle={title} mobileOnly />
 			<PageShell footer={<CaseStudyPager slug={slug} currentTitle={title} />}>
 				<Box sx={{ mb: { xs: 2.5, md: 3 } }}>
-					<Typography variant='pageTitle' sx={{ mb: subtitle ? 1.25 : 0 }}>
+					<Typography variant='pageTitle' sx={{ mb: subtitle ? 0.75 : 0 }}>
 						{title}
 					</Typography>
 					{subtitle && (
-						<Typography variant='subtitle1' sx={{ maxWidth: tokens.layout.readableWidth, mb: intro ? 1.5 : 0 }}>
+						<Typography variant='pageSubtitle' sx={{ maxWidth: tokens.layout.readableWidth, mb: intro ? 1.5 : 0 }}>
 							{subtitle}
 						</Typography>
 					)}

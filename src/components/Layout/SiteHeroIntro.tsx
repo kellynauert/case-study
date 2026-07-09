@@ -40,7 +40,7 @@ interface SiteHeroIntroProps {
 
 export function SiteHeroIntro({ onNavigate }: SiteHeroIntroProps) {
 	return (
-		<Box sx={{ px: 1, mb: 5.5 }}>
+		<Box sx={{ px: 1, pt: 2, mb: 5.5 }}>
 			<Typography
 				variant='h1'
 				component={Link}
@@ -49,7 +49,8 @@ export function SiteHeroIntro({ onNavigate }: SiteHeroIntroProps) {
 				sx={{
 					display: 'block',
 					m: 0,
-					mb: 0.75,
+					mb: 0,
+					lineHeight: '36px',
 					fontSize: { xs: '2.5rem', md: '3rem' },
 					color: tokens.textPrimary,
 					textDecoration: 'none',

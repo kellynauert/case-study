@@ -155,8 +155,8 @@ export function Gallery({ images, compact = false, title, header, headerId }: Ga
 				sx={{
 					display: 'flex',
 					alignItems: 'center',
-					justifyContent: { xs: 'space-between', sm: 'flex-start' },
-					gap: 1,
+					justifyContent: { xs: 'center', sm: 'flex-start' },
+					gap: { xs: 0.75, sm: 1 },
 					flexShrink: 0,
 					width: { xs: '100%', sm: 'auto' },
 				}}>
@@ -299,7 +299,6 @@ export function Gallery({ images, compact = false, title, header, headerId }: Ga
 						animation: reducedMotion ? 'none' : 'gallery-image-enter 1100ms ease-out',
 					}}
 				/>
-				<Typography variant='caption' sx={{ display: 'block', mt: 1.25 }}>{label}</Typography>
 			</Box>
 		</Box>
 	);

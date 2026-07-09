@@ -17,6 +17,7 @@ const pagerLinkSx = {
 	alignItems: 'center',
 	gap: 0.5,
 	minWidth: 0,
+	minHeight: 44,
 	p: 0,
 	border: 'none',
 	bgcolor: 'transparent',
@@ -31,6 +32,15 @@ const pagerLinkSx = {
 	},
 } as const;
 
+const pagerLabelSx = {
+	m: 0,
+	minWidth: 0,
+	color: 'inherit',
+	overflow: 'hidden',
+	textOverflow: 'ellipsis',
+	whiteSpace: 'nowrap',
+} as const;
+
 function PagerLink({ study, direction }: { study: CaseStudyMeta; direction: 'previous' | 'next' }) {
 	const isPrevious = direction === 'previous';
 
@@ -41,24 +51,17 @@ function PagerLink({ study, direction }: { study: CaseStudyMeta; direction: 'pre
 			aria-label={`${isPrevious ? 'Previous' : 'Next'} system: ${study.title}`}
 			sx={{
 				...pagerLinkSx,
-				flexDirection: isPrevious ? 'row' : 'row-reverse',
+				flexDirection: 'row',
 				maxWidth: '100%',
 			}}>
-			{isPrevious ?
-				<ChevronLeftIcon sx={{ fontSize: '0.875rem', flexShrink: 0 }} />
-			:	<ChevronRightIcon sx={{ fontSize: '0.875rem', flexShrink: 0 }} />}
-			<Typography
-				variant='caption'
-				sx={{
-					m: 0,
-					minWidth: 0,
-					color: 'inherit',
-					overflow: 'hidden',
-					textOverflow: 'ellipsis',
-					whiteSpace: 'nowrap',
-				}}>
+			{isPrevious && <ChevronLeftIcon sx={{ fontSize: '1rem', flexShrink: 0 }} />}
+			<Typography variant='caption' sx={{ ...pagerLabelSx, display: { xs: 'block', sm: 'none' } }}>
+				{isPrevious ? 'Previous' : 'Next'}
+			</Typography>
+			<Typography variant='caption' sx={{ ...pagerLabelSx, display: { xs: 'none', sm: 'block' } }}>
 				{study.title}
 			</Typography>
+			{!isPrevious && <ChevronRightIcon sx={{ fontSize: '1rem', flexShrink: 0 }} />}
 		</Box>
 	);
 }
@@ -67,27 +70,42 @@ export function CaseStudyPager({ slug, currentTitle }: CaseStudyPagerProps) {
 	const { previous, next } = getAdjacentCaseStudies(slug);
 
 	return (
-		<Box
-			sx={{
-				display: 'grid',
-				gridTemplateColumns: { xs: '1fr', sm: '1fr auto 1fr' },
-				gap: { xs: 1.5, sm: 2 },
-				alignItems: 'center',
-			}}>
-			<Box sx={{ justifySelf: { xs: 'stretch', sm: 'start' }, minWidth: 0 }}>
-				{previous && <PagerLink study={previous} direction='previous' />}
-			</Box>
-			<Typography variant='caption' sx={{ m: 0, textAlign: 'center', color: tokens.textSecondary }}>
+		<Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.5, sm: 2 } }}>
+			<Typography
+				variant='caption'
+				sx={{
+					m: 0,
+					textAlign: 'center',
+					color: tokens.textSecondary,
+					display: { xs: 'block', sm: 'none' },
+				}}>
 				{currentTitle}
 			</Typography>
+
 			<Box
 				sx={{
-					justifySelf: { xs: 'stretch', sm: 'end' },
-					minWidth: 0,
-					display: 'flex',
-					justifyContent: { xs: 'flex-start', sm: 'flex-end' },
+					display: 'grid',
+					gridTemplateColumns: { xs: '1fr 1fr', sm: 'minmax(0, 1fr) auto minmax(0, 1fr)' },
+					gap: { xs: 1, sm: 2 },
+					alignItems: 'center',
 				}}>
-				{next && <PagerLink study={next} direction='next' />}
+				<Box sx={{ justifySelf: 'start', minWidth: 0 }}>{previous && <PagerLink study={previous} direction='previous' />}</Box>
+
+				<Typography
+					variant='caption'
+					sx={{
+						m: 0,
+						px: 1,
+						textAlign: 'center',
+						color: tokens.textSecondary,
+						display: { xs: 'none', sm: 'block' },
+					}}>
+					{currentTitle}
+				</Typography>
+
+				<Box sx={{ justifySelf: 'end', minWidth: 0, display: 'flex', justifyContent: 'flex-end' }}>
+					{next && <PagerLink study={next} direction='next' />}
+				</Box>
 			</Box>
 		</Box>
 	);

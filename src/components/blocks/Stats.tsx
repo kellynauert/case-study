@@ -13,31 +13,48 @@ export function Stats({ items, compact = false }: StatsProps) {
 		<Box
 			sx={{
 				display: 'grid',
-				gridTemplateColumns: { xs: '1fr 1fr', md: `repeat(${Math.min(items.length, 4)}, 1fr)` },
-				gap: 1.5,
+				gridTemplateColumns: 'repeat(3, 1fr)',
+				gap: { xs: 1, sm: 1.5 },
 				my: compact ? 0 : 3,
 			}}>
 			{items.map((stat) => (
 				<Box
 					key={stat.label}
 					sx={{
-						p: 2,
-						borderRadius: 1.5,
+						display: 'flex',
+						flexDirection: 'column',
+						gap: 0.25,
+						px: { xs: 1, sm: 2 },
+						py: { xs: 1.25, sm: 1.75 },
+						borderRadius: 1,
 						border: `1px solid ${tokens.border}`,
-						bgcolor: tokens.surfaceRaised,
+						bgcolor: tokens.surface,
 					}}>
 					<Typography
+						component='p'
 						sx={{
-							fontSize: { xs: '1.5rem', sm: '1.875rem' },
+							m: 0,
+							fontFamily: tokens.fontDisplay,
+							fontSize: { xs: '1.5rem', sm: '1.75rem' },
 							fontWeight: 600,
 							letterSpacing: '-0.03em',
-							lineHeight: 1,
-							mb: 0.75,
-							color: tokens.textPrimary,
+							lineHeight: 1.1,
+							...tokens.gradientText,
 						}}>
 						{stat.value}
 					</Typography>
-					<Typography variant='caption' sx={{ m: 0 }}>{stat.label}</Typography>
+					<Typography
+						component='p'
+						sx={{
+							m: 0,
+							fontSize: '0.8125rem',
+							fontWeight: 500,
+							lineHeight: 1.2,
+							color: tokens.textSecondary,
+							letterSpacing: '0.01em',
+						}}>
+						{stat.label}
+					</Typography>
 				</Box>
 			))}
 		</Box>

@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import { useLightbox, type LightboxImage } from '../../context/LightboxContext';
 import { imageSrc } from '../../lib/images';
 import { tokens } from '../../theme/theme';
@@ -7,19 +6,18 @@ import { tokens } from '../../theme/theme';
 interface StudyImageProps {
 	src: string;
 	alt?: string;
-	caption?: string;
 	gallery?: LightboxImage[];
 	galleryIndex?: number;
 	fullWidth?: boolean;
 }
 
-export function StudyImage({ src, alt, caption, gallery, galleryIndex = 0, fullWidth = false }: StudyImageProps) {
+export function StudyImage({ src, alt, gallery, galleryIndex = 0, fullWidth = false }: StudyImageProps) {
 	const { open } = useLightbox();
 	const resolved = imageSrc(src);
-	const label = alt ?? caption ?? src;
+	const label = alt ?? src;
 
 	const handleOpen = () => {
-		const images = gallery ?? [{ src: resolved, alt: label, caption }];
+		const images = gallery ?? [{ src: resolved, alt: label }];
 		open(images, gallery ? galleryIndex : 0);
 	};
 
@@ -62,7 +60,6 @@ export function StudyImage({ src, alt, caption, gallery, galleryIndex = 0, fullW
 					}}
 				/>
 			</Box>
-			{caption && <Typography variant='caption' sx={{ display: 'block', mt: 1.25 }}>{caption}</Typography>}
 		</Box>
 	);
 }

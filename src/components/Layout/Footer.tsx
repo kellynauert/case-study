@@ -10,7 +10,7 @@ export function Footer() {
 			component='footer'
 			sx={{
 				borderTop: `1px solid ${tokens.border}`,
-				mt: { xs: 8, md: 12 },
+				mt: { xs: 4, md: 6 },
 			}}>
 			<Box
 				sx={{

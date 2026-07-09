@@ -139,11 +139,6 @@ export function Lightbox() {
 						objectFit: 'contain',
 					}}
 				/>
-				{current.caption && (
-					<Typography variant='caption' sx={{ display: 'block', mt: 1.25, color: tokens.textMuted, px: 1 }}>
-						{current.caption}
-					</Typography>
-				)}
 				{images.length > 1 && (
 					<Box
 						sx={{

@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -9,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
 import { alpha } from '@mui/material/styles';
 import { getAllCaseStudies } from '../../lib/caseStudyRegistry';
+import { hero } from '../../lib/site';
 import { isShowcaseViewed } from '../../lib/viewedShowcases';
 import { useViewedShowcases } from '../../hooks/useViewedShowcases';
 import { mobileHeaderHeight } from '../../lib/styles';
@@ -99,7 +101,16 @@ function navLinkSx(active: boolean, level: 'primary' | 'sub' = 'primary') {
 	};
 }
 
-function NavContent({ onNavigate, showHeroIntro = true }: { onNavigate?: () => void; showHeroIntro?: boolean }) {
+function NavContent({
+	onNavigate,
+	showHeroIntro = true,
+	inDrawer = false,
+}: {
+	onNavigate?: () => void;
+	showHeroIntro?: boolean;
+	/** Mobile slide-out drawer — show hero on landing page (hidden in desktop sidebar on xs home to avoid duplicating in-page hero). */
+	inDrawer?: boolean;
+}) {
 	const location = useLocation();
 	const viewed = useViewedShowcases();
 	const isHomeActive = location.pathname === '/';
@@ -113,10 +124,11 @@ function NavContent({ onNavigate, showHeroIntro = true }: { onNavigate?: () => v
 				flexDirection: 'column',
 				pl: 1.5,
 				pr: 5,
-				py: 2,
+				pt: 3,
+				pb: 2,
 			}}>
 			{showHeroIntro && (
-				<Box sx={{ display: { xs: isHomeActive ? 'none' : 'block', md: 'block' } }}>
+				<Box sx={{ display: { xs: isHomeActive && !inDrawer ? 'none' : 'block', md: 'block' } }}>
 					<SiteHeroIntro onNavigate={onNavigate} />
 				</Box>
 			)}
@@ -191,15 +203,76 @@ function NavContent({ onNavigate, showHeroIntro = true }: { onNavigate?: () => v
 
 const shellMaxWidth = tokens.layout.shellMaxWidth;
 
+function isHeroScrolledPast(heroEl: HTMLElement) {
+	return heroEl.getBoundingClientRect().bottom <= 0;
+}
+
 export function MobileStickyNavBar() {
 	const { openDrawer } = useNavDrawer();
+	const location = useLocation();
+	const isLanding = location.pathname === '/';
+	const [heroScrolledPast, setHeroScrolledPast] = useState(() => location.pathname !== '/');
 
-	return (
+	useEffect(() => {
+		if (!isLanding) {
+			setHeroScrolledPast(true);
+			return;
+		}
+
+		let cancelled = false;
+		let heroEl: HTMLElement | null = null;
+		let observer: IntersectionObserver | null = null;
+		let retryId = 0;
+
+		const update = () => {
+			if (!cancelled && heroEl) {
+				setHeroScrolledPast(isHeroScrolledPast(heroEl));
+			}
+		};
+
+		const attach = () => {
+			heroEl = document.getElementById('landing-hero');
+			if (!heroEl) return false;
+
+			setHeroScrolledPast(false);
+			update();
+
+			observer = new IntersectionObserver(update, { threshold: [0] });
+			observer.observe(heroEl);
+
+			window.addEventListener('scroll', update, { passive: true });
+			window.addEventListener('resize', update, { passive: true });
+			return true;
+		};
+
+		const tryAttach = () => {
+			if (cancelled) return;
+			if (attach()) return;
+			retryId = requestAnimationFrame(tryAttach);
+		};
+
+		tryAttach();
+
+		return () => {
+			cancelled = true;
+			cancelAnimationFrame(retryId);
+			observer?.disconnect();
+			window.removeEventListener('scroll', update);
+			window.removeEventListener('resize', update);
+		};
+	}, [isLanding, location.pathname]);
+
+	const showBar = !isLanding || heroScrolledPast;
+	const hiddenTop = `calc(-1 * (${mobileHeaderHeight}px + env(safe-area-inset-top, 0px)))`;
+
+	const bar = (
 		<Box
 			sx={{
 				display: { xs: 'flex', md: 'none' },
-				position: 'sticky',
-				top: 0,
+				position: isLanding ? 'fixed' : 'sticky',
+				top: isLanding ? (showBar ? 0 : hiddenTop) : 0,
+				left: isLanding ? 0 : undefined,
+				right: isLanding ? 0 : undefined,
 				zIndex: 1200,
 				alignItems: 'center',
 				height: `calc(${mobileHeaderHeight}px + env(safe-area-inset-top, 0px))`,
@@ -209,6 +282,13 @@ export function MobileStickyNavBar() {
 				bgcolor: alpha(tokens.background, 0.92),
 				backdropFilter: 'blur(10px)',
 				borderBottom: `1px solid ${tokens.border}`,
+				...(isLanding && {
+					transition: 'top 200ms ease',
+					pointerEvents: showBar ? 'auto' : 'none',
+					'@media (prefers-reduced-motion: reduce)': {
+						transition: 'none',
+					},
+				}),
 			}}>
 			<IconButton
 				onClick={openDrawer}
@@ -216,14 +296,47 @@ export function MobileStickyNavBar() {
 				sx={{
 					width: 44,
 					height: 44,
+					flexShrink: 0,
 					color: tokens.textSecondary,
 					'&:hover': { color: tokens.accent, bgcolor: 'transparent' },
 					'&:focus-visible': { outline: `2px solid ${tokens.accent}`, outlineOffset: 2 },
 				}}>
 				<MenuIcon />
 			</IconButton>
+			<Typography
+				component={Link}
+				to='/'
+				sx={{
+					flex: 1,
+					minWidth: 0,
+					m: 0,
+					pl: 0.25,
+					pr: 1.5,
+					fontFamily: tokens.fontDisplay,
+					fontSize: '1.125rem',
+					fontWeight: 600,
+					letterSpacing: '-0.02em',
+					lineHeight: 1.2,
+					color: tokens.textPrimary,
+					textDecoration: 'none',
+					overflow: 'hidden',
+					textOverflow: 'ellipsis',
+					whiteSpace: 'nowrap',
+					'&:focus-visible': {
+						outline: `2px solid ${tokens.accent}`,
+						outlineOffset: 2,
+					},
+				}}>
+				{hero.headline}
+			</Typography>
 		</Box>
 	);
+
+	if (isLanding) {
+		return createPortal(bar, document.body);
+	}
+
+	return bar;
 }
 
 function NavDrawerInternals({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -248,7 +361,7 @@ function NavDrawerInternals({ open, onClose }: { open: boolean; onClose: () => v
 						<CloseIcon />
 					</IconButton>
 				</Box>
-				<NavContent onNavigate={onClose} />
+				<NavContent onNavigate={onClose} inDrawer />
 			</Drawer>
 
 			<Box

@@ -6,6 +6,7 @@ declare module '@mui/material/styles' {
 		panelHeading: CSSObject;
 		displayTitle: CSSObject;
 		pageTitle: CSSObject;
+		pageSubtitle: CSSObject;
 	}
 
 	interface TypographyVariantsOptions {
@@ -13,6 +14,7 @@ declare module '@mui/material/styles' {
 		panelHeading?: CSSObject;
 		displayTitle?: CSSObject;
 		pageTitle?: CSSObject;
+		pageSubtitle?: CSSObject;
 	}
 }
 
@@ -22,6 +24,7 @@ declare module '@mui/material/Typography' {
 		panelHeading: true;
 		displayTitle: true;
 		pageTitle: true;
+		pageSubtitle: true;
 	}
 }
 
