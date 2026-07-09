@@ -37,7 +37,7 @@ export function ApprenticeEvaluationPage() {
 
 			<StudySection id='reflection-journals' title='Reflection Journals'>
 				<StudyGrid>
-					<StudyCell size={{ xs: 12, md: 3 }}>
+					<StudyCell size={{ xs: 12, md: 'grow' }}>
 						<StudyBody>
 							Reflections are scheduled across the program with administrator-configured prompts and instructions. Responses attach to
 							each apprentice's record for mentor review. The system supports daily and weekly reflection schedules.
@@ -49,7 +49,7 @@ export function ApprenticeEvaluationPage() {
 							holidays and scheduling gaps.
 						</StudyBody>
 					</StudyCell>
-					<StudyCell size={{ xs: 12, md: 9 }}>
+					<StudyCell size={{ xs: 12, md: 'auto' }}>
 						<StudyImage src='reflection.gif' alt='Apprentice reflection journal with scheduled prompts' />
 					</StudyCell>
 				</StudyGrid>
@@ -68,7 +68,7 @@ export function ApprenticeEvaluationPage() {
 							reflection schedules per organization without custom development.
 						</StudyBody>
 					</StudyCell>
-					<StudyCell size={{ xs: 12 }}>
+					<StudyCell size={{ xs: 12, md: 'auto' }}>
 						<StudyImage src='evaluation_rating.gif' alt='Evaluation rating history with level-change tracking' />
 					</StudyCell>
 				</StudyGrid>

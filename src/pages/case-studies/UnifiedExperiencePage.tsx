@@ -33,11 +33,8 @@ export function UnifiedExperiencePage() {
 				<StudyImage src='courses.gif' alt='Courses page with progress summaries and Continue card' />
 			</StudySection>
 
-			<StudyGrid sx={{ alignItems: 'flex-start' }}>
-				<StudyCell size={{ xs: 6, md: 4, lg: 2 }}>
-					<StudyImage src='course_nav.gif' alt='In-course navigation with progress and status indicators' />
-				</StudyCell>
-				<StudyCell size={{ xs: 12, md: 8, lg: 10 }}>
+			<StudyGrid>
+				<StudyCell size={{ xs: 12, md: 'grow' }}>
 					<StudySection id='course-navigation' title='Course Navigation'>
 						<StudyBody>
 							In-course navigation follows the section, lesson, and page model defined in authoring. The navigation bar shows the full
@@ -57,11 +54,14 @@ export function UnifiedExperiencePage() {
 						<StudyBody>Completion feedback appears inline when work is finished.</StudyBody>
 					</StudySection>
 				</StudyCell>
+				<StudyCell size={{ xs: 12, md: 'auto' }}>
+					<StudyImage src='course_nav.gif' alt='In-course navigation with progress and status indicators' />
+				</StudyCell>
 			</StudyGrid>
 
 			<StudySection id='unified-presentation' title='Unified Presentation'>
 				<StudyGrid>
-					<StudyCell size={{ xs: 12, md: 4 }}>
+					<StudyCell size={{ xs: 12, md: 'grow' }}>
 						<StudyBody>
 							Typography, layout, and interaction patterns are consistent across courses because the platform controls rendering.
 							Content is organized in the order students work through it, not split across separate pages, assignments, and downloads
@@ -73,7 +73,7 @@ export function UnifiedExperiencePage() {
 							report fewer navigation questions from students.
 						</StudyBody>
 					</StudyCell>
-					<StudyCell size={{ xs: 12, md: 8 }}>
+					<StudyCell size={{ xs: 12, md: 'auto' }}>
 						<StudyImage src='reading_page.gif' alt='Lesson page with instructional content' />
 					</StudyCell>
 				</StudyGrid>

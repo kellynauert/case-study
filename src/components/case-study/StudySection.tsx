@@ -5,16 +5,24 @@ import { scrollMarginTop } from '../../lib/styles';
 
 interface StudySectionProps {
 	id: string;
-	title: string;
+	title?: string;
 	children: ReactNode;
+}
+
+export function StudySectionHeading({ children }: { children: ReactNode }) {
+	return (
+		<Typography variant='sectionHeading' sx={{ mb: { xs: 2, md: 2.5 } }}>
+			{children}
+		</Typography>
+	);
 }
 
 export function StudySection({ id, title, children }: StudySectionProps) {
 	return (
 		<Box id={id} sx={{ scrollMarginTop, py: { xs: 2, md: 3 } }}>
-			<Typography variant='sectionHeading' sx={{ mb: { xs: 2, md: 2.5 } }}>
-				{title}
-			</Typography>
+			{title ?
+				<StudySectionHeading>{title}</StudySectionHeading>
+			:	null}
 			{children}
 		</Box>
 	);

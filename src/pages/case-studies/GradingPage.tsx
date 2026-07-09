@@ -1,11 +1,10 @@
 import { StudyPage } from '../../components/case-study/StudyPage';
-import { StudySection } from '../../components/case-study/StudySection';
+import { StudySection, StudySectionHeading } from '../../components/case-study/StudySection';
 import { StudyGrid } from '../../components/case-study/StudyGrid';
 import { StudyCell } from '../../components/case-study/StudyCell';
 import { StudyBody } from '../../components/case-study/StudyBody';
 import { StudyBulletList } from '../../components/case-study/StudyBulletList';
 import { StudyImage } from '../../components/case-study/StudyImage';
-import { StudyImageRow } from '../../components/case-study/StudyImageRow';
 import type { StudySectionItem } from '../../lib/caseStudyTypes';
 
 export const gradingSections: StudySectionItem[] = [
@@ -38,36 +37,31 @@ export function GradingPage() {
 				<StudyImage src='grading-queue.jpg' alt='Grading queue grouped by assignment with program filters' />
 			</StudySection>
 
-			<StudySection id='gradebooks' title='Gradebooks'>
-				<StudyBody>
-					The course gradebook shows all students in a single course with grades and submission status. Guest instructors with one or two
-					classes use it to review and grade work within a single course view.
-				</StudyBody>
-				<StudyBody>
-					The student gradebook shows one student's grades and submissions across every enrolled course. Internal graders use it when
-					following an individual student across multiple enrollments, such as when a student completes a large volume of work before a
-					deadline.
-				</StudyBody>
-				<StudyBody>Both gradebooks restrict visibility to courses and students within each staff member's assigned access.</StudyBody>
-				<StudyImageRow
-					images={[
-						{
-							src: 'course_gradebook.gif',
-							alt: 'Course gradebook with submission status per student',
-							size: { xs: 12, md: 5 },
-						},
-						{
-							src: 'student_gradebook.gif',
-							alt: 'Student gradebook across multiple course enrollments',
-							size: { xs: 12, md: 7 },
-						},
-					]}
-				/>
+			<StudySection id='gradebooks'>
+				<StudyGrid>
+					<StudyCell size={{ xs: 12, md: 'auto' }} sx={{ order: { xs: 2, md: 1 } }}>
+						<StudyImage src='course_gradebook.gif' alt='Course gradebook with submission status per student' />
+					</StudyCell>
+					<StudyCell size={{ xs: 12, md: 'grow' }} sx={{ order: { xs: 1, md: 2 } }}>
+						<StudySectionHeading>Gradebooks</StudySectionHeading>
+						<StudyBody>
+							The course gradebook shows all students in a single course with grades and submission status. Guest instructors with one
+							or two classes use it to review and grade work within a single course view.
+						</StudyBody>
+						<StudyBody>
+							The student gradebook shows one student's grades and submissions across every enrolled course. Internal graders use it
+							when following an individual student across multiple enrollments, such as when a student completes a large volume of work
+							before a deadline.
+						</StudyBody>
+						<StudyBody>Both gradebooks restrict visibility to courses and students within each staff member's assigned access.</StudyBody>
+					</StudyCell>
+				</StudyGrid>
+				<StudyImage src='student_gradebook.gif' alt='Student gradebook across multiple course enrollments' />
 			</StudySection>
 
 			<StudySection id='scoring-and-automatic-grading' title='Scoring and Automatic Grading'>
 				<StudyGrid>
-					<StudyCell size={{ xs: 12, md: 5 }}>
+					<StudyCell size={{ xs: 12, md: 'grow' }}>
 						<StudyBody>
 							Authors configure point values and grading mode at item creation. Weights carry into the gradebook automatically, so
 							graders never recalculate course totals. Zero-point items track completion without affecting the course percentage.
@@ -80,9 +74,6 @@ export function GradingPage() {
 								'Display items complete through read-time engagement; certificates issue automatically—neither enters the grading queue.',
 							]}
 						/>
-					</StudyCell>
-					<StudyCell size={{ xs: 12, md: 7 }}>
-						<StudyImage src='grading.jpg' alt='Grading interface showing per-item scores and submission status' />
 					</StudyCell>
 				</StudyGrid>
 			</StudySection>

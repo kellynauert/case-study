@@ -29,7 +29,7 @@ export function CourseAuthoringPage() {
 					<StudyCell size={{ xs: 12 }}>
 						<StudyImage src='courses-editor.jpg' alt='Courses editor selection with drag-and-drop course structure' />
 					</StudyCell>
-					<StudyCell size={{ xs: 12, md: 6 }}>
+					<StudyCell size={{ xs: 12, md: 'grow' }}>
 						<StudyBody>
 							Each course has a structure of sections, lessons, and pages. Authors reorder content with drag-and-drop and control what
 							appears in student navigation.
@@ -45,7 +45,7 @@ export function CourseAuthoringPage() {
 							]}
 						/>
 					</StudyCell>
-					<StudyCell size={{ xs: 12, md: 6 }}>
+					<StudyCell size={{ xs: 12, md: 'auto' }}>
 						<StudyImage src='course_overview_editing.png' alt='Course metadata and overview editing' />
 					</StudyCell>
 				</StudyGrid>
@@ -73,7 +73,7 @@ export function CourseAuthoringPage() {
 			<StudySection id='content-types' title='Content Types'>
 				<StudyBody>Every page is built from a fixed set of item types, each with a dedicated editor.</StudyBody>
 				<StudyGrid>
-					<StudyCell size={{ xs: 12, md: 6 }}>
+					<StudyCell size={{ xs: 12, md: 'grow' }}>
 						<StudyBulletList
 							items={[
 								'Display items — instructional rich content with in-app word editing, embeds, and optional read-time completion tracking',
@@ -88,7 +88,7 @@ export function CourseAuthoringPage() {
 							]}
 						/>
 					</StudyCell>
-					<StudyCell size={{ xs: 12, md: 6 }}>
+					<StudyCell size={{ xs: 12, md: 'auto' }}>
 						<StudyImage src='fill-in-the-blank.png' alt='Fill-in-the-blank assessment configuration' />
 					</StudyCell>
 				</StudyGrid>
@@ -109,8 +109,8 @@ export function CourseAuthoringPage() {
 				</StudyBody>
 				<StudyImageRow
 					images={[
-						{ src: 'linked_item.gif', alt: 'Linked item indicator in the lesson editor', size: { xs: 12, md: 7 } },
-						{ src: 'linked_drawer.gif', alt: 'Usage drawer showing all locations for a linked item', size: { xs: 12, md: 5 } },
+						{ src: 'linked_item.gif', alt: 'Linked item indicator in the lesson editor', size: { xs: 12, md: 'auto' } },
+						{ src: 'linked_drawer.gif', alt: 'Usage drawer showing all locations for a linked item', size: { xs: 12, md: 'auto' } },
 					]}
 				/>
 			</StudySection>
@@ -124,7 +124,7 @@ export function CourseAuthoringPage() {
 					The platform classifies edit severity on save. Authors can override the classification when the edit intent differs from the
 					default.
 				</StudyBody>
-				<StudyImage src='versioning.png' alt='Major and minor version classification on save' fullWidth />
+				<StudyImage src='versioning.png' alt='Major and minor version classification on save' align='center' />
 			</StudySection>
 		</StudyPage>
 	);

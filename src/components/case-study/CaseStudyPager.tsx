@@ -55,10 +55,10 @@ function PagerLink({ study, direction }: { study: CaseStudyMeta; direction: 'pre
 				maxWidth: '100%',
 			}}>
 			{isPrevious && <ChevronLeftIcon sx={{ fontSize: '1rem', flexShrink: 0 }} />}
-			<Typography variant='caption' sx={{ ...pagerLabelSx, display: { xs: 'block', sm: 'none' } }}>
+			<Typography variant='caption' sx={{ ...pagerLabelSx, display: { xs: 'block', md: 'none' } }}>
 				{isPrevious ? 'Previous' : 'Next'}
 			</Typography>
-			<Typography variant='caption' sx={{ ...pagerLabelSx, display: { xs: 'none', sm: 'block' } }}>
+			<Typography variant='caption' sx={{ ...pagerLabelSx, display: { xs: 'none', md: 'block' } }}>
 				{study.title}
 			</Typography>
 			{!isPrevious && <ChevronRightIcon sx={{ fontSize: '1rem', flexShrink: 0 }} />}
@@ -70,14 +70,14 @@ export function CaseStudyPager({ slug, currentTitle }: CaseStudyPagerProps) {
 	const { previous, next } = getAdjacentCaseStudies(slug);
 
 	return (
-		<Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.5, sm: 2 } }}>
+		<Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.5, md: 2 } }}>
 			<Typography
 				variant='caption'
 				sx={{
 					m: 0,
 					textAlign: 'center',
 					color: tokens.textSecondary,
-					display: { xs: 'block', sm: 'none' },
+					display: { xs: 'block', md: 'none' },
 				}}>
 				{currentTitle}
 			</Typography>
@@ -85,8 +85,8 @@ export function CaseStudyPager({ slug, currentTitle }: CaseStudyPagerProps) {
 			<Box
 				sx={{
 					display: 'grid',
-					gridTemplateColumns: { xs: '1fr 1fr', sm: 'minmax(0, 1fr) auto minmax(0, 1fr)' },
-					gap: { xs: 1, sm: 2 },
+					gridTemplateColumns: { xs: '1fr 1fr', md: 'minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr)' },
+					gap: { xs: 1, md: 2 },
 					alignItems: 'center',
 				}}>
 				<Box sx={{ justifySelf: 'start', minWidth: 0 }}>{previous && <PagerLink study={previous} direction='previous' />}</Box>
@@ -94,11 +94,11 @@ export function CaseStudyPager({ slug, currentTitle }: CaseStudyPagerProps) {
 				<Typography
 					variant='caption'
 					sx={{
-						m: 0,
+						...pagerLabelSx,
 						px: 1,
 						textAlign: 'center',
 						color: tokens.textSecondary,
-						display: { xs: 'none', sm: 'block' },
+						display: { xs: 'none', md: 'block' },
 					}}>
 					{currentTitle}
 				</Typography>

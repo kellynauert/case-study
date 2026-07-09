@@ -10,7 +10,7 @@ interface StudyGridProps {
 
 export function StudyGrid({ children, spacing = 3, sx }: StudyGridProps) {
 	return (
-		<Grid container spacing={spacing} sx={{ mb: 2, ...sx }}>
+		<Grid container spacing={spacing} sx={{ mb: 2, alignItems: 'flex-start', ...sx }}>
 			{children}
 		</Grid>
 	);

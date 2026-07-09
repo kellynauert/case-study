@@ -17,7 +17,7 @@ export function StudyImageRow({ images, defaultSize = { xs: 12, md: 6 } }: Study
 	}));
 
 	return (
-		<StudyGrid spacing={2}>
+		<StudyGrid spacing={2} sx={{ alignItems: 'flex-start' }}>
 			{images.map((image, index) => (
 				<StudyCell key={`${image.src}-${index}`} size={image.size ?? defaultSize}>
 					<StudyImage src={image.src} alt={image.alt} gallery={gallery} galleryIndex={index} />

@@ -8,10 +8,10 @@ interface StudyImageProps {
 	alt?: string;
 	gallery?: LightboxImage[];
 	galleryIndex?: number;
-	fullWidth?: boolean;
+	align?: 'start' | 'center';
 }
 
-export function StudyImage({ src, alt, gallery, galleryIndex = 0, fullWidth = false }: StudyImageProps) {
+export function StudyImage({ src, alt, gallery, galleryIndex = 0, align = 'start' }: StudyImageProps) {
 	const { open } = useLightbox();
 	const resolved = imageSrc(src);
 	const label = alt ?? src;
@@ -22,7 +22,16 @@ export function StudyImage({ src, alt, gallery, galleryIndex = 0, fullWidth = fa
 	};
 
 	return (
-		<Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: fullWidth ? 'center' : 'stretch' }}>
+		<Box
+			sx={{
+				width: 'fit-content',
+				maxWidth: '100%',
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: align === 'center' ? 'center' : 'flex-start',
+				alignSelf: align === 'center' ? 'center' : 'flex-start',
+				mx: align === 'center' ? 'auto' : 0,
+			}}>
 			<Box
 				component='button'
 				type='button'
@@ -30,7 +39,7 @@ export function StudyImage({ src, alt, gallery, galleryIndex = 0, fullWidth = fa
 				aria-label={`View fullscreen: ${label}`}
 				sx={{
 					display: 'block',
-					width: fullWidth ? 'fit-content' : '100%',
+					width: 'fit-content',
 					maxWidth: '100%',
 					m: 0,
 					p: 0,
@@ -54,9 +63,9 @@ export function StudyImage({ src, alt, gallery, galleryIndex = 0, fullWidth = fa
 					decoding='async'
 					sx={{
 						display: 'block',
-						width: fullWidth ? 'auto' : '100%',
-						maxWidth: '100%',
+						width: 'auto',
 						height: 'auto',
+						maxWidth: '100%',
 					}}
 				/>
 			</Box>
