@@ -20,17 +20,17 @@ export const links = {
 
 export const hero = {
 	headline: author.name,
-	title: 'Feature Showcase',
+	title: 'Platform Systems',
 	roleLine: `${author.role}`,
-	primaryCta: 'View Showcase',
+	primaryCta: 'View Systems',
 	secondaryCta: 'Download Resume',
 } as const;
 
 export const platformStory = {
 	heading: project.fullName,
 	paragraphs: [
-		'MathTrack Institute is an education startup whose offerings have evolved significantly over the years. As the company pivoted and introduced new programs, the MathTrack app adapted alongside it, continuously adding, redesigning, and retiring features to support changing business needs.',
-		'Today that work is focused on teacher apprenticeship programs: coursework for college credit and licensure, and tools that help mentors evaluate, support, and communicate with apprentices.',
+		'MathTrack is a production learning platform I designed, architected, and built over six years. It includes course authoring, student learning, grading, administration, and apprentice evaluation—each as a distinct system within a shared platform.',
+		'The platform currently supports teacher apprenticeship programs: coursework for college credit and licensure, plus tools for mentors to evaluate, support, and track apprentices through state-required competencies.',
 	],
 	continuation: [] as const,
 } as const;
@@ -43,49 +43,39 @@ export const platformStats = [
 	{ value: '4+', label: 'CMS, SIS, EMS, and evaluations in one LMS' },
 ] as const;
 
-/** Short homepage teasers — not full feature showcase summaries */
+/** Short homepage teasers — system summaries for the platform index */
 export const caseStudyTeasers = {
-	'course-authoring': 'Custom authoring tools that replaced a generic LMS, with a shared content model for every course.',
-	'unified-experience': 'One student interface for course navigation, progress, and grades across the program.',
-	grading: 'Grading queue, gradebooks, scoring options, and AI-assisted review for instructor workflows.',
-	admin: 'Admin tools for admissions, enrollment, transcripts, and reporting, built as those needs appeared.',
-	'apprentice-evaluation': 'Configurable evaluations, reflection journals, and progress tracking for mentor workflows.',
+	'course-authoring': 'Structured curriculum authoring with a shared content model, item versioning, and linked content across 160+ courses.',
+	'unified-experience': 'Single student interface for course navigation, progress tracking, milestones, and grades across every enrollment.',
+	grading: 'Grading queue, course and student gradebooks, automatic scoring, and AI-assisted review with instructor-controlled final grades.',
+	admin: 'Staff interfaces for enrollment, documents, announcements, organizational structure, and operational debugging.',
+	'apprentice-evaluation': 'Configurable competency evaluations, reflection journals, and apprentice progress tracking for mentor programs.',
 } as const;
 
 export const sections = {
-	caseStudies: 'Showcase',
+	caseStudies: 'Systems',
 	screens: 'Gallery',
 } as const;
 
 /** Every product screenshot available in public/images */
 export const allScreenshots = [
-	'announcement.jpg',
-	'course-enrollment-automatic.jpg',
-	'course-enrollment-manual.jpg',
-	'course-structure.jpg',
-	'courses-editor.jpg',
-	'courses.jpg',
-	'departments.jpg',
-	'evaluation.jpg',
-	'file-upload.jpg',
-	'grading-queue.jpg',
-	'grading.jpg',
-	'item-creation-1.jpg',
-	'item-creation.jpg',
-	'notifications.jpg',
-	'overidden.jpg',
-	'passed-quiz.jpg',
-	'quiz-submission.jpg',
-	'reflection.jpg',
-	'section-overviews.jpg',
-	'studentgradebook.jpg',
-	'submission-issues.jpg',
-	'test-creation.jpg',
+	{ src: 'courses.gif', caption: 'Courses page with progress summaries' },
+	{ src: 'course_nav.gif', caption: 'In-course navigation with status indicators' },
+	{ src: 'editing_course_navigation.gif', caption: 'Drag-and-drop course structure editor' },
+	{ src: 'course_overview_editing.png', caption: 'Course metadata and overview editing' },
+	{ src: 'ai_grading.gif', caption: 'AI-assisted grading with text grounding' },
+	{ src: 'course_gradebook.gif', caption: 'Course gradebook view' },
+	{ src: 'student_gradebook.gif', caption: 'Student gradebook across enrollments' },
+	{ src: 'notifications.gif', caption: 'Targeted announcements' },
+	{ src: 'reflection.gif', caption: 'Apprentice reflection journal' },
+	{ src: 'evaluation_rating.gif', caption: 'Evaluation rating history' },
+	{ src: 'versioning.png', caption: 'Item version classification' },
+	{ src: 'linked_item.gif', caption: 'Linked content indicator' },
 ] as const;
 
 export const site = {
-	headline: 'Showcase',
-	tagline: 'Work from MathTrack',
+	headline: 'Platform',
+	tagline: 'Production systems from MathTrack',
 	intro: platformStory.paragraphs[0].trim(),
 } as const;
 

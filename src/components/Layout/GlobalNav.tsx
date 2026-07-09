@@ -133,7 +133,7 @@ function NavContent({ onNavigate, showHeroIntro = true }: { onNavigate?: () => v
 			</Box>
 
 			<Typography component='p' sx={{ ...navGroupLabelSx, mt: 0.5 }}>
-				Showcases
+				Systems
 			</Typography>
 
 			<Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.25 }}>

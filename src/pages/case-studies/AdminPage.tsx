@@ -1,14 +1,19 @@
 import { StudyPage } from '../../components/case-study/StudyPage';
 import { StudySection } from '../../components/case-study/StudySection';
-import { StudyGrid } from '../../components/case-study/StudyGrid';
-import { StudyCell } from '../../components/case-study/StudyCell';
+import { StudyCapability } from '../../components/case-study/StudyCapability';
 import { StudyBody } from '../../components/case-study/StudyBody';
-import { StudyImage } from '../../components/case-study/StudyImage';
+import { StudyScreens } from '../../components/case-study/StudyScreens';
 import type { StudySectionItem } from '../../lib/caseStudyTypes';
 
 export const adminSections: StudySectionItem[] = [
-	{ id: 'admin-with-each-feature', title: 'Admin With Each Feature' },
-	{ id: 'what-accumulated-over-time', title: 'What Accumulated Over Time' },
+	{ id: 'platform-overview', title: 'Platform Overview' },
+	{ id: 'key-capabilities', title: 'Key Capabilities' },
+	{ id: 'user-and-enrollment-management', title: 'User and Enrollment Management', level: 2 },
+	{ id: 'documents-and-communications', title: 'Documents and Communications', level: 2 },
+	{ id: 'organizational-structure', title: 'Organizational Structure', level: 2 },
+	{ id: 'operational-tooling', title: 'Operational Tooling', level: 2 },
+	{ id: 'outcome', title: 'Outcome' },
+	{ id: 'screens', title: 'Screens' },
 ];
 
 export function AdminPage() {
@@ -16,74 +21,90 @@ export function AdminPage() {
 		<StudyPage
 			slug='admin'
 			title='Administrative Platform'
-			subtitle='Admin tools for admissions, enrollment, transcripts, and reporting.'
+			subtitle='Staff interfaces for admissions, enrollment, transcripts, reporting, and operational workflows.'
+			intro='The administrative platform provides staff-facing tools for the operational work that surrounds student-facing features. Each admin interface was built alongside the student or instructor feature it supports, so staff can manage enrollment, documents, reporting, and organizational configuration without engineering changes.'
 			sections={adminSections}>
-			<StudySection id='admin-with-each-feature' title='Admin With Each Feature'>
+			<StudySection id='platform-overview' title='Platform Overview'>
 				<StudyBody>
-					As MathTrack grew, operational work scaled faster than tooling. Admissions, enrollment, transcript requests, and reporting
-					obligations introduced repeated manual processes. Without an interface for staff, the work either stayed in spreadsheets or
-					required engineering changes.
+					The admin platform covers admissions, enrollment, transcript management, state reporting, user administration, and operational
+					debugging. Administrative staff use these interfaces to manage the data and workflows that student-facing features depend on.
 				</StudyBody>
 				<StudyBody>
-					Administrative staff handle applications, enrollment, cohort moves, transcripts, and state reporting. Information flows through
-					multiple systems, but the key constraint was always the same: staff needed a way to manage operational tasks without waiting for
-					code changes.
+					Primary users are program managers, admissions staff, and operations teams. The system was built incrementally: when a new student
+					feature created recurring operational work, the corresponding admin interface shipped with it rather than leaving staff to use
+					spreadsheets or request code changes.
 				</StudyBody>
 				<StudyBody>
-					The pattern was consistent: when a student feature created operational work that had to be handled repeatedly, the admin interface
-					shipped alongside it.
+					Admin tools share patterns where related workflows overlap—table layouts, filtering, role-based access—but were not designed as a
+					single unified suite upfront. The collection reflects operational needs as they appeared across six years of platform growth.
 				</StudyBody>
-				<StudyBody>
-					User management started with a practical request: managers needed different table layouts for different programs. The solution was
-					a set of program-specific tables with default columns tailored to each use case, plus local column presets saved per user so
-					managers could adjust views without affecting everyone else.
-				</StudyBody>
-				<StudyImage src='studentgradebook.jpg' alt='Student gradebook admin view' />
-				<StudyBody>
-					Documents were another recurring need. The documents flow lets staff upload required files, name them, and organize them into
-					groups that can be created on the fly. Students can then view or download documents directly from their documents page, reducing
-					the number of one-off file requests sent to teachers.
-				</StudyBody>
-				<StudyBody>
-					Support and debugging also drove tooling. The workflow area includes an activity report that shows each user's path through the
-					app. This makes it possible to validate whether a student interacted with the system as reported and to reconstruct routing steps
-					when a bug report is filed.
-				</StudyBody>
-				<StudyBody>
-					For organization, the departments page groups roles and programs into department-level units. Departments can automatically enroll
-					relevant roles or programs into standard courses, which reduces manual updates when programs change. Departments also support
-					accessible color grouping so staff can quickly visually identify related program variants.
-				</StudyBody>
-				<StudyImage src='ada_colors.gif' alt='Accessible color grouping' />
-				<StudyBody>Enrollment tools let staff manage cohort moves and course assignments without engineering changes.</StudyBody>
-				<StudyImage src='course-enrollment-manual.jpg' alt='Manual course enrollment' />
-				<StudyBody>
-					Operational data ingestion became part of the admin toolset as well. Import tooling creates and updates schools and districts from
-					source spreadsheets, syncs with HubSpot, and provides district/school grouping that can be used as cohorts for analytics.
-				</StudyBody>
-				<StudyBody>
-					Finally, announcements centralize time-sensitive messaging. Staff can create banner-style notifications or longer dashboard
-					messages, target specific roles or cohorts, and (for banners) optionally replace the close button with a link to ensure users take
-					the requested action.
-				</StudyBody>
-				<StudyImage src='notifications.gif' alt='Announcements and notifications' />
-				<StudyBody>Course and program editing tools grew alongside student-facing features as operational needs appeared.</StudyBody>
-				<StudyImage src='courses-editor.jpg' alt='Courses editor' />
 			</StudySection>
 
-			<StudySection id='what-accumulated-over-time' title='What Accumulated Over Time'>
-				<StudyGrid>
-					<StudyCell size={{ xs: 12, md: 6 }}>
-						<StudyBody>
-							The result is a collection of admin tools shaped by the features they support rather than a single unified suite designed
-							upfront. Related interfaces share patterns where it made sense, but the collection was built incrementally based on
-							operational problems as they appeared.
-						</StudyBody>
-					</StudyCell>
-					<StudyCell size={{ xs: 12, md: 6 }}>
-						<StudyImage src='grading-queue.jpg' alt='Grading queue admin view' />
-					</StudyCell>
-				</StudyGrid>
+			<StudySection id='key-capabilities' title='Key Capabilities'>
+				<StudyCapability id='user-and-enrollment-management' title='User and Enrollment Management'>
+					<StudyBody>
+						User management provides program-specific table layouts with default columns tailored to each program's operational needs.
+						Managers save local column presets per user so view customizations do not affect other staff members.
+					</StudyBody>
+					<StudyBody>
+						Enrollment tools let staff manage cohort moves and course assignments directly. Manual and rule-based enrollment flows support
+						assigning students to courses without database access or engineering intervention.
+					</StudyBody>
+				</StudyCapability>
+
+				<StudyCapability id='documents-and-communications' title='Documents and Communications'>
+					<StudyBody>
+						The documents system lets staff upload required files, name them, and organize them into groups created on the fly. Students
+						access documents from their documents page, reducing one-off file requests to instructors.
+					</StudyBody>
+					<StudyBody>
+						Announcements centralize time-sensitive messaging. Staff create banner-style notifications or longer dashboard messages,
+						target specific roles or cohorts, and optionally replace the close button with a link to ensure users complete the requested
+						action.
+					</StudyBody>
+				</StudyCapability>
+
+				<StudyCapability id='organizational-structure' title='Organizational Structure'>
+					<StudyBody>
+						The departments page groups roles and programs into department-level units. Departments can automatically enroll relevant
+						roles or programs into standard courses, reducing manual updates when programs change.
+					</StudyBody>
+					<StudyBody>
+						Departments support accessible color grouping so staff can visually distinguish related program variants. Color palettes are
+						selected to meet contrast requirements for staff identification workflows.
+					</StudyBody>
+				</StudyCapability>
+
+				<StudyCapability id='operational-tooling' title='Operational Tooling'>
+					<StudyBody>
+						The workflow area includes an activity report showing each user's path through the application. Staff use this to validate
+						reported student interactions and reconstruct routing steps when debugging support tickets.
+					</StudyBody>
+					<StudyBody>
+						Import tooling creates and updates schools and districts from source spreadsheets, syncs with HubSpot, and provides
+						district/school grouping usable as cohorts for analytics. Course and program editing tools grew alongside student-facing
+						features as operational needs appeared.
+					</StudyBody>
+				</StudyCapability>
+			</StudySection>
+
+			<StudySection id='outcome' title='Outcome'>
+				<StudyBody>
+					Administrative staff manage admissions, enrollment, and reporting through platform interfaces rather than spreadsheets or direct
+					database access. Operational tasks that previously required engineering changes are handled through admin tools built alongside
+					the features they support.
+				</StudyBody>
+			</StudySection>
+
+			<StudySection id='screens' title='Screens'>
+				<StudyScreens
+					images={[
+						{ src: 'notifications.gif', caption: 'Targeted announcements with banner and dashboard message types' },
+						{ src: 'ada_colors.gif', caption: 'Accessible color grouping for department program variants' },
+						{ src: 'course_overview_editing.png', caption: 'Course and program editing interface' },
+						{ src: 'student_gradebook.gif', caption: 'Student records view with program-specific columns' },
+					]}
+				/>
 			</StudySection>
 		</StudyPage>
 	);

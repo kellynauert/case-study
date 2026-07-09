@@ -5,7 +5,7 @@ import { useScrollSpy } from '../../hooks/useScrollSpy';
 import { PageShell } from '../Layout/PageShell';
 import { TableOfContents } from '../Layout/TableOfContents';
 import type { StudySectionItem, TocHeading } from '../../lib/caseStudyTypes';
-import { displayTitleSx, secondaryTextSx } from '../../lib/styles';
+import { bodyTextSx, displayTitleSx, secondaryTextSx } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 import { CaseStudyPager } from './CaseStudyPager';
 
@@ -13,14 +13,19 @@ interface StudyPageProps {
 	slug: string;
 	title: string;
 	subtitle: string;
+	intro: string;
 	sections: StudySectionItem[];
 	children: ReactNode;
 }
 
-export function StudyPage({ slug, title, subtitle, sections, children }: StudyPageProps) {
+export function StudyPage({ slug, title, subtitle, intro, sections, children }: StudyPageProps) {
 	const sectionIds = sections.map((section) => section.id);
 	const activeId = useScrollSpy(sectionIds);
-	const headings: TocHeading[] = sections.map((section) => ({ id: section.id, title: section.title, level: 1 }));
+	const headings: TocHeading[] = sections.map((section) => ({
+		id: section.id,
+		title: section.title,
+		level: section.level ?? 1,
+	}));
 
 	return (
 		<>
@@ -30,7 +35,10 @@ export function StudyPage({ slug, title, subtitle, sections, children }: StudyPa
 					<Typography component='h1' sx={{ ...displayTitleSx, mb: subtitle ? 1.25 : 0 }}>
 						{title}
 					</Typography>
-					{subtitle && <Typography sx={{ maxWidth: tokens.layout.readableWidth, ...secondaryTextSx }}>{subtitle}</Typography>}
+					{subtitle && (
+						<Typography sx={{ maxWidth: tokens.layout.readableWidth, mb: intro ? 1.5 : 0, ...secondaryTextSx }}>{subtitle}</Typography>
+					)}
+					{intro && <Typography sx={{ maxWidth: tokens.layout.readableWidth, ...bodyTextSx }}>{intro}</Typography>}
 				</Box>
 				{children}
 			</PageShell>

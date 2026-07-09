@@ -39,7 +39,7 @@ function PagerLink({ study, direction }: { study: CaseStudyMeta; direction: 'pre
 		<Box
 			component={Link}
 			to={`/case-studies/${study.slug}`}
-			aria-label={`${isPrevious ? 'Previous' : 'Next'} showcase: ${study.title}`}
+			aria-label={`${isPrevious ? 'Previous' : 'Next'} system: ${study.title}`}
 			sx={{
 				...pagerLinkSx,
 				flexDirection: isPrevious ? 'row' : 'row-reverse',

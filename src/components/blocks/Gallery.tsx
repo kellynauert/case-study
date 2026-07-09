@@ -12,13 +12,26 @@ import { captionTextSx, sectionHeadingSx } from '../../lib/styles';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { tokens } from '../../theme/theme';
 
+export type GalleryImage = string | { src: string; caption?: string };
+
 interface GalleryProps {
-	images: string[];
+	images: GalleryImage[];
 	compact?: boolean;
 	/** Section label rendered inline with controls — matches landing Gallery header */
 	title?: string;
 	header?: ReactNode;
 	headerId?: string;
+}
+
+function resolveImage(image: GalleryImage): { src: string; caption: string } {
+	if (typeof image === 'string') {
+		return { src: image, caption: imageLabel(image) };
+	}
+
+	return {
+		src: image.src,
+		caption: image.caption ?? imageLabel(image.src),
+	};
 }
 
 const AUTO_PLAY_MS = 12000;
@@ -57,9 +70,9 @@ export function Gallery({ images, compact = false, title, header, headerId }: Ga
 	const [inView, setInView] = useState(false);
 
 	const count = images.length;
-	const current = images[index];
-	const src = imageSrc(current);
-	const label = imageLabel(current);
+	const current = resolveImage(images[index]);
+	const src = imageSrc(current.src);
+	const label = current.caption;
 
 	const goTo = useCallback(
 		(nextIndex: number) => {
@@ -162,7 +175,7 @@ export function Gallery({ images, compact = false, title, header, headerId }: Ga
 						}}>
 						{images.map((file, dotIndex) => (
 							<Box
-								key={file}
+								key={typeof file === 'string' ? file : file.src}
 								component='button'
 								type='button'
 								aria-label={`Go to screenshot ${dotIndex + 1}`}
@@ -287,6 +300,7 @@ export function Gallery({ images, compact = false, title, header, headerId }: Ga
 						animation: reducedMotion ? 'none' : 'gallery-image-enter 1100ms ease-out',
 					}}
 				/>
+				<Typography sx={{ display: 'block', mt: 1.25, ...captionTextSx }}>{label}</Typography>
 			</Box>
 		</Box>
 	);

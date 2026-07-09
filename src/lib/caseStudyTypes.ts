@@ -3,6 +3,7 @@ import type { ComponentType } from 'react';
 export interface StudySectionItem {
 	id: string;
 	title: string;
+	level?: 1 | 2;
 }
 
 export interface TocHeading {

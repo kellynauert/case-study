@@ -74,7 +74,7 @@ export function TableOfContents({ headings, activeId, studyTitle, mobileOnly = f
 	if (headings.length === 0) return null;
 
 	const navContent = (
-		<Box component='nav' aria-label='Showcase sections' sx={{ px: 1.5, py: 2 }}>
+		<Box component='nav' aria-label='System sections' sx={{ px: 1.5, py: 2 }}>
 			<Box
 				component={Link}
 				to='/#case-studies'
@@ -94,7 +94,7 @@ export function TableOfContents({ headings, activeId, studyTitle, mobileOnly = f
 						outlineOffset: 2,
 					},
 				}}>
-				← Showcase
+				← Systems
 			</Box>
 			{studyTitle && (
 				<Typography
@@ -160,7 +160,7 @@ export function TableOfContents({ headings, activeId, studyTitle, mobileOnly = f
 
 			{!mobileOnly && (
 				<Box
-					aria-label='Showcase navigation'
+					aria-label='System navigation'
 					sx={{
 						display: { xs: 'none', md: 'block' },
 						position: 'sticky',
