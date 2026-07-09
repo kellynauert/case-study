@@ -31,11 +31,20 @@ export function CourseAuthoringPage() {
 					</StudyCell>
 					<StudyCell size={{ xs: 12, md: 6 }}>
 						<StudyBody>
-							Each course has metadata (number, title, images, program associations) and a structure of sections, lessons, and pages.
-							Authors edit overviews, reorder content with drag-and-drop, and control what appears in student navigation.
+							Each course has a structure of sections, lessons, and pages. Authors reorder content with drag-and-drop and control what
+							appears in student navigation.
 						</StudyBody>
+						<StudyBody>The overview editor configures the course landing page students see before entering content.</StudyBody>
+						<StudyBulletList
+							items={[
+								'Course number, title, and header image',
+								'Departments, category, assigned professor, credit hours, and group PD hours',
+								'Overview description, syllabus link, and companion guide',
+								'Tags and prerequisite or related course associations',
+								'Published status',
+							]}
+						/>
 					</StudyCell>
-
 					<StudyCell size={{ xs: 12, md: 6 }}>
 						<StudyImage src='course_overview_editing.png' alt='Course metadata and overview editing' />
 					</StudyCell>

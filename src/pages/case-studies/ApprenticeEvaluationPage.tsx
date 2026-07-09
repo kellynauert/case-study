@@ -33,15 +33,11 @@ export function ApprenticeEvaluationPage() {
 					with an optional-auth flow: a private-information warning and name entry when the mentor is not signed in, with audit trail
 					logging tying ratings to the correct reviewer.
 				</StudyBody>
-				<StudyImage
-					src='evaluation.jpg'
-					alt='Mentor evaluation page with competency groups and rating scales'
-				/>
 			</StudySection>
 
 			<StudySection id='reflection-journals' title='Reflection Journals'>
 				<StudyGrid>
-					<StudyCell size={{ xs: 12, md: 6 }}>
+					<StudyCell size={{ xs: 12, md: 3 }}>
 						<StudyBody>
 							Reflections are scheduled across the program with administrator-configured prompts and instructions. Responses attach to
 							each apprentice's record for mentor review. The system supports daily and weekly reflection schedules.
@@ -53,18 +49,15 @@ export function ApprenticeEvaluationPage() {
 							holidays and scheduling gaps.
 						</StudyBody>
 					</StudyCell>
-					<StudyCell size={{ xs: 12, md: 6 }}>
-						<StudyImage
-							src='reflection.gif'
-							alt='Apprentice reflection journal with scheduled prompts'
-						/>
+					<StudyCell size={{ xs: 12, md: 9 }}>
+						<StudyImage src='reflection.gif' alt='Apprentice reflection journal with scheduled prompts' />
 					</StudyCell>
 				</StudyGrid>
 			</StudySection>
 
 			<StudySection id='progress-tracker' title='Progress Tracker'>
 				<StudyGrid>
-					<StudyCell size={{ xs: 12, md: 6 }}>
+					<StudyCell size={{ xs: 12 }}>
 						<StudyBody>
 							Each apprentice has a progress dashboard aggregating evaluations, reflections, required observations, coursework, and
 							outstanding requirements. Evaluation history shows who rated changes and when ratings moved between levels. Evaluations
@@ -75,11 +68,8 @@ export function ApprenticeEvaluationPage() {
 							reflection schedules per organization without custom development.
 						</StudyBody>
 					</StudyCell>
-					<StudyCell size={{ xs: 12, md: 6 }}>
-						<StudyImage
-							src='evaluation_rating.gif'
-							alt='Evaluation rating history with level-change tracking'
-						/>
+					<StudyCell size={{ xs: 12 }}>
+						<StudyImage src='evaluation_rating.gif' alt='Evaluation rating history with level-change tracking' />
 					</StudyCell>
 				</StudyGrid>
 			</StudySection>
