@@ -91,6 +91,7 @@ export function FeatureShowcaseList({ studies, nested = false }: FeatureShowcase
 				display: 'grid',
 				gridTemplateColumns: {
 					xs: '1fr',
+					sm: 'repeat(2, 1fr)',
 					md: 'repeat(2, 1fr)',
 				},
 				gap: { xs: 1.5, sm: 1.75, md: 1.5 },

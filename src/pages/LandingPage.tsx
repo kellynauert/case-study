@@ -2,8 +2,9 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { getAllCaseStudies } from '../lib/caseStudies';
 import { hero, sections, allScreenshots } from '../lib/site';
-import { pagePaddingX, pageTopPadding, scrollMarginTop, sectionHeadingSx } from '../lib/styles';
+import { pagePaddingX, scrollMarginTop, sectionHeadingSx } from '../lib/styles';
 import { SiteLayout } from '../components/Layout/SiteLayout';
+import { SiteHeroIntro } from '../components/Layout/SiteHeroIntro';
 import { FadeIn } from '../components/Layout/FadeIn';
 import { ContextPanel } from '../components/landing/ContextPanel';
 import { Gallery } from '../components/blocks/Gallery';
@@ -26,10 +27,14 @@ export function LandingPage() {
 
 	return (
 		<SiteLayout>
+			<Box sx={{ display: { xs: 'block', md: 'none' }, pl: 1.5, pr: 2, pt: 1 }}>
+				<SiteHeroIntro />
+			</Box>
+
 			<SectionShell>
 				<Box
 					sx={{
-						pt: pageTopPadding,
+						pt: { xs: 0, md: 5 },
 						pb: { xs: 2, md: 3 },
 					}}>
 					<Box

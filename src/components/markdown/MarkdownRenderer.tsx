@@ -60,6 +60,7 @@ function buildProseSx(wide: boolean) {
 			color: tokens.accent,
 			fontWeight: 500,
 			textDecoration: 'none',
+			overflowWrap: 'anywhere',
 			borderBottom: `1px solid ${alpha(tokens.accentPink, 0.35)}`,
 			transition: 'color 200ms ease, border-color 200ms ease',
 			'&:hover': {
@@ -69,6 +70,7 @@ function buildProseSx(wide: boolean) {
 		},
 		'& strong': { color: tokens.textPrimary, fontWeight: 600 },
 		'& em': { fontStyle: 'italic' },
+		'& p, & li': { overflowWrap: 'anywhere' },
 	};
 }
 

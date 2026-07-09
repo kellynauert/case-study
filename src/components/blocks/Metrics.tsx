@@ -13,7 +13,7 @@ export function Metrics({ items }: MetricsProps) {
 		<Box
 			sx={{
 				display: 'grid',
-				gridTemplateColumns: { xs: '1fr 1fr', md: `repeat(${Math.min(items.length, 4)}, 1fr)` },
+				gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: `repeat(${Math.min(items.length, 4)}, 1fr)` },
 				gap: 1.5,
 				my: 3,
 			}}>

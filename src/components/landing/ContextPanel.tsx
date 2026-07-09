@@ -67,6 +67,7 @@ const toggleButtonSx = {
 	gap: 0.5,
 	m: 0,
 	p: 0,
+	minHeight: 44,
 	border: 'none',
 	bgcolor: 'transparent',
 	fontFamily: 'inherit',

@@ -4,15 +4,19 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import MenuIcon from '@mui/icons-material/Menu';
+import ListIcon from '@mui/icons-material/List';
 import CloseIcon from '@mui/icons-material/Close';
+import { alpha } from '@mui/material/styles';
 import type { HeadingItem } from '../../lib/parseMarkdown';
+import { mobileHeaderHeight } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 interface TableOfContentsProps {
 	headings: HeadingItem[];
 	activeId: string;
 	studyTitle?: string;
+	/** Hide the desktop sticky sidebar — use on pages that already have GlobalNav */
+	mobileOnly?: boolean;
 }
 
 function scrollToSection(id: string) {
@@ -37,10 +41,12 @@ function NavLinks({ headings, activeId, onNavigate }: { headings: HeadingItem[];
 						}}
 						aria-current={isActive ? 'location' : undefined}
 						sx={{
-							display: 'block',
-							py: 0.625,
+							display: 'flex',
+							alignItems: 'center',
+							py: 1,
 							pl: item.level === 2 ? 2 : 1,
 							pr: 1,
+							minHeight: 44,
 							textDecoration: 'none',
 							borderLeft: `2px solid ${isActive ? tokens.accent : 'transparent'}`,
 							fontSize: item.level === 2 ? '0.75rem' : '0.8125rem',
@@ -62,8 +68,10 @@ function NavLinks({ headings, activeId, onNavigate }: { headings: HeadingItem[];
 	);
 }
 
-export function TableOfContents({ headings, activeId, studyTitle }: TableOfContentsProps) {
+export function TableOfContents({ headings, activeId, studyTitle, mobileOnly = false }: TableOfContentsProps) {
 	const [mobileOpen, setMobileOpen] = useState(false);
+
+	if (headings.length === 0) return null;
 
 	const navContent = (
 		<Box component='nav' aria-label='Showcase sections' sx={{ px: 1.5, py: 2 }}>
@@ -72,9 +80,11 @@ export function TableOfContents({ headings, activeId, studyTitle }: TableOfConte
 				to='/#case-studies'
 				onClick={() => setMobileOpen(false)}
 				sx={{
-					display: 'block',
+					display: 'flex',
+					alignItems: 'center',
 					px: 1,
 					mb: 2,
+					minHeight: 44,
 					fontSize: '0.8125rem',
 					color: tokens.textNav,
 					textDecoration: 'none',
@@ -108,56 +118,63 @@ export function TableOfContents({ headings, activeId, studyTitle }: TableOfConte
 		<>
 			<IconButton
 				onClick={() => setMobileOpen(true)}
-				aria-label='Open navigation'
+				aria-label='Open section navigation'
 				sx={{
-					display: { md: 'none' },
+					display: { xs: 'flex', md: 'none' },
 					position: 'fixed',
-					top: 72,
+					top: `calc(${mobileHeaderHeight}px + env(safe-area-inset-top, 0px) + 8px)`,
 					right: 16,
-					zIndex: 1200,
-					bgcolor: tokens.surface,
+					zIndex: 1190,
+					width: 44,
+					height: 44,
+					bgcolor: alpha(tokens.surface, 0.94),
 					border: `1px solid ${tokens.border}`,
+					boxShadow: tokens.shadowSubtle,
 					'&:focus-visible': { outline: `2px solid ${tokens.accent}`, outlineOffset: 2 },
 				}}>
-				<MenuIcon fontSize='small' />
+				<ListIcon fontSize='small' />
 			</IconButton>
 
 			<Drawer
 				open={mobileOpen}
 				onClose={() => setMobileOpen(false)}
+				anchor='right'
 				sx={{ display: { md: 'none' } }}
 				slotProps={{
 					paper: {
 						sx: {
-							width: 280,
+							width: { xs: 'min(100vw, 320px)', sm: 320 },
+							maxWidth: '100vw',
 							bgcolor: tokens.surface,
-							borderRight: `1px solid ${tokens.border}`,
+							borderLeft: `1px solid ${tokens.border}`,
 						},
 					},
 				}}>
 				<Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 1 }}>
-					<IconButton onClick={() => setMobileOpen(false)} aria-label='Close navigation'>
-						<CloseIcon fontSize='small' />
+					<IconButton onClick={() => setMobileOpen(false)} aria-label='Close section navigation' sx={{ width: 44, height: 44 }}>
+						<CloseIcon />
 					</IconButton>
 				</Box>
 				{navContent}
 			</Drawer>
 
-			<Box
-				aria-label='Showcase navigation'
-				sx={{
-					display: { xs: 'none', md: 'block' },
-					position: 'sticky',
-					top: '4rem',
-					height: 'calc(100vh - 4rem)',
-					width: tokens.layout.navWidth,
-					flexShrink: 0,
-					borderRight: `1px solid ${tokens.border}`,
-					overflowY: 'auto',
-					alignSelf: 'flex-start',
-				}}>
-				{navContent}
-			</Box>
+			{!mobileOnly && (
+				<Box
+					aria-label='Showcase navigation'
+					sx={{
+						display: { xs: 'none', md: 'block' },
+						position: 'sticky',
+						top: '4rem',
+						height: 'calc(100vh - 4rem)',
+						width: tokens.layout.navWidth,
+						flexShrink: 0,
+						borderRight: `1px solid ${tokens.border}`,
+						overflowY: 'auto',
+						alignSelf: 'flex-start',
+					}}>
+					{navContent}
+				</Box>
+			)}
 		</>
 	);
 }

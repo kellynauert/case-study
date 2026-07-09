@@ -13,7 +13,7 @@ export function Stats({ items }: StatsProps) {
 		<Box
 			sx={{
 				display: 'grid',
-				gridTemplateColumns: { xs: '1fr 1fr', md: `repeat(${Math.min(items.length, 4)}, 1fr)` },
+				gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: `repeat(${Math.min(items.length, 4)}, 1fr)` },
 				gap: 1.5,
 				my: 3,
 			}}>
@@ -28,7 +28,7 @@ export function Stats({ items }: StatsProps) {
 					}}>
 					<Typography
 						sx={{
-							fontSize: '1.875rem',
+							fontSize: { xs: '1.5rem', sm: '1.875rem' },
 							fontWeight: 600,
 							letterSpacing: '-0.03em',
 							lineHeight: 1,

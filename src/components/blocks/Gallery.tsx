@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode, type TouchEvent } from 'react';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -31,8 +31,8 @@ const imageEnterKeyframes = {
 } as const;
 
 const controlButtonSx = {
-	width: 28,
-	height: 28,
+	width: { xs: 44, md: 36 },
+	height: { xs: 44, md: 36 },
 	color: tokens.textNav,
 	border: `1px solid ${tokens.border}`,
 	borderRadius: 1,
@@ -40,6 +40,8 @@ const controlButtonSx = {
 	'&:hover': { color: tokens.accent, bgcolor: alpha(tokens.surfaceRaised, 0.9) },
 	'&:focus-visible': { outline: `2px solid ${tokens.accent}`, outlineOffset: 2 },
 } as const;
+
+const SWIPE_THRESHOLD = 48;
 
 function imageLabel(file: string): string {
 	return file.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
@@ -51,6 +53,7 @@ export function Gallery({ images, compact = false, title, header, headerId }: Ga
 	const [hoverPaused, setHoverPaused] = useState(false);
 	const reducedMotion = useReducedMotion();
 	const containerRef = useRef<HTMLDivElement>(null);
+	const touchStartX = useRef(0);
 	const [inView, setInView] = useState(false);
 
 	const count = images.length;
@@ -116,59 +119,104 @@ export function Gallery({ images, compact = false, title, header, headerId }: Ga
 			</Typography>
 		:	null);
 
+	const showDotStrip = count <= 12;
+
+	const handleTouchStart = useCallback((event: TouchEvent) => {
+		touchStartX.current = event.touches[0]?.clientX ?? 0;
+	}, []);
+
+	const handleTouchEnd = useCallback(
+		(event: TouchEvent) => {
+			if (count <= 1) return;
+			const endX = event.changedTouches[0]?.clientX ?? 0;
+			const delta = endX - touchStartX.current;
+			if (Math.abs(delta) < SWIPE_THRESHOLD) return;
+			if (delta > 0) prev();
+			else next();
+		},
+		[count, next, prev]
+	);
+
 	const controls =
 		count > 1 ?
 			<Box
 				sx={{
 					display: 'flex',
 					alignItems: 'center',
-					gap: 1.5,
+					justifyContent: { xs: 'space-between', sm: 'flex-start' },
+					gap: 1,
 					flexShrink: 0,
+					width: { xs: '100%', sm: 'auto' },
 				}}>
-				<Box sx={{ display: 'flex', gap: 0.75 }}>
-					{images.map((file, dotIndex) => (
-						<Box
-							key={file}
-							component='button'
-							type='button'
-							aria-label={`Go to screenshot ${dotIndex + 1}`}
-							aria-current={dotIndex === index ? 'true' : undefined}
-							onClick={() => goTo(dotIndex)}
-							sx={{
-								width: 8,
-								height: 8,
-								p: 0,
-								border: 'none',
-								borderRadius: '50%',
-								cursor: 'pointer',
-								bgcolor: dotIndex === index ? tokens.accent : alpha(tokens.textMuted, 0.45),
-								transition: 'background-color 200ms ease',
-								'&:focus-visible': {
-									outline: `2px solid ${tokens.accent}`,
-									outlineOffset: 2,
-								},
-							}}
-						/>
-					))}
+				{showDotStrip && (
+					<Box
+						sx={{
+							display: { xs: 'none', sm: 'flex' },
+							gap: 0.75,
+							maxWidth: { sm: 200, md: 320 },
+							overflowX: 'auto',
+							flexShrink: 1,
+							WebkitOverflowScrolling: 'touch',
+							scrollbarWidth: 'none',
+							'&::-webkit-scrollbar': { display: 'none' },
+						}}>
+						{images.map((file, dotIndex) => (
+							<Box
+								key={file}
+								component='button'
+								type='button'
+								aria-label={`Go to screenshot ${dotIndex + 1}`}
+								aria-current={dotIndex === index ? 'true' : undefined}
+								onClick={() => goTo(dotIndex)}
+								sx={{
+									flexShrink: 0,
+									width: 44,
+									height: 44,
+									p: 0,
+									border: 'none',
+									bgcolor: 'transparent',
+									cursor: 'pointer',
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'center',
+									'&:focus-visible': {
+										outline: `2px solid ${tokens.accent}`,
+										outlineOffset: 2,
+										borderRadius: 1,
+									},
+								}}>
+								<Box
+									sx={{
+										width: 8,
+										height: 8,
+										borderRadius: '50%',
+										bgcolor: dotIndex === index ? tokens.accent : alpha(tokens.textMuted, 0.45),
+										transition: 'background-color 200ms ease',
+									}}
+								/>
+							</Box>
+						))}
+					</Box>
+				)}
+				<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexShrink: 0 }}>
+					<Typography sx={{ ...captionTextSx, flexShrink: 0, minWidth: '3.5rem', textAlign: 'center' }}>
+						{index + 1} / {count}
+					</Typography>
+					<IconButton onClick={prev} aria-label='Previous screenshot' sx={controlButtonSx}>
+						<ChevronLeftIcon sx={{ fontSize: '1.125rem' }} />
+					</IconButton>
+					<IconButton
+						onClick={() => setPlaying((current) => !current)}
+						aria-label={playing ? 'Pause slideshow' : 'Play slideshow'}
+						sx={controlButtonSx}>
+						{playing ?
+							<PauseIcon sx={{ fontSize: '1.125rem' }} />
+						:	<PlayArrowIcon sx={{ fontSize: '1.125rem' }} />}
+					</IconButton>
+					<IconButton onClick={next} aria-label='Next screenshot' sx={controlButtonSx}>
+						<ChevronRightIcon sx={{ fontSize: '1.125rem' }} />
+					</IconButton>
 				</Box>
-				<Typography sx={{ ...captionTextSx, flexShrink: 0 }}>
-					{index + 1} / {count}
-				</Typography>
-				<IconButton onClick={prev} aria-label='Previous screenshot' size='small' sx={controlButtonSx}>
-					<ChevronLeftIcon sx={{ fontSize: '1rem' }} />
-				</IconButton>
-				<IconButton
-					onClick={() => setPlaying((current) => !current)}
-					aria-label={playing ? 'Pause slideshow' : 'Play slideshow'}
-					size='small'
-					sx={controlButtonSx}>
-					{playing ?
-						<PauseIcon sx={{ fontSize: '1rem' }} />
-					:	<PlayArrowIcon sx={{ fontSize: '1rem' }} />}
-				</IconButton>
-				<IconButton onClick={next} aria-label='Next screenshot' size='small' sx={controlButtonSx}>
-					<ChevronRightIcon sx={{ fontSize: '1rem' }} />
-				</IconButton>
 			</Box>
 		:	null;
 
@@ -191,11 +239,11 @@ export function Gallery({ images, compact = false, title, header, headerId }: Ga
 				<Box
 					sx={{
 						display: 'flex',
-						alignItems: 'center',
+						flexDirection: { xs: 'column', sm: 'row' },
+						alignItems: { xs: 'stretch', sm: 'center' },
 						justifyContent: heading ? 'space-between' : 'flex-end',
-						gap: 2,
+						gap: { xs: 1.5, sm: 2 },
 						mb: { xs: 2.5, md: 3 },
-						flexWrap: 'wrap',
 					}}>
 					{heading && <Box sx={{ minWidth: 0 }}>{heading}</Box>}
 					{controls}
@@ -207,6 +255,8 @@ export function Gallery({ images, compact = false, title, header, headerId }: Ga
 				aria-roledescription='carousel'
 				aria-label={title ? `${title} gallery` : 'Screenshot gallery'}
 				tabIndex={count > 1 ? 0 : undefined}
+				onTouchStart={handleTouchStart}
+				onTouchEnd={handleTouchEnd}
 				sx={{
 					position: 'relative',
 					width: '100%',

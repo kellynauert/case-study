@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { createContext, useContext, useState, type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -7,15 +7,28 @@ import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
-import DownloadIcon from '@mui/icons-material/Download';
 import { alpha } from '@mui/material/styles';
 import { getAllCaseStudies } from '../../lib/caseStudies';
 import { isShowcaseViewed } from '../../lib/viewedShowcases';
 import { useViewedShowcases } from '../../hooks/useViewedShowcases';
-import { hero, links } from '../../lib/site';
+import { mobileHeaderHeight } from '../../lib/styles';
+import { SiteHeroIntro } from './SiteHeroIntro';
 import { tokens } from '../../theme/theme';
 
 const studies = getAllCaseStudies();
+
+interface NavDrawerContextValue {
+	openDrawer: () => void;
+	closeDrawer: () => void;
+}
+
+const NavDrawerContext = createContext<NavDrawerContextValue | null>(null);
+
+function useNavDrawer() {
+	const ctx = useContext(NavDrawerContext);
+	if (!ctx) throw new Error('useNavDrawer must be used within NavDrawerProvider');
+	return ctx;
+}
 
 function ReadIndicator({ read, active }: { read: boolean; active?: boolean }) {
 	return (
@@ -47,32 +60,6 @@ function ReadIndicator({ read, active }: { read: boolean; active?: boolean }) {
 	);
 }
 
-const secondaryButtonSx = {
-	display: 'inline-flex',
-	alignItems: 'center',
-	gap: 0.75,
-	p: 0,
-	m: 0,
-	fontSize: '0.8125rem',
-	fontWeight: 600,
-	letterSpacing: '0.02em',
-	color: tokens.accentPink,
-	bgcolor: 'transparent',
-	border: 'none',
-	textDecoration: 'none',
-	cursor: 'pointer',
-	transition: 'color 180ms ease, opacity 180ms ease',
-	'&:hover': {
-		color: tokens.accent,
-		'& .global-nav-resume-icon': { transform: 'translateY(1px)' },
-	},
-	'&:focus-visible': {
-		outline: `2px solid ${tokens.accentPink}`,
-		outlineOffset: 3,
-		borderRadius: 0.5,
-	},
-} as const;
-
 const navGroupLabelSx = {
 	display: 'block',
 	px: 1,
@@ -90,9 +77,10 @@ const navGroupLabelSx = {
 function navLinkSx(active: boolean, level: 'primary' | 'sub' = 'primary') {
 	return {
 		display: 'block',
-		py: 0.625,
+		py: 1,
 		pl: level === 'sub' ? 2 : 1,
 		pr: 1,
+		minHeight: 44,
 		textDecoration: 'none',
 		borderLeft: `2px solid ${active ? tokens.accent : 'transparent'}`,
 		fontSize: level === 'sub' ? '0.75rem' : '0.8125rem',
@@ -111,7 +99,7 @@ function navLinkSx(active: boolean, level: 'primary' | 'sub' = 'primary') {
 	};
 }
 
-function NavContent({ onNavigate }: { onNavigate?: () => void }) {
+function NavContent({ onNavigate, showHeroIntro = true }: { onNavigate?: () => void; showHeroIntro?: boolean }) {
 	const location = useLocation();
 	const viewed = useViewedShowcases();
 	const isHomeActive = location.pathname === '/';
@@ -127,60 +115,11 @@ function NavContent({ onNavigate }: { onNavigate?: () => void }) {
 				pr: 5,
 				py: 2,
 			}}>
-			<Box sx={{ px: 1, mb: 5.5 }}>
-				<Typography
-					variant='h1'
-					component={Link}
-					to='/'
-					onClick={onNavigate}
-					sx={{
-						display: 'block',
-						m: 0,
-						mb: 0.75,
-						fontSize: { xs: '2.25rem', md: '2.75rem' },
-						color: tokens.textPrimary,
-						textDecoration: 'none',
-						'&:focus-visible': {
-							outline: `2px solid ${tokens.accent}`,
-							outlineOffset: 2,
-						},
-					}}>
-					{hero.headline}
-				</Typography>
-
-				<Box
-					sx={{
-						display: 'flex',
-						flexWrap: 'nowrap',
-						alignItems: 'center',
-						columnGap: 2,
-						mb: 0,
-					}}>
-					<Typography
-						component='p'
-						sx={{
-							m: 0,
-							flexShrink: 0,
-							whiteSpace: 'nowrap',
-							fontSize: { xs: '0.8125rem', md: '0.875rem' },
-							lineHeight: 1.4,
-							fontWeight: 500,
-							color: tokens.textSecondary,
-						}}>
-						{hero.roleLine}
-					</Typography>
-
-					<Box
-						component='a'
-						href={links.resume}
-						download
-						aria-label='Download resume PDF'
-						sx={{ ...secondaryButtonSx, flexShrink: 0, whiteSpace: 'nowrap' }}>
-						<DownloadIcon className='global-nav-resume-icon' sx={{ fontSize: '1rem', transition: 'transform 180ms ease' }} />
-						{hero.secondaryCta}
-					</Box>
+			{showHeroIntro && (
+				<Box sx={{ display: { xs: isHomeActive ? 'none' : 'block', md: 'block' } }}>
+					<SiteHeroIntro onNavigate={onNavigate} />
 				</Box>
-			</Box>
+			)}
 
 			<Box sx={{ mb: 1.5 }}>
 				<Box
@@ -215,10 +154,11 @@ function NavContent({ onNavigate }: { onNavigate?: () => void }) {
 								display: 'grid',
 								gridTemplateColumns: '1.25rem 1fr',
 								gap: 0.75,
-								alignItems: 'start',
-								py: 0.625,
+								alignItems: 'center',
+								py: 1,
 								pl: 2,
 								pr: 1,
+								minHeight: 44,
 								textDecoration: 'none',
 								borderLeft: `2px solid ${isActive ? tokens.accent : 'transparent'}`,
 								transition: 'color 200ms ease',
@@ -251,36 +191,53 @@ function NavContent({ onNavigate }: { onNavigate?: () => void }) {
 
 const shellMaxWidth = tokens.layout.navWidth + 1320;
 
-export function GlobalNav() {
-	const [mobileOpen, setMobileOpen] = useState(false);
+export function MobileStickyNavBar() {
+	const { openDrawer } = useNavDrawer();
 
 	return (
-		<>
+		<Box
+			sx={{
+				display: { xs: 'flex', md: 'none' },
+				position: 'sticky',
+				top: 0,
+				zIndex: 1200,
+				alignItems: 'center',
+				height: `calc(${mobileHeaderHeight}px + env(safe-area-inset-top, 0px))`,
+				pt: 'env(safe-area-inset-top, 0px)',
+				px: 0.5,
+				flexShrink: 0,
+				bgcolor: alpha(tokens.background, 0.92),
+				backdropFilter: 'blur(10px)',
+				borderBottom: `1px solid ${tokens.border}`,
+			}}>
 			<IconButton
-				onClick={() => setMobileOpen(true)}
+				onClick={openDrawer}
 				aria-label='Open site navigation'
 				sx={{
-					display: { md: 'none' },
-					position: 'fixed',
-					top: 12,
-					left: 16,
-					zIndex: 1200,
+					width: 44,
+					height: 44,
 					color: tokens.textSecondary,
-					bgcolor: 'transparent',
 					'&:hover': { color: tokens.accent, bgcolor: 'transparent' },
 					'&:focus-visible': { outline: `2px solid ${tokens.accent}`, outlineOffset: 2 },
 				}}>
-				<MenuIcon fontSize='small' />
+				<MenuIcon />
 			</IconButton>
+		</Box>
+	);
+}
 
+function NavDrawerInternals({ open, onClose }: { open: boolean; onClose: () => void }) {
+	return (
+		<>
 			<Drawer
-				open={mobileOpen}
-				onClose={() => setMobileOpen(false)}
+				open={open}
+				onClose={onClose}
 				sx={{ display: { md: 'none' } }}
 				slotProps={{
 					paper: {
 						sx: {
-							width: tokens.layout.navWidth,
+							width: { xs: 'min(100vw, 360px)', sm: 360 },
+							maxWidth: '100vw',
 							bgcolor: alpha(tokens.background, 0.94),
 							backdropFilter: 'blur(10px)',
 							boxShadow: `4px 0 20px ${alpha(tokens.accent, 0.05)}`,
@@ -288,11 +245,11 @@ export function GlobalNav() {
 					},
 				}}>
 				<Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 1 }}>
-					<IconButton onClick={() => setMobileOpen(false)} aria-label='Close site navigation'>
-						<CloseIcon fontSize='small' />
+					<IconButton onClick={onClose} aria-label='Close site navigation' sx={{ width: 44, height: 44 }}>
+						<CloseIcon />
 					</IconButton>
 				</Box>
-				<NavContent onNavigate={() => setMobileOpen(false)} />
+				<NavContent onNavigate={onClose} />
 			</Drawer>
 
 			<Box
@@ -321,5 +278,20 @@ export function GlobalNav() {
 				<NavContent />
 			</Box>
 		</>
+	);
+}
+
+export function NavDrawerProvider({ children }: { children: ReactNode }) {
+	const [mobileOpen, setMobileOpen] = useState(false);
+
+	return (
+		<NavDrawerContext.Provider
+			value={{
+				openDrawer: () => setMobileOpen(true),
+				closeDrawer: () => setMobileOpen(false),
+			}}>
+			{children}
+			<NavDrawerInternals open={mobileOpen} onClose={() => setMobileOpen(false)} />
+		</NavDrawerContext.Provider>
 	);
 }

@@ -25,14 +25,13 @@ export function ScrollToTopButton() {
 		<IconButton
 			onClick={() => window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' })}
 			aria-label='Back to top'
-			size='small'
 			sx={{
 				position: 'fixed',
-				bottom: { xs: 20, md: 28 },
-				right: { xs: 16, md: 28 },
+				bottom: { xs: 'max(20px, env(safe-area-inset-bottom))', md: 28 },
+				right: { xs: 'max(16px, env(safe-area-inset-right))', md: 28 },
 				zIndex: 20,
-				width: 36,
-				height: 36,
+				width: 44,
+				height: 44,
 				color: tokens.textNav,
 				border: `1px solid ${tokens.border}`,
 				borderRadius: 1,

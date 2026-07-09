@@ -15,7 +15,7 @@ export function PageShell({ footer, children }: PageShellProps) {
 				width: '100%',
 				maxWidth: tokens.layout.pageMaxWidth,
 				px: pagePaddingX,
-				pt: pageTopPadding,
+				pt: { xs: 2, md: pageTopPadding.md },
 				pb: { xs: 6, md: 10 },
 			}}>
 			{children}
