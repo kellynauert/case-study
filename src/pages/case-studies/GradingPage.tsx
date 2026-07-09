@@ -3,6 +3,7 @@ import { StudySection } from '../../components/case-study/StudySection';
 import { StudyGrid } from '../../components/case-study/StudyGrid';
 import { StudyCell } from '../../components/case-study/StudyCell';
 import { StudyBody } from '../../components/case-study/StudyBody';
+import { StudyBulletList } from '../../components/case-study/StudyBulletList';
 import { StudyImage } from '../../components/case-study/StudyImage';
 import { StudyImageRow } from '../../components/case-study/StudyImageRow';
 import type { StudySectionItem } from '../../lib/caseStudyTypes';
@@ -10,6 +11,7 @@ import type { StudySectionItem } from '../../lib/caseStudyTypes';
 export const gradingSections: StudySectionItem[] = [
 	{ id: 'grading-queue', title: 'Grading Queue' },
 	{ id: 'gradebooks', title: 'Gradebooks' },
+	{ id: 'scoring-and-automatic-grading', title: 'Scoring and Automatic Grading' },
 	{ id: 'ai-assisted-grading', title: 'AI-Assisted Grading' },
 	{ id: 'grader-notes', title: 'Grader Notes' },
 ];
@@ -63,6 +65,28 @@ export function GradingPage() {
 				/>
 			</StudySection>
 
+			<StudySection id='scoring-and-automatic-grading' title='Scoring and Automatic Grading'>
+				<StudyGrid>
+					<StudyCell size={{ xs: 12, md: 5 }}>
+						<StudyBody>
+							Authors configure point values and grading mode at item creation. Weights carry into the gradebook automatically, so
+							graders never recalculate course totals. Zero-point items track completion without affecting the course percentage.
+						</StudyBody>
+						<StudyBulletList
+							items={[
+								'Page-level grading assigns one score per page; per-item grading handles mixed pages independently.',
+								'Multiple choice, true/false, and fill in the blank grade automatically on submission.',
+								'Open responses, file uploads, discussions, and scored date inputs enter the grading queue.',
+								'Display items complete through read-time engagement; certificates issue automatically—neither enters the grading queue.',
+							]}
+						/>
+					</StudyCell>
+					<StudyCell size={{ xs: 12, md: 7 }}>
+						<StudyImage src='grading.jpg' alt='Grading interface showing per-item scores and submission status' />
+					</StudyCell>
+				</StudyGrid>
+			</StudySection>
+
 			<StudySection id='ai-assisted-grading' title='AI-Assisted Grading'>
 				<StudyGrid>
 					<StudyCell size={{ xs: 12, md: 4 }}>
@@ -75,8 +99,7 @@ export function GradingPage() {
 						<StudyBody>
 							AI suggestions include color-coded highlights showing which portions of the student's response the model referenced.
 							Mismatched highlight colors indicate the model added unsupported content or missed source text. Final scores remain with
-							the instructor. Objective assessments grade automatically; AI suggestions reduced time on written response review across
-							all MathTrack programs.
+							the instructor. AI suggestions reduced time on open response review across all MathTrack programs.
 						</StudyBody>
 					</StudyCell>
 					<StudyCell size={{ xs: 12, md: 8 }}>

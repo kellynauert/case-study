@@ -24,7 +24,7 @@ export const caseStudies = [
 			'Assignment-first grading queue, course and student gradebooks, automatic scoring, and AI-assisted review with instructor-controlled final grades.',
 		years: '2020–Present',
 		order: 3,
-		readingMinutes: 2,
+		readingMinutes: 3,
 		sections: gradingSections,
 		component: GradingPage,
 	},

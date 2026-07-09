@@ -22,33 +22,22 @@ export function CourseAuthoringPage() {
 			slug='course-authoring'
 			title='Course Authoring'
 			subtitle='Custom curriculum authoring with typed content blocks and shared presentation.'
-			intro='Curriculum authoring runs in a dedicated editor. Authors work with typed content blocks while the platform controls layout, navigation, and student presentation. Course structure defined here drives in-course navigation, progress tracking, and assessment configuration in the student and grading systems.'
+			intro='Curriculum authoring runs in a dedicated editor. Authors work with typed content blocks while the platform controls layout, navigation, and student presentation. Course structure defined here drives in-course navigation, progress tracking, and assessment configuration in the student and grading systems. Authors previously had to make layout and navigation decisions while writing curriculum. The authoring layer separates content from presentation so authors can focus on instructional material while the platform enforces consistent structure across courses. '
 			sections={courseAuthoringSections}>
 			<StudySection id='course-management' title='Course Management'>
-				<StudyBody>
-					Authors previously had to make layout and navigation decisions while writing curriculum. The authoring layer separates content
-					from presentation so authors can focus on instructional material while the platform enforces consistent structure across courses.
-				</StudyBody>
 				<StudyGrid>
+					<StudyCell size={{ xs: 12 }}>
+						<StudyImage src='courses-editor.jpg' alt='Courses editor selection with drag-and-drop course structure' />
+					</StudyCell>
 					<StudyCell size={{ xs: 12, md: 6 }}>
 						<StudyBody>
 							Each course has metadata (number, title, images, program associations) and a structure of sections, lessons, and pages.
 							Authors edit overviews, reorder content with drag-and-drop, and control what appears in student navigation.
 						</StudyBody>
-						<StudyBody>
-							Lessons and sections can be hidden from navigation when numbering should skip, such as introduction pages at the start or
-							feedback pages at the end. Courses can be cloned for variants across states and programs, with a choice about whether
-							cloned items retain their original IDs or receive new ones.
-						</StudyBody>
-						<StudyBody>
-							More than 160 courses have been created in the platform. Authors report preferring it for curriculum work.
-						</StudyBody>
 					</StudyCell>
+
 					<StudyCell size={{ xs: 12, md: 6 }}>
-						<StudyImage
-							src='course_overview_editing.png'
-							alt='Course metadata and overview editing'
-						/>
+						<StudyImage src='course_overview_editing.png' alt='Course metadata and overview editing' />
 					</StudyCell>
 				</StudyGrid>
 			</StudySection>
@@ -59,39 +48,45 @@ export function CourseAuthoringPage() {
 					through a single editor workflow regardless of item type.
 				</StudyBody>
 				<StudyBody>
+					Lessons and sections can be hidden from navigation when numbering should skip, such as introduction pages at the start or feedback
+					pages at the end. Courses can be cloned for variants across states and programs, with a choice about whether cloned items retain
+					their original IDs or receive new ones.
+				</StudyBody>
+				<StudyBody>
 					Page-level settings support grading an entire page at once or grading each item individually. Authors set point values,
 					completion-only behavior, and item-specific options without modifying layout or typography. Content and presentation are decoupled
 					at the data model level: item types define author input, and the rendering layer controls layout and interaction. New item
 					configuration does not require per-course layout work.
 				</StudyBody>
-				<StudyImage
-					src='editing_course_navigation.gif'
-					alt='Drag-and-drop course structure editor'
-				/>
+				<StudyImage src='editing_course_navigation.gif' alt='Drag-and-drop course structure editor' />
 			</StudySection>
 
 			<StudySection id='content-types' title='Content Types'>
 				<StudyBody>Every page is built from a fixed set of item types, each with a dedicated editor.</StudyBody>
-				<StudyBulletList
-					items={[
-						'Display Items — instructional content with read-time tracking; marked read after three seconds on the page',
-						'Assessments — multiple choice, fill-in-the-blank, and written response; supports checkbox/radio, answer scrambling with preview, and configurable AI grading prompts',
-						'Discussions — students submit a response and lock it before viewing peer submissions',
-						'File Uploads — student submissions with instructor review',
-						'Reflections — structured written responses attached to apprentice records',
-						'Announcements — time-sensitive messaging within a course',
-					]}
-				/>
+				<StudyGrid>
+					<StudyCell size={{ xs: 12, md: 6 }}>
+						<StudyBulletList
+							items={[
+								'Display items — instructional rich content with in-app word editing, embeds, and optional read-time completion tracking',
+								'Fill in the blank — students select text from a list matched against author-configured answer keys',
+								'Open response — free-text submissions reviewed by instructors; supports configurable AI grading prompts.',
+								'True/false — single-selection questions scored automatically against the correct answer.',
+								'Multiple choice — radio or checkbox selections with answer scrambling and forced checkbox option.',
+								'Date input — students submit a date; can carry points for manual review or track completion only.	',
+								'File upload — student file submissions with instructor review. Supports file type restrictions, maximum size, and enabling multiple file uploads.',
+								"Discussion — students submit a response and lock it before viewing peer submissions. Students within the same cohort can view each other's responses.",
+								'Certificate — issued automatically when course completion criteria are met.',
+							]}
+						/>
+					</StudyCell>
+					<StudyCell size={{ xs: 12, md: 6 }}>
+						<StudyImage src='fill-in-the-blank.png' alt='Fill-in-the-blank assessment configuration' />
+					</StudyCell>
+				</StudyGrid>
 				<StudyBody>
 					AI grading prompts are configured per item at authoring time. The prompt, item type, and rubric context are stored with the item
 					and passed to the grading platform when instructors review submissions.
 				</StudyBody>
-				<StudyImageRow
-					images={[
-						{ src: 'reading_page.gif', alt: 'Display item editor with read-time tracking' },
-						{ src: 'fill-in-the-blank.png', alt: 'Fill-in-the-blank assessment configuration' },
-					]}
-				/>
 			</StudySection>
 
 			<StudySection id='content-reuse' title='Content Reuse'>
@@ -120,11 +115,7 @@ export function CourseAuthoringPage() {
 					The platform classifies edit severity on save. Authors can override the classification when the edit intent differs from the
 					default.
 				</StudyBody>
-				<StudyImage
-					src='versioning.png'
-					alt='Major and minor version classification on save'
-					fullWidth
-				/>
+				<StudyImage src='versioning.png' alt='Major and minor version classification on save' fullWidth />
 			</StudySection>
 		</StudyPage>
 	);

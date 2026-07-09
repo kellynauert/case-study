@@ -34,7 +34,10 @@ export function UnifiedExperiencePage() {
 			</StudySection>
 
 			<StudyGrid sx={{ alignItems: 'flex-start' }}>
-				<StudyCell size={{ xs: 12, md: 8 }}>
+				<StudyCell size={{ xs: 6, md: 4, lg: 2 }}>
+					<StudyImage src='course_nav.gif' alt='In-course navigation with progress and status indicators' />
+				</StudyCell>
+				<StudyCell size={{ xs: 12, md: 8, lg: 10 }}>
 					<StudySection id='course-navigation' title='Course Navigation'>
 						<StudyBody>
 							In-course navigation follows the section, lesson, and page model defined in authoring. The navigation bar shows the full
@@ -48,27 +51,32 @@ export function UnifiedExperiencePage() {
 
 					<StudySection id='progress' title='Progress'>
 						<StudyBody>
-							Reading pages are marked complete after three seconds of engagement, allowing progress to reflect reviewed content without
+							Display items are marked complete after a few seconds of engagement, allowing progress to reflect reviewed content without
 							an additional confirmation step.
 						</StudyBody>
 						<StudyBody>Completion feedback appears inline when work is finished.</StudyBody>
 					</StudySection>
 				</StudyCell>
-				<StudyCell size={{ xs: 6, md: 4, lg: 2 }}>
-					<StudyImage src='course_nav.gif' alt='In-course navigation with progress and status indicators' />
-				</StudyCell>
 			</StudyGrid>
 
 			<StudySection id='unified-presentation' title='Unified Presentation'>
-				<StudyBody>
-					Typography, layout, and interaction patterns are consistent across courses because the platform controls rendering. Content is
-					organized in the order students work through it, not split across separate pages, assignments, and downloads areas.
-				</StudyBody>
-				<StudyBody>
-					Quiz feedback, retake behavior, and submission confirmation use the same patterns in every course. Progress and grade visibility
-					on the courses page reduced the need for students to open individual courses to check their status. Instructors report fewer
-					navigation questions from students.
-				</StudyBody>
+				<StudyGrid>
+					<StudyCell size={{ xs: 12, md: 4 }}>
+						<StudyBody>
+							Typography, layout, and interaction patterns are consistent across courses because the platform controls rendering.
+							Content is organized in the order students work through it, not split across separate pages, assignments, and downloads
+							areas.
+						</StudyBody>
+						<StudyBody>
+							Quiz feedback, retake behavior, and submission confirmation use the same patterns in every course. Progress and grade
+							visibility on the courses page reduced the need for students to open individual courses to check their status. Instructors
+							report fewer navigation questions from students.
+						</StudyBody>
+					</StudyCell>
+					<StudyCell size={{ xs: 12, md: 8 }}>
+						<StudyImage src='reading_page.gif' alt='Lesson page with instructional content' />
+					</StudyCell>
+				</StudyGrid>
 			</StudySection>
 		</StudyPage>
 	);
