@@ -1,19 +1,10 @@
 import { StudyPage } from '../../components/case-study/StudyPage';
-import { StudySection, StudySectionHeading } from '../../components/case-study/StudySection';
+import { StudySection } from '../../components/case-study/StudySection';
 import { StudyGrid } from '../../components/case-study/StudyGrid';
 import { StudyCell } from '../../components/case-study/StudyCell';
 import { StudyBody } from '../../components/case-study/StudyBody';
 import { StudyBulletList } from '../../components/case-study/StudyBulletList';
 import { StudyImage } from '../../components/case-study/StudyImage';
-import type { StudySectionItem } from '../../lib/caseStudyTypes';
-
-export const gradingSections: StudySectionItem[] = [
-	{ id: 'grading-queue', title: 'Grading Queue' },
-	{ id: 'gradebooks', title: 'Gradebooks' },
-	{ id: 'scoring-and-automatic-grading', title: 'Scoring and Automatic Grading' },
-	{ id: 'ai-assisted-grading', title: 'AI-Assisted Grading' },
-	{ id: 'grader-notes', title: 'Grader Notes' },
-];
 
 export function GradingPage() {
 	return (
@@ -21,8 +12,7 @@ export function GradingPage() {
 			slug='grading'
 			title='Grading'
 			subtitle='Submission review, gradebooks, and scoring for instructor workflows.'
-			intro='Instructors and grading staff review submissions, assign scores, and manage gradebooks for all MathTrack courses. The platform reads item configuration from authoring (point values, grading mode, AI prompts, grader notes) and writes scores back to student records used by the learning experience and admin reporting.'
-			sections={gradingSections}>
+			intro='Instructors and grading staff review submissions, assign scores, and manage gradebooks for all MathTrack courses. The platform reads item configuration from authoring (point values, grading mode, AI prompts, grader notes) and writes scores back to student records used by the learning experience and admin reporting.'>
 			<StudySection id='grading-queue' title='Grading Queue'>
 				<StudyBody>
 					The grading queue groups pending submissions by assignment rather than by student. Instructors grading a batch of similar work can
@@ -34,16 +24,15 @@ export function GradingPage() {
 					every page load. Opening a submission another grader is actively reviewing displays a warning banner to prevent overwriting
 					unsaved grade data. The queue can be filtered by assigned courses or by program.
 				</StudyBody>
-				<StudyImage src='grading-queue.jpg' alt='Grading queue grouped by assignment with program filters' />
+				<StudyImage src='grading/grading-queue.jpg' alt='Grading queue grouped by assignment with program filters' />
 			</StudySection>
 
-			<StudySection id='gradebooks'>
+			<StudySection id='gradebooks' title='Gradebooks'>
 				<StudyGrid>
 					<StudyCell size={{ xs: 12, md: 'auto' }} sx={{ order: { xs: 2, md: 1 } }}>
-						<StudyImage src='course_gradebook.gif' alt='Course gradebook with submission status per student' />
+						<StudyImage src='grading/course_gradebook.gif' alt='Course gradebook with submission status per student' />
 					</StudyCell>
 					<StudyCell size={{ xs: 12, md: 'grow' }} sx={{ order: { xs: 1, md: 2 } }}>
-						<StudySectionHeading>Gradebooks</StudySectionHeading>
 						<StudyBody>
 							The course gradebook shows all students in a single course with grades and submission status. Guest instructors with one
 							or two classes use it to review and grade work within a single course view.
@@ -56,7 +45,7 @@ export function GradingPage() {
 						<StudyBody>Both gradebooks restrict visibility to courses and students within each staff member's assigned access.</StudyBody>
 					</StudyCell>
 				</StudyGrid>
-				<StudyImage src='student_gradebook.gif' alt='Student gradebook across multiple course enrollments' />
+				<StudyImage src='grading/student_gradebook.gif' alt='Student gradebook across multiple course enrollments' />
 			</StudySection>
 
 			<StudySection id='scoring-and-automatic-grading' title='Scoring and Automatic Grading'>
@@ -94,7 +83,7 @@ export function GradingPage() {
 						</StudyBody>
 					</StudyCell>
 					<StudyCell size={{ xs: 12, md: 8 }}>
-						<StudyImage src='ai_grading.gif' alt='AI-assisted grading with color-coded text grounding' />
+						<StudyImage src='grading/ai_grading.gif' alt='AI-assisted grading with color-coded text grounding' />
 					</StudyCell>
 				</StudyGrid>
 			</StudySection>

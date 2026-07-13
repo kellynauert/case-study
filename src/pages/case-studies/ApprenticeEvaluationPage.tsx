@@ -4,13 +4,6 @@ import { StudyGrid } from '../../components/case-study/StudyGrid';
 import { StudyCell } from '../../components/case-study/StudyCell';
 import { StudyBody } from '../../components/case-study/StudyBody';
 import { StudyImage } from '../../components/case-study/StudyImage';
-import type { StudySectionItem } from '../../lib/caseStudyTypes';
-
-export const apprenticeEvaluationSections: StudySectionItem[] = [
-	{ id: 'evaluation-forms', title: 'Evaluation Forms' },
-	{ id: 'reflection-journals', title: 'Reflection Journals' },
-	{ id: 'progress-tracker', title: 'Progress Tracker' },
-];
 
 export function ApprenticeEvaluationPage() {
 	return (
@@ -18,8 +11,7 @@ export function ApprenticeEvaluationPage() {
 			slug='apprentice-evaluation'
 			title='Apprentice Evaluation & Reflection System'
 			subtitle='Competency evaluations, reflection journals, and progress tracking for teacher apprenticeship programs.'
-			intro='This system supports mentor evaluations, apprentice reflection journals, and progress tracking for teacher apprenticeship programs. Programs differ in competencies, evaluation schedules, scoring methods, and documentation requirements; the platform handles those variations through configuration rather than custom builds per organization.'
-			sections={apprenticeEvaluationSections}>
+			intro='This system supports mentor evaluations, apprentice reflection journals, and progress tracking for teacher apprenticeship programs. Programs differ in competencies, evaluation schedules, scoring methods, and documentation requirements; the platform handles those variations through configuration rather than custom builds per organization.'>
 			<StudySection id='evaluation-forms' title='Evaluation Forms'>
 				<StudyBody>
 					Competencies are maintained in a configurable table with standardized codes, organized into groups that control what mentors see
@@ -50,7 +42,7 @@ export function ApprenticeEvaluationPage() {
 						</StudyBody>
 					</StudyCell>
 					<StudyCell size={{ xs: 12, md: 'auto' }}>
-						<StudyImage src='reflection.gif' alt='Apprentice reflection journal with scheduled prompts' />
+						<StudyImage src='apprentice-evaluation/reflection.gif' alt='Apprentice reflection journal with scheduled prompts' />
 					</StudyCell>
 				</StudyGrid>
 			</StudySection>
@@ -69,7 +61,7 @@ export function ApprenticeEvaluationPage() {
 						</StudyBody>
 					</StudyCell>
 					<StudyCell size={{ xs: 12, md: 'auto' }}>
-						<StudyImage src='evaluation_rating.gif' alt='Evaluation rating history with level-change tracking' />
+						<StudyImage src='apprentice-evaluation/evaluation_rating.gif' alt='Evaluation rating history with level-change tracking' />
 					</StudyCell>
 				</StudyGrid>
 			</StudySection>

@@ -1,7 +1,7 @@
-import { CourseAuthoringPage, courseAuthoringSections } from '../pages/case-studies/CourseAuthoringPage';
-import { UnifiedExperiencePage, unifiedExperienceSections } from '../pages/case-studies/UnifiedExperiencePage';
-import { GradingPage, gradingSections } from '../pages/case-studies/GradingPage';
-import { ApprenticeEvaluationPage, apprenticeEvaluationSections } from '../pages/case-studies/ApprenticeEvaluationPage';
+import { CourseAuthoringPage } from '../pages/case-studies/CourseAuthoringPage';
+import { UnifiedExperiencePage } from '../pages/case-studies/UnifiedExperiencePage';
+import { GradingPage } from '../pages/case-studies/GradingPage';
+import { ApprenticeEvaluationPage } from '../pages/case-studies/ApprenticeEvaluationPage';
 import type { CaseStudyEntry, CaseStudyMeta } from './caseStudyTypes';
 
 export const caseStudies = [
@@ -14,7 +14,6 @@ export const caseStudies = [
 		years: '2020–Present',
 		order: 2,
 		readingMinutes: 4,
-		sections: courseAuthoringSections,
 		component: CourseAuthoringPage,
 	},
 	{
@@ -26,7 +25,6 @@ export const caseStudies = [
 		years: '2020–Present',
 		order: 3,
 		readingMinutes: 3,
-		sections: gradingSections,
 		component: GradingPage,
 	},
 	{
@@ -37,7 +35,6 @@ export const caseStudies = [
 		years: '2020–Present',
 		order: 4,
 		readingMinutes: 2,
-		sections: unifiedExperienceSections,
 		component: UnifiedExperiencePage,
 	},
 	{
@@ -48,7 +45,6 @@ export const caseStudies = [
 		years: '2022–Present',
 		order: 5,
 		readingMinutes: 2,
-		sections: apprenticeEvaluationSections,
 		component: ApprenticeEvaluationPage,
 	},
 ] as const satisfies readonly CaseStudyEntry[];

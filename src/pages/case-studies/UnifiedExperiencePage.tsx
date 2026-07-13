@@ -4,14 +4,6 @@ import { StudyGrid } from '../../components/case-study/StudyGrid';
 import { StudyCell } from '../../components/case-study/StudyCell';
 import { StudyBody } from '../../components/case-study/StudyBody';
 import { StudyImage } from '../../components/case-study/StudyImage';
-import type { StudySectionItem } from '../../lib/caseStudyTypes';
-
-export const unifiedExperienceSections: StudySectionItem[] = [
-	{ id: 'courses-dashboard', title: 'Courses Dashboard' },
-	{ id: 'course-navigation', title: 'Course Navigation' },
-	{ id: 'progress', title: 'Progress' },
-	{ id: 'unified-presentation', title: 'Unified Presentation' },
-];
 
 export function UnifiedExperiencePage() {
 	return (
@@ -19,8 +11,7 @@ export function UnifiedExperiencePage() {
 			slug='unified-experience'
 			title='Student Learning Experience'
 			subtitle='A single student interface for every enrollment in the program.'
-			intro='Enrolled students access courses, complete assignments, track progress, and view grades through one interface shared across the program. Every course uses the same section, lesson, and page structure so students can move between courses without relearning the interface.'
-			sections={unifiedExperienceSections}>
+			intro='Enrolled students access courses, complete assignments, track progress, and view grades through one interface shared across the program. Every course uses the same section, lesson, and page structure so students can move between courses without relearning the interface.'>
 			<StudySection id='courses-dashboard' title='Courses Dashboard'>
 				<StudyBody>
 					The courses page lists active enrollments with progress and grade summaries. A Continue card returns students to their current
@@ -30,7 +21,7 @@ export function UnifiedExperiencePage() {
 					Due dates are calculated from each student's program start date, producing personalized timelines from a shared program schedule.
 					Students with different start dates receive appropriate deadlines without manual per-student configuration.
 				</StudyBody>
-				<StudyImage src='courses.gif' alt='Courses page with progress summaries and Continue card' />
+				<StudyImage src='unified-experience/courses.gif' alt='Courses page with progress summaries and Continue card' />
 			</StudySection>
 
 			<StudyGrid>
@@ -55,7 +46,7 @@ export function UnifiedExperiencePage() {
 					</StudySection>
 				</StudyCell>
 				<StudyCell size={{ xs: 12, md: 'auto' }}>
-					<StudyImage src='course_nav.gif' alt='In-course navigation with progress and status indicators' />
+					<StudyImage src='unified-experience/course_nav.gif' alt='In-course navigation with progress and status indicators' />
 				</StudyCell>
 			</StudyGrid>
 
@@ -74,7 +65,7 @@ export function UnifiedExperiencePage() {
 						</StudyBody>
 					</StudyCell>
 					<StudyCell size={{ xs: 12, md: 'auto' }}>
-						<StudyImage src='reading_page.gif' alt='Lesson page with instructional content' />
+						<StudyImage src='unified-experience/reading_page.gif' alt='Lesson page with instructional content' />
 					</StudyCell>
 				</StudyGrid>
 			</StudySection>

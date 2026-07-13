@@ -25,7 +25,6 @@ export interface CaseStudyMeta {
 	years: string;
 	order: number;
 	readingMinutes: number;
-	sections: StudySectionItem[];
 }
 
 export interface CaseStudyEntry extends CaseStudyMeta {

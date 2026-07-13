@@ -5,37 +5,14 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { StudyPage } from '../../components/case-study/StudyPage';
 import { StudySection } from '../../components/case-study/StudySection';
+import { StudySubsection } from '../../components/case-study/StudySubsection';
 import { StudyBody } from '../../components/case-study/StudyBody';
 import { StudyBulletList } from '../../components/case-study/StudyBulletList';
 import { StudyGrid } from '../../components/case-study/StudyGrid';
 import { StudyCell } from '../../components/case-study/StudyCell';
 import { StudyImage } from '../../components/case-study/StudyImage';
-import type { StudySectionItem } from '../../lib/caseStudyTypes';
 import { scrollMarginTop } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
-
-export const courseAuthoringSections: StudySectionItem[] = [
-	{ id: 'course-configuration', title: 'Course Configuration' },
-	{ id: 'course-creation', title: 'Course Creation', level: 2 },
-	{ id: 'departments', title: 'Departments', level: 2 },
-	{ id: 'course-cloning', title: 'Course Cloning', level: 2 },
-	{ id: 'course-structure', title: 'Course Structure' },
-	{ id: 'syllabus', title: 'Syllabus', level: 2 },
-	{ id: 'companion-guide', title: 'Companion Guide', level: 2 },
-	{ id: 'page-authoring', title: 'Page Authoring' },
-	{ id: 'page-options', title: 'Page Options', level: 2 },
-	{ id: 'item-types', title: 'Item Types' },
-	{ id: 'view-only-item-types', title: 'View-only Item Types', level: 2 },
-	{ id: 'interactive-item-types', title: 'Interactive Item Types', level: 2 },
-	{ id: 'points', title: 'Points', level: 2 },
-	{ id: 'grader-notes', title: 'Grader Notes', level: 2 },
-	{ id: 'feedback', title: 'Feedback', level: 2 },
-	{ id: 'ai-assisted-grading', title: 'AI-Assisted Grading', level: 2 },
-	{ id: 'item-bank', title: 'Item Bank', level: 2 },
-	{ id: 'linked-items', title: 'Linked Items', level: 2 },
-	{ id: 'item-versioning', title: 'Item Versioning', level: 2 },
-	{ id: 'locking', title: 'Locking' },
-];
 
 type Cols = number;
 
@@ -63,22 +40,6 @@ function Split({ left, right, leftCols = 6, rightCols = 6 }: { left: ReactNode; 
 			<StudyCell size={{ xs: 12, md: leftCols }}>{left}</StudyCell>
 			<StudyCell size={{ xs: 12, md: rightCols }}>{right}</StudyCell>
 		</StudyGrid>
-	);
-}
-
-function Subtitle({ id, title, first = false }: { id?: string; title: string; first?: boolean }) {
-	return (
-		<Typography
-			id={id}
-			variant='subsectionHeading'
-			sx={{
-				m: 0,
-				mt: first ? { xs: 2.5, md: 3 } : { xs: 4, md: 5 },
-				mb: 1.5,
-				scrollMarginTop,
-			}}>
-			{title}
-		</Typography>
 	);
 }
 
@@ -143,8 +104,7 @@ export function CourseAuthoringPage() {
 						</>
 					}
 				/>
-			}
-			sections={courseAuthoringSections}>
+			}>
 			<StudySection id='course-configuration' title='Course Configuration'>
 				<Col cols={6}>
 					<StudyBody>
@@ -153,13 +113,13 @@ export function CourseAuthoringPage() {
 					</StudyBody>
 				</Col>
 
-				<Subtitle id='course-creation' title='Course Creation' first />
+				<StudySubsection id='course-creation' title='Course Creation' first />
 				<Col cols={6}>
 					<StudyBody>
 						New courses are created from the catalog and can be drag-and-dropped to reorder how they appear in the catalog for students.
 					</StudyBody>
 				</Col>
-				<StudyImage src='courses-editor.jpg' alt='Course catalog with creation and drag-and-drop reordering' />
+				<StudyImage src='course-authoring/courses-editor.jpg' alt='Course catalog with creation and drag-and-drop reordering' />
 				<Split
 					left={
 						<>
@@ -173,7 +133,7 @@ export function CourseAuthoringPage() {
 									'Assigned professor',
 									<>
 										Credit hours and professional development hours (affects the{' '}
-										<SectionLink to='view-only-item-types'>Certificate Item</SectionLink> and Transcripts)
+										<SectionLink to='item-types'>Certificate Item</SectionLink> and Transcripts)
 									</>,
 									<>
 										<SectionLink to='companion-guide'>Companion guide</SectionLink>
@@ -190,10 +150,12 @@ export function CourseAuthoringPage() {
 							/>
 						</>
 					}
-					right={<StudyImage src='course_overview_editing.png' alt='Course metadata and overview editing' maxWidth={633} />}
+					right={
+						<StudyImage src='course-authoring/course_overview_editing.png' alt='Course metadata and overview editing' maxWidth={633} />
+					}
 				/>
 
-				<Subtitle id='departments' title='Departments' />
+				<StudySubsection id='departments' title='Departments' />
 				<Split
 					left={
 						<>
@@ -226,10 +188,10 @@ export function CourseAuthoringPage() {
 							</StudyBody>
 						</>
 					}
-					right={<StudyImage src='departments.jpg' alt='Department configuration' />}
+					right={<StudyImage src='course-authoring/departments.jpg' alt='Department configuration' />}
 				/>
 
-				<Subtitle id='course-cloning' title='Course Cloning' />
+				<StudySubsection id='course-cloning' title='Course Cloning' />
 				<Col cols={6}>
 					<StudyBody>
 						Courses can be cloned for variants across states and programs. When cloning a course you have the option of keeping original
@@ -255,9 +217,9 @@ export function CourseAuthoringPage() {
 						</StudyBody>
 					}
 				/>
-				<StudyImage src='editing_course_navigation.gif' alt='Drag-and-drop editor for sections, lessons, and pages' />
+				<StudyImage src='course-authoring/editing_course_navigation.gif' alt='Drag-and-drop editor for sections, lessons, and pages' />
 
-				<Subtitle id='syllabus' title='Syllabus' first />
+				<StudySubsection id='syllabus' title='Syllabus' first />
 				<Split
 					left={
 						<StudyBody>
@@ -273,7 +235,7 @@ export function CourseAuthoringPage() {
 					}
 				/>
 
-				<Subtitle id='companion-guide' title='Companion Guide' />
+				<StudySubsection id='companion-guide' title='Companion Guide' />
 				<Col cols={6}>
 					<StudyBody>
 						Companion guides allow instructors to view instructional content next to course content, but outside of course navigation.
@@ -293,7 +255,7 @@ export function CourseAuthoringPage() {
 					</StudyBody>
 				</Col>
 
-				<Subtitle id='page-options' title='Page Options' first />
+				<StudySubsection id='page-options' title='Page Options' first />
 				<Split
 					left={
 						<>
@@ -328,15 +290,15 @@ export function CourseAuthoringPage() {
 				/>
 			</StudySection>
 
-			<StudySection id='item-types' title='Item Types'>
+			<StudySection id='items' title='Items'>
 				<Col cols={6}>
 					<StudyBody>
 						Pages are built by dragging and dropping Item blocks of different types. Every Item type has a dedicated configuration editor
 						with both item specific inputs and general inputs.
 					</StudyBody>
 				</Col>
-
-				<Subtitle id='view-only-item-types' title='View-only Item Types' first />
+				<StudySubsection id='item-types' title='Item Types' first />
+				<DetailTitle title='View Only' first />
 				<Col cols={6}>
 					<StudyBulletList
 						items={[
@@ -350,12 +312,10 @@ export function CourseAuthoringPage() {
 						]}
 					/>
 				</Col>
-
-				<Subtitle id='interactive-item-types' title='Interactive Item Types' />
+				<DetailTitle title='Automatic Grading' first />
 				<Split
 					left={
 						<>
-							<DetailTitle title='Automatic Grading' first />
 							<StudyBulletList
 								items={[
 									'Multiple choice — radio or checkbox selections with answer scrambling',
@@ -380,11 +340,10 @@ export function CourseAuthoringPage() {
 					}
 				/>
 				<Split
-					left={<StudyImage src='fill-in-the-blank.png' alt='Fill-in-the-blank assessment configuration' maxWidth={544} />}
-					right={<StudyImage src='item-creation.jpg' alt='Adding and configuring content items on a page' />}
+					left={<StudyImage src='course-authoring/fill-in-the-blank.png' alt='Fill-in-the-blank assessment configuration' maxWidth={544} />}
+					right={<StudyImage src='course-authoring/item-creation.jpg' alt='Adding and configuring content items on a page' />}
 				/>
-
-				<Subtitle id='points' title='Points' />
+				<StudySubsection id='points' title='Points' />
 				<Split
 					left={
 						<>
@@ -417,24 +376,21 @@ export function CourseAuthoringPage() {
 						</>
 					}
 				/>
-
-				<Subtitle id='grader-notes' title='Grader Notes' />
+				<StudySubsection id='grader-notes' title='Grader Notes' />
 				<Col cols={6}>
 					<StudyBody>
 						Manually graded items can have Grader's Notes, which are special messages displayed next to the item that only graders can
 						see. These function as a hint or reminder system for graders on how an individual item should be graded.
 					</StudyBody>
 				</Col>
-
-				<Subtitle id='feedback' title='Feedback' />
+				<StudySubsection id='feedback' title='Feedback' />
 				<Col cols={6}>
 					<StudyBody>
 						Automatic Grading items have the option to provide feedback to students for both incorrect and correct answers. These special
 						messages display next to the item after the page has been graded and can be seen by the student.
 					</StudyBody>
 				</Col>
-
-				<Subtitle id='ai-assisted-grading' title='AI-Assisted Grading' />
+				<StudySubsection id='ai-assisted-grading' title='AI-Assisted Grading' />
 				<Split
 					left={
 						<StudyBody>
@@ -449,8 +405,7 @@ export function CourseAuthoringPage() {
 						</StudyBody>
 					}
 				/>
-
-				<Subtitle id='item-bank' title='Item Bank' />
+				<StudySubsection id='item-bank' title='Item Bank' />
 				<Col cols={6}>
 					<StudyBody>
 						Items can be reused by inserting them from the Item Bank. Items can be found in the Item Bank by searching for title and
@@ -460,8 +415,7 @@ export function CourseAuthoringPage() {
 						Items.
 					</StudyBody>
 				</Col>
-
-				<Subtitle id='linked-items' title='Linked Items' />
+				<StudySubsection id='linked-items' title='Linked Items' />
 				<Split
 					left={
 						<>
@@ -491,11 +445,10 @@ export function CourseAuthoringPage() {
 					}
 				/>
 				<Split
-					left={<StudyImage src='linked_item.gif' alt='Linked item indicator in the lesson editor' />}
-					right={<StudyImage src='linked_drawer.gif' alt='Usage drawer showing all locations for a linked item' />}
+					left={<StudyImage src='course-authoring/linked_item.gif' alt='Linked item indicator in the lesson editor' />}
+					right={<StudyImage src='course-authoring/linked_drawer.gif' alt='Usage drawer showing all locations for a linked item' />}
 				/>
-
-				<Subtitle id='item-versioning' title='Item Versioning' />
+				<StudySubsection id='item-versioning' title='Item Versioning' />
 				<Split
 					left={
 						<>
@@ -524,7 +477,7 @@ export function CourseAuthoringPage() {
 								The <PageLink to='/case-studies/grading'>Grading</PageLink> page goes into more detail about how item versions and
 								responses are related and implemented in the database.
 							</StudyBody>
-							<StudyImage src='versioning.png' alt='Major and minor version classification on save' maxWidth={317} />
+							<StudyImage src='course-authoring/versioning.png' alt='Major and minor version classification on save' maxWidth={317} />
 						</>
 					}
 				/>

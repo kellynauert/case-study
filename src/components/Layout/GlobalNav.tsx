@@ -8,28 +8,22 @@ import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { alpha } from '@mui/material/styles';
 import { getAllCaseStudies } from '../../lib/caseStudyRegistry';
 import type { TocHeading } from '../../lib/caseStudyTypes';
 import { hero } from '../../lib/site';
 import { isShowcaseViewed } from '../../lib/viewedShowcases';
 import { useViewedShowcases } from '../../hooks/useViewedShowcases';
+import { useViewedSections } from '../../hooks/useViewedSections';
 import { mobileHeaderHeight } from '../../lib/styles';
+import { usePageToc } from './PageTocContext';
 import { SiteHeroIntro } from './SiteHeroIntro';
 import { tokens } from '../../theme/theme';
-
-const studies = getAllCaseStudies();
-
-export interface PageTocState {
-	headings: TocHeading[];
-	activeId: string;
-}
 
 interface NavDrawerContextValue {
 	openDrawer: () => void;
 	closeDrawer: () => void;
-	pageToc: PageTocState | null;
-	setPageToc: (toc: PageTocState | null) => void;
 }
 
 const NavDrawerContext = createContext<NavDrawerContextValue | null>(null);
@@ -40,17 +34,29 @@ function useNavDrawer() {
 	return ctx;
 }
 
-/** Publish in-page section links into GlobalNav (cleared on unmount). */
-export function useSetPageToc() {
-	return useNavDrawer().setPageToc;
-}
-
 function scrollToSection(id: string) {
 	const el = document.getElementById(id);
 	if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function ReadIndicator({ read, active }: { read: boolean; active?: boolean }) {
+type ReadStatus = 'unread' | 'progress' | 'done';
+
+function ReadIndicator({
+	status,
+	read,
+	active,
+	size = 'md',
+}: {
+	status?: ReadStatus;
+	/** Study-level convenience — treated as done/unread when `status` is omitted. */
+	read?: boolean;
+	active?: boolean;
+	size?: 'sm' | 'md';
+}) {
+	const finalStatus: ReadStatus = status ?? (read ? 'done' : 'unread');
+	const iconSize = size === 'sm' ? '0.75rem' : '1rem';
+	const boxSize = size === 'sm' ? '0.875rem' : '1.25rem';
+
 	return (
 		<Box
 			aria-hidden
@@ -58,15 +64,15 @@ function ReadIndicator({ read, active }: { read: boolean; active?: boolean }) {
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'center',
-				width: '1.25rem',
-				height: '1.25rem',
-				mt: '0.05em',
+				width: boxSize,
+				height: boxSize,
+				mt: size === 'sm' ? '0.1em' : '0.05em',
 				flexShrink: 0,
 			}}>
-			{read && (
+			{finalStatus === 'done' ?
 				<CheckIcon
 					sx={{
-						fontSize: '1rem',
+						fontSize: iconSize,
 						color: active ? tokens.accent : alpha(tokens.accentPink, 0.65),
 						'& path': {
 							stroke: 'currentColor',
@@ -75,9 +81,50 @@ function ReadIndicator({ read, active }: { read: boolean; active?: boolean }) {
 						},
 					}}
 				/>
-			)}
+			: finalStatus === 'progress' ?
+				<RadioButtonUncheckedIcon
+					sx={{
+						fontSize: iconSize,
+						color: active ? tokens.accent : alpha(tokens.accent, 0.55),
+					}}
+				/>
+			:	null}
 		</Box>
 	);
+}
+
+function leafReadStatus(id: string, activeId: string, readIds: ReadonlySet<string>): ReadStatus {
+	if (readIds.has(id)) return 'done';
+	if (activeId === id) return 'progress';
+	return 'unread';
+}
+
+function sectionReadStatus(sectionId: string, children: TocHeading[], activeId: string, readIds: ReadonlySet<string>): ReadStatus {
+	if (children.length === 0) {
+		return leafReadStatus(sectionId, activeId, readIds);
+	}
+
+	const childStatuses = children.map((child) => leafReadStatus(child.id, activeId, readIds));
+	if (childStatuses.every((s) => s === 'done')) return 'done';
+	if (childStatuses.some((s) => s === 'progress')) return 'progress';
+	if (childStatuses.some((s) => s === 'done') || activeId === sectionId) return 'progress';
+	return 'unread';
+}
+
+function groupHeadings(headings: TocHeading[]) {
+	const groups: { section: TocHeading; children: TocHeading[] }[] = [];
+	for (const heading of headings) {
+		if ((heading.level ?? 1) === 2) {
+			if (groups.length === 0) {
+				groups.push({ section: heading, children: [] });
+			} else {
+				groups[groups.length - 1].children.push(heading);
+			}
+		} else {
+			groups.push({ section: heading, children: [] });
+		}
+	}
+	return groups;
 }
 
 const navGroupLabelSx = {
@@ -119,67 +166,78 @@ function navLinkSx(active: boolean, level: 'primary' | 'sub' = 'primary') {
 	};
 }
 
-function PageSectionLinks({ headings, activeId, onNavigate }: { headings: TocHeading[]; activeId: string; onNavigate?: () => void }) {
-	type TocBlock =
-		| { kind: 'section'; item: TocHeading }
-		| { kind: 'group'; items: TocHeading[] };
+function PageSectionLinks({
+	slug,
+	headings,
+	activeId,
+	onNavigate,
+}: {
+	slug: string;
+	headings: TocHeading[];
+	activeId: string;
+	onNavigate?: () => void;
+}) {
+	const viewed = useViewedSections(slug);
+	const readIds = new Set(viewed);
+	const groups = groupHeadings(headings);
 
-	const blocks: TocBlock[] = [];
-	for (const item of headings) {
-		if (item.level === 2) {
-			const last = blocks[blocks.length - 1];
-			if (last?.kind === 'group') last.items.push(item);
-			else blocks.push({ kind: 'group', items: [item] });
-		} else {
-			blocks.push({ kind: 'section', item });
-		}
-	}
-
-	const linkSx = (item: TocHeading, nested: boolean) => {
+	const renderLink = (item: TocHeading, nested: boolean, status: ReadStatus) => {
 		const isActive = activeId === item.id;
-		return {
-			display: 'block',
-			py: nested ? 0.35 : 0.45,
-			pl: nested ? 1.25 : 0.65,
-			pr: 0.5,
-			borderLeft: nested ? 'none' : `2px solid ${isActive ? tokens.accent : 'transparent'}`,
-			textDecoration: 'none',
-			fontFamily: tokens.fontBody,
-			fontSize: nested ? '0.6875rem' : '0.75rem',
-			fontWeight:
-				isActive ? 600
-				: nested ? 400
-				: 500,
-			letterSpacing: '0.01em',
-			lineHeight: 1.35,
-			color:
-				isActive ? tokens.accent
-				: nested ? tokens.textMuted
-				: tokens.textNav,
-			transition: 'color 160ms ease, border-color 160ms ease',
-			'&:hover': { color: tokens.accent },
-			'&:focus-visible': {
-				outline: `2px solid ${tokens.accent}`,
-				outlineOffset: 1,
-			},
-		} as const;
+		return (
+			<Box
+				key={item.id}
+				component='a'
+				href={`#${item.id}`}
+				onClick={(e) => {
+					e.preventDefault();
+					scrollToSection(item.id);
+					onNavigate?.();
+				}}
+				aria-current={isActive ? 'location' : undefined}
+				aria-label={`${item.title}${
+					status === 'done' ? ', read'
+					: status === 'progress' ? ', in progress'
+					: ''
+				}`}
+				sx={{
+					display: 'grid',
+					gridTemplateColumns: nested ? '0.875rem 1fr' : '0.875rem 1fr',
+					gap: 0.5,
+					alignItems: 'start',
+					py: nested ? 0.35 : 0.45,
+					pl: nested ? 0.75 : 0.35,
+					pr: 0.5,
+					borderLeft: nested ? 'none' : `2px solid ${isActive ? tokens.accent : 'transparent'}`,
+					textDecoration: 'none',
+					'&:hover .page-toc-label': { color: tokens.accent },
+					'&:focus-visible': {
+						outline: `2px solid ${tokens.accent}`,
+						outlineOffset: 1,
+					},
+				}}>
+				<ReadIndicator status={status} active={isActive} size='sm' />
+				<Box
+					className='page-toc-label'
+					sx={{
+						fontFamily: tokens.fontBody,
+						fontSize: nested ? '0.6875rem' : '0.75rem',
+						fontWeight:
+							isActive ? 600
+							: nested ? 400
+							: 500,
+						letterSpacing: '0.01em',
+						lineHeight: 1.35,
+						color:
+							isActive ? tokens.accent
+							: nested ? tokens.textMuted
+							: tokens.textNav,
+						transition: 'color 160ms ease',
+					}}>
+					{item.title}
+				</Box>
+			</Box>
+		);
 	};
-
-	const renderLink = (item: TocHeading, nested: boolean) => (
-		<Box
-			key={item.id}
-			component='a'
-			href={`#${item.id}`}
-			onClick={(e) => {
-				e.preventDefault();
-				scrollToSection(item.id);
-				onNavigate?.();
-			}}
-			aria-current={activeId === item.id ? 'location' : undefined}
-			sx={linkSx(item, nested)}>
-			{item.title}
-		</Box>
-	);
 
 	return (
 		<Box
@@ -194,27 +252,25 @@ function PageSectionLinks({ headings, activeId, onNavigate }: { headings: TocHea
 				pb: 1,
 				mt: -0.15,
 			}}>
-			{blocks.map((block, index) => {
-				if (block.kind === 'section') {
-					return (
-						<Box key={block.item.id} sx={{ mt: index > 0 ? 0.75 : 0 }}>
-							{renderLink(block.item, false)}
-						</Box>
-					);
-				}
+			{groups.map((group, index) => {
+				const sectionStatus = sectionReadStatus(group.section.id, group.children, activeId, readIds);
+				const groupActive = group.children.some((item) => item.id === activeId) || activeId === group.section.id;
 
-				const groupActive = block.items.some((item) => item.id === activeId);
 				return (
-					<Box
-						key={block.items.map((item) => item.id).join('-')}
-						sx={{
-							mt: 0.15,
-							mb: 0.15,
-							ml: 0.35,
-							pl: 0.25,
-							borderLeft: `2px solid ${groupActive ? alpha(tokens.accent, 0.45) : tokens.border}`,
-						}}>
-						{block.items.map((item) => renderLink(item, true))}
+					<Box key={group.section.id} sx={{ mt: index > 0 ? 0.75 : 0 }}>
+						{renderLink(group.section, false, sectionStatus)}
+						{group.children.length > 0 ?
+							<Box
+								sx={{
+									mt: 0.15,
+									mb: 0.15,
+									ml: 0.35,
+									pl: 0.25,
+									borderLeft: `2px solid ${groupActive ? alpha(tokens.accent, 0.45) : tokens.border}`,
+								}}>
+								{group.children.map((child) => renderLink(child, true, leafReadStatus(child.id, activeId, readIds)))}
+							</Box>
+						:	null}
 					</Box>
 				);
 			})}
@@ -234,7 +290,8 @@ function NavContent({
 }) {
 	const location = useLocation();
 	const viewed = useViewedShowcases();
-	const { pageToc } = useNavDrawer();
+	const pageToc = usePageToc();
+	const studies = getAllCaseStudies();
 	const isHomeActive = location.pathname === '/';
 
 	return (
@@ -318,7 +375,12 @@ function NavContent({
 								</Typography>
 							</Box>
 							{showPageToc ?
-								<PageSectionLinks headings={pageToc.headings} activeId={pageToc.activeId} onNavigate={onNavigate} />
+								<PageSectionLinks
+									slug={pageToc.slug}
+									headings={pageToc.headings}
+									activeId={pageToc.activeId}
+									onNavigate={onNavigate}
+								/>
 							:	null}
 						</Box>
 					);
@@ -526,15 +588,12 @@ function NavDrawerInternals({ open, onClose }: { open: boolean; onClose: () => v
 
 export function NavDrawerProvider({ children }: { children: ReactNode }) {
 	const [mobileOpen, setMobileOpen] = useState(false);
-	const [pageToc, setPageToc] = useState<PageTocState | null>(null);
 
 	return (
 		<NavDrawerContext.Provider
 			value={{
 				openDrawer: () => setMobileOpen(true),
 				closeDrawer: () => setMobileOpen(false),
-				pageToc,
-				setPageToc,
 			}}>
 			{children}
 			<NavDrawerInternals open={mobileOpen} onClose={() => setMobileOpen(false)} />
