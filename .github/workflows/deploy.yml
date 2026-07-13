@@ -25,15 +25,9 @@ jobs:
                   node-version: 22
                   cache: npm
 
-            - name: Set base path for GitHub Pages
-              run: |
-                  REPO_NAME="${{ github.event.repository.name }}"
-                  OWNER="${{ github.repository_owner }}"
-                  if [ "$REPO_NAME" = "${OWNER}.github.io" ]; then
-                    echo "VITE_BASE_PATH=/" >> "$GITHUB_ENV"
-                  else
-                    echo "VITE_BASE_PATH=/${REPO_NAME}/" >> "$GITHUB_ENV"
-                  fi
+            # Custom domain (kellynauert.com) serves the site at the domain root.
+            - name: Set base path for custom domain
+              run: echo "VITE_BASE_PATH=/" >> "$GITHUB_ENV"
 
             - run: npm ci
             - run: npm run build
@@ -54,3 +48,13 @@ jobs:
         steps:
             - uses: actions/deploy-pages@v4
               id: deployment
+
+            # Actions-based Pages ignores CNAME in the artifact; set the domain via API.
+            # Enable "Enforce HTTPS" in Settings → Pages after DNS propagates.
+            - name: Configure custom domain
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  gh api --method PUT "repos/${{ github.repository }}/pages" \
+                    -f cname='kellynauert.com' \
+                    -f build_type='workflow'
