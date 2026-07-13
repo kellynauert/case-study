@@ -77,16 +77,29 @@ export const theme = createTheme({
 			},
 		},
 		sectionHeading: {
+			fontFamily: fontDisplay,
+			fontSize: '1.5rem',
+			fontWeight: 400,
+			// letterSpacing: '0.14em',
+			// textTransform: 'uppercase',
+			color: textPrimary,
+			lineHeight: 1,
+		},
+		subsectionHeading: {
 			fontFamily: fontBody,
-			fontSize: '0.875rem',
-			fontWeight: 600,
-			letterSpacing: '0.14em',
-			textTransform: 'uppercase',
+			fontSize: '1.2rem',
+			fontWeight: 800,
+
+			lineHeight: 1,
 			color: textSecondary,
-			lineHeight: 1.4,
-			'@media (min-width:900px)': {
-				fontSize: '0.9375rem',
-			},
+		},
+		detailHeading: {
+			fontFamily: fontBody,
+			fontSize: '1rem',
+			fontWeight: 600,
+			letterSpacing: '0.02em',
+			lineHeight: 1.3,
+			color: textMuted,
 		},
 		panelHeading: {
 			fontFamily: fontDisplay,
@@ -166,6 +179,8 @@ export const theme = createTheme({
 			defaultProps: {
 				variantMapping: {
 					sectionHeading: 'h2',
+					subsectionHeading: 'h3',
+					detailHeading: 'h4',
 					panelHeading: 'h3',
 					displayTitle: 'h3',
 					pageTitle: 'h1',

@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
 import { alpha } from '@mui/material/styles';
 import { getAllCaseStudies } from '../../lib/caseStudyRegistry';
+import type { TocHeading } from '../../lib/caseStudyTypes';
 import { hero } from '../../lib/site';
 import { isShowcaseViewed } from '../../lib/viewedShowcases';
 import { useViewedShowcases } from '../../hooks/useViewedShowcases';
@@ -19,9 +20,16 @@ import { tokens } from '../../theme/theme';
 
 const studies = getAllCaseStudies();
 
+export interface PageTocState {
+	headings: TocHeading[];
+	activeId: string;
+}
+
 interface NavDrawerContextValue {
 	openDrawer: () => void;
 	closeDrawer: () => void;
+	pageToc: PageTocState | null;
+	setPageToc: (toc: PageTocState | null) => void;
 }
 
 const NavDrawerContext = createContext<NavDrawerContextValue | null>(null);
@@ -30,6 +38,16 @@ function useNavDrawer() {
 	const ctx = useContext(NavDrawerContext);
 	if (!ctx) throw new Error('useNavDrawer must be used within NavDrawerProvider');
 	return ctx;
+}
+
+/** Publish in-page section links into GlobalNav (cleared on unmount). */
+export function useSetPageToc() {
+	return useNavDrawer().setPageToc;
+}
+
+function scrollToSection(id: string) {
+	const el = document.getElementById(id);
+	if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function ReadIndicator({ read, active }: { read: boolean; active?: boolean }) {
@@ -101,6 +119,109 @@ function navLinkSx(active: boolean, level: 'primary' | 'sub' = 'primary') {
 	};
 }
 
+function PageSectionLinks({ headings, activeId, onNavigate }: { headings: TocHeading[]; activeId: string; onNavigate?: () => void }) {
+	type TocBlock =
+		| { kind: 'section'; item: TocHeading }
+		| { kind: 'group'; items: TocHeading[] };
+
+	const blocks: TocBlock[] = [];
+	for (const item of headings) {
+		if (item.level === 2) {
+			const last = blocks[blocks.length - 1];
+			if (last?.kind === 'group') last.items.push(item);
+			else blocks.push({ kind: 'group', items: [item] });
+		} else {
+			blocks.push({ kind: 'section', item });
+		}
+	}
+
+	const linkSx = (item: TocHeading, nested: boolean) => {
+		const isActive = activeId === item.id;
+		return {
+			display: 'block',
+			py: nested ? 0.35 : 0.45,
+			pl: nested ? 1.25 : 0.65,
+			pr: 0.5,
+			borderLeft: nested ? 'none' : `2px solid ${isActive ? tokens.accent : 'transparent'}`,
+			textDecoration: 'none',
+			fontFamily: tokens.fontBody,
+			fontSize: nested ? '0.6875rem' : '0.75rem',
+			fontWeight:
+				isActive ? 600
+				: nested ? 400
+				: 500,
+			letterSpacing: '0.01em',
+			lineHeight: 1.35,
+			color:
+				isActive ? tokens.accent
+				: nested ? tokens.textMuted
+				: tokens.textNav,
+			transition: 'color 160ms ease, border-color 160ms ease',
+			'&:hover': { color: tokens.accent },
+			'&:focus-visible': {
+				outline: `2px solid ${tokens.accent}`,
+				outlineOffset: 1,
+			},
+		} as const;
+	};
+
+	const renderLink = (item: TocHeading, nested: boolean) => (
+		<Box
+			key={item.id}
+			component='a'
+			href={`#${item.id}`}
+			onClick={(e) => {
+				e.preventDefault();
+				scrollToSection(item.id);
+				onNavigate?.();
+			}}
+			aria-current={activeId === item.id ? 'location' : undefined}
+			sx={linkSx(item, nested)}>
+			{item.title}
+		</Box>
+	);
+
+	return (
+		<Box
+			component='nav'
+			aria-label='On this page'
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				gap: 0,
+				pl: '2.15rem',
+				pr: 0.5,
+				pb: 1,
+				mt: -0.15,
+			}}>
+			{blocks.map((block, index) => {
+				if (block.kind === 'section') {
+					return (
+						<Box key={block.item.id} sx={{ mt: index > 0 ? 0.75 : 0 }}>
+							{renderLink(block.item, false)}
+						</Box>
+					);
+				}
+
+				const groupActive = block.items.some((item) => item.id === activeId);
+				return (
+					<Box
+						key={block.items.map((item) => item.id).join('-')}
+						sx={{
+							mt: 0.15,
+							mb: 0.15,
+							ml: 0.35,
+							pl: 0.25,
+							borderLeft: `2px solid ${groupActive ? alpha(tokens.accent, 0.45) : tokens.border}`,
+						}}>
+						{block.items.map((item) => renderLink(item, true))}
+					</Box>
+				);
+			})}
+		</Box>
+	);
+}
+
 function NavContent({
 	onNavigate,
 	showHeroIntro = true,
@@ -113,6 +234,7 @@ function NavContent({
 }) {
 	const location = useLocation();
 	const viewed = useViewedShowcases();
+	const { pageToc } = useNavDrawer();
 	const isHomeActive = location.pathname === '/';
 
 	return (
@@ -153,46 +275,51 @@ function NavContent({
 					const href = `/case-studies/${study.slug}`;
 					const isActive = location.pathname === href;
 					const read = isShowcaseViewed(study.slug, viewed);
+					const showPageToc = isActive && pageToc && pageToc.headings.length > 0;
 
 					return (
-						<Box
-							key={study.slug}
-							component={Link}
-							to={href}
-							onClick={onNavigate}
-							aria-current={isActive ? 'page' : undefined}
-							aria-label={`${study.title}${read ? ', read' : ', unread'}`}
-							sx={{
-								display: 'grid',
-								gridTemplateColumns: '1.25rem 1fr',
-								gap: 0.75,
-								alignItems: 'center',
-								py: 1,
-								pl: 2,
-								pr: 1,
-								minHeight: 44,
-								textDecoration: 'none',
-								borderLeft: `2px solid ${isActive ? tokens.accent : 'transparent'}`,
-								transition: 'color 200ms ease',
-								'&:hover': { '& .global-nav-title': { color: tokens.accent } },
-								'&:focus-visible': {
-									outline: `2px solid ${tokens.accent}`,
-									outlineOffset: 2,
-								},
-							}}>
-							<ReadIndicator read={read} active={isActive} />
-							<Typography
-								className='global-nav-title'
+						<Box key={study.slug}>
+							<Box
+								component={Link}
+								to={href}
+								onClick={onNavigate}
+								aria-current={isActive ? 'page' : undefined}
+								aria-label={`${study.title}${read ? ', read' : ', unread'}`}
 								sx={{
-									m: 0,
-									fontSize: '0.8125rem',
-									fontWeight: isActive ? 600 : 400,
-									lineHeight: 1.45,
-									color: isActive ? tokens.accent : tokens.textNav,
+									display: 'grid',
+									gridTemplateColumns: '1.25rem 1fr',
+									gap: 0.75,
+									alignItems: 'center',
+									py: showPageToc ? 0.75 : 1,
+									pl: 2,
+									pr: 1,
+									minHeight: showPageToc ? 36 : 44,
+									textDecoration: 'none',
+									borderLeft: `2px solid ${isActive ? tokens.accent : 'transparent'}`,
 									transition: 'color 200ms ease',
+									'&:hover': { '& .global-nav-title': { color: tokens.accent } },
+									'&:focus-visible': {
+										outline: `2px solid ${tokens.accent}`,
+										outlineOffset: 2,
+									},
 								}}>
-								{study.title}
-							</Typography>
+								<ReadIndicator read={read} active={isActive} />
+								<Typography
+									className='global-nav-title'
+									sx={{
+										m: 0,
+										fontSize: '0.8125rem',
+										fontWeight: isActive ? 600 : 400,
+										lineHeight: 1.45,
+										color: isActive ? tokens.accent : tokens.textNav,
+										transition: 'color 200ms ease',
+									}}>
+									{study.title}
+								</Typography>
+							</Box>
+							{showPageToc ?
+								<PageSectionLinks headings={pageToc.headings} activeId={pageToc.activeId} onNavigate={onNavigate} />
+							:	null}
 						</Box>
 					);
 				})}
@@ -270,7 +397,11 @@ export function MobileStickyNavBar() {
 			sx={{
 				display: { xs: 'flex', md: 'none' },
 				position: isLanding ? 'fixed' : 'sticky',
-				top: isLanding ? (showBar ? 0 : hiddenTop) : 0,
+				top:
+					isLanding ?
+						showBar ? 0
+						:	hiddenTop
+					:	0,
 				left: isLanding ? 0 : undefined,
 				right: isLanding ? 0 : undefined,
 				zIndex: 1200,
@@ -395,12 +526,15 @@ function NavDrawerInternals({ open, onClose }: { open: boolean; onClose: () => v
 
 export function NavDrawerProvider({ children }: { children: ReactNode }) {
 	const [mobileOpen, setMobileOpen] = useState(false);
+	const [pageToc, setPageToc] = useState<PageTocState | null>(null);
 
 	return (
 		<NavDrawerContext.Provider
 			value={{
 				openDrawer: () => setMobileOpen(true),
 				closeDrawer: () => setMobileOpen(false),
+				pageToc,
+				setPageToc,
 			}}>
 			{children}
 			<NavDrawerInternals open={mobileOpen} onClose={() => setMobileOpen(false)} />

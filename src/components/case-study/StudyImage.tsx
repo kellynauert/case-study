@@ -9,9 +9,11 @@ interface StudyImageProps {
 	gallery?: LightboxImage[];
 	galleryIndex?: number;
 	align?: 'start' | 'center';
+	/** Cap rendered width so smaller source assets are not upscaled past native resolution. */
+	maxWidth?: number | string;
 }
 
-export function StudyImage({ src, alt, gallery, galleryIndex = 0, align = 'start' }: StudyImageProps) {
+export function StudyImage({ src, alt, gallery, galleryIndex = 0, align = 'start', maxWidth }: StudyImageProps) {
 	const { open } = useLightbox();
 	const resolved = imageSrc(src);
 	const label = alt ?? src;
@@ -25,12 +27,13 @@ export function StudyImage({ src, alt, gallery, galleryIndex = 0, align = 'start
 		<Box
 			sx={{
 				width: 'fit-content',
-				maxWidth: '100%',
+				maxWidth: maxWidth ?? '100%',
 				display: 'flex',
 				flexDirection: 'column',
 				alignItems: align === 'center' ? 'center' : 'flex-start',
 				alignSelf: align === 'center' ? 'center' : 'flex-start',
 				mx: align === 'center' ? 'auto' : 0,
+				my: { xs: 1.5, md: 2 },
 			}}>
 			<Box
 				component='button'

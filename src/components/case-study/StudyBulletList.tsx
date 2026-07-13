@@ -1,8 +1,9 @@
+import type { ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 interface StudyBulletListProps {
-	items: string[];
+	items: ReactNode[];
 }
 
 export function StudyBulletList({ items }: StudyBulletListProps) {
@@ -19,9 +20,11 @@ export function StudyBulletList({ items }: StudyBulletListProps) {
 					'&:last-child': { mb: 0 },
 				},
 			}}>
-			{items.map((item) => (
-				<Box component='li' key={item.slice(0, 48)}>
-					<Typography variant='body1'>{item}</Typography>
+			{items.map((item, index) => (
+				<Box component='li' key={typeof item === 'string' ? item.slice(0, 48) : index}>
+					<Typography variant='body1' component='div'>
+						{item}
+					</Typography>
 				</Box>
 			))}
 		</Box>

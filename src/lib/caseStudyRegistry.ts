@@ -8,11 +8,12 @@ export const caseStudies = [
 	{
 		slug: 'course-authoring',
 		title: 'Course Authoring',
-		subtitle: 'Custom curriculum authoring with typed content blocks and shared presentation.',
-		summary: 'Dedicated authoring environment with reusable content blocks, linked items, and versioning across 160+ courses created.',
+		subtitle: 'The app contains an integrated curriculum authoring system for creating, organizing, and maintaining college-credit courses.',
+		summary:
+			'Integrated curriculum authoring for college-credit courses: structure, item types, reuse, versioning, and locking across 160+ courses.',
 		years: '2020–Present',
 		order: 2,
-		readingMinutes: 3,
+		readingMinutes: 4,
 		sections: courseAuthoringSections,
 		component: CourseAuthoringPage,
 	},

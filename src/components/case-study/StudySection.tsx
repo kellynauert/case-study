@@ -11,7 +11,7 @@ interface StudySectionProps {
 
 export function StudySectionHeading({ children }: { children: ReactNode }) {
 	return (
-		<Typography variant='sectionHeading' sx={{ mb: { xs: 2, md: 2.5 } }}>
+		<Typography variant='sectionHeading' sx={{ mb: { xs: 3, md: 4 } }}>
 			{children}
 		</Typography>
 	);
@@ -19,7 +19,7 @@ export function StudySectionHeading({ children }: { children: ReactNode }) {
 
 export function StudySection({ id, title, children }: StudySectionProps) {
 	return (
-		<Box id={id} sx={{ scrollMarginTop, py: { xs: 2, md: 3 } }}>
+		<Box id={id} sx={{ scrollMarginTop, py: { xs: 3, md: 5 } }}>
 			{title ?
 				<StudySectionHeading>{title}</StudySectionHeading>
 			:	null}

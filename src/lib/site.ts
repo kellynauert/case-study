@@ -44,7 +44,7 @@ export const platformStats = [
 
 /** Short homepage teasers — system summaries for the platform index */
 export const caseStudyTeasers = {
-	'course-authoring': 'Typed content blocks with shared presentation across 160+ courses created.',
+	'course-authoring': 'Curriculum authoring built into the platform—structure, typed items, reuse, and versioning across 160+ courses.',
 	'unified-experience': 'Consistent navigation, progress tracking, and grade visibility across every enrollment.',
 	grading: 'Assignment-first queue, course and student gradebooks, automatic scoring, and AI-assisted open response review.',
 	'apprentice-evaluation': 'Configurable competency evaluations, reflection journals, and apprentice progress tracking.',
