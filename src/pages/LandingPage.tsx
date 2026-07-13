@@ -11,11 +11,12 @@ import { tokens } from '../theme/theme';
 
 export function LandingPage() {
 	const systemGroups = getCaseStudiesBySystemGroup();
-	const groupStartIndexes = systemGroups.reduce<number[]>((indexes, group, i) => {
-		const start = i === 0 ? 1 : indexes[i - 1] + systemGroups[i - 1].studies.length;
-		indexes.push(start);
-		return indexes;
-	}, []);
+	const groupStartIndexes: number[] = [];
+	let nextIndex = 1;
+	for (const { studies } of systemGroups) {
+		groupStartIndexes.push(nextIndex);
+		nextIndex += studies.length;
+	}
 
 	return (
 		<SiteLayout>
