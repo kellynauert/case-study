@@ -1,23 +1,25 @@
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { getAllCaseStudies } from '../lib/caseStudyRegistry';
-import { platformStory, platformStats } from '../lib/site';
+import { getCaseStudiesBySystemGroup } from '../lib/caseStudyRegistry';
+import { platformStory } from '../lib/site';
 import { pagePaddingX, scrollMarginTop } from '../lib/styles';
 import { SiteLayout } from '../components/Layout/SiteLayout';
 import { SiteHeroIntro } from '../components/Layout/SiteHeroIntro';
 import { FeatureShowcaseList } from '../components/landing/FeatureShowcaseList';
-import { Stats } from '../components/blocks/Stats';
+import { PlatformTimeline } from '../components/landing/PlatformTimeline';
 import { tokens } from '../theme/theme';
 
 export function LandingPage() {
-	const caseStudies = getAllCaseStudies();
+	const systemGroups = getCaseStudiesBySystemGroup();
+	const groupStartIndexes = systemGroups.reduce<number[]>((indexes, group, i) => {
+		const start = i === 0 ? 1 : indexes[i - 1] + systemGroups[i - 1].studies.length;
+		indexes.push(start);
+		return indexes;
+	}, []);
 
 	return (
 		<SiteLayout>
-			<Box
-				id='landing-hero'
-				sx={{ display: { xs: 'block', md: 'none' }, pl: 1.5, pr: 2, pt: 2 }}>
+			<Box id='landing-hero' sx={{ display: { xs: 'block', md: 'none' }, pl: 1.5, pr: 2, pt: 2 }}>
 				<SiteHeroIntro />
 			</Box>
 
@@ -39,22 +41,37 @@ export function LandingPage() {
 						{platformStory.heading}
 					</Typography>
 
-					<Grid container spacing={3} sx={{ alignItems: 'start' }}>
+					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 2 }}>
 						{platformStory.paragraphs.map((paragraph) => (
-							<Grid key={paragraph.slice(0, 40)} size={{ xs: 12, md: 6 }}>
-								<Typography variant='body1' sx={{ m: 0 }}>
-									{paragraph}
-								</Typography>
-							</Grid>
+							<Typography key={paragraph.slice(0, 40)} variant='body1' sx={{ m: 0 }}>
+								{paragraph}
+							</Typography>
 						))}
-					</Grid>
-
-					<Box sx={{ mt: { xs: 2.5, md: 3 } }}>
-						<Stats items={[...platformStats]} compact />
 					</Box>
 
-					<Box sx={{ mt: { xs: 3, md: 3.5 } }}>
-						<FeatureShowcaseList studies={caseStudies} />
+					<PlatformTimeline />
+
+					{platformStory.closing.map((paragraph) => (
+						<Typography key={paragraph.slice(0, 40)} variant='body1' sx={{ m: 0, mt: 2 }}>
+							{paragraph}
+						</Typography>
+					))}
+
+					<Box sx={{ mt: { xs: 3, md: 3.5 }, display: 'flex', flexDirection: 'column', gap: { xs: 3, md: 3.5 } }}>
+						{systemGroups.map(({ group, studies }, groupIndex) => (
+							<Box key={group}>
+								<Typography
+									component='h2'
+									variant='subsectionHeading'
+									sx={{
+										m: 0,
+										mb: { xs: 1.5, md: 1.75 },
+									}}>
+									{group}
+								</Typography>
+								<FeatureShowcaseList studies={studies} startIndex={groupStartIndexes[groupIndex]} />
+							</Box>
+						))}
 					</Box>
 				</Box>
 			</Box>

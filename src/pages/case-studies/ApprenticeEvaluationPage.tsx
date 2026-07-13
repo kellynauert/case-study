@@ -1,69 +1,136 @@
+import type { ReactNode } from 'react';
+import Box from '@mui/material/Box';
 import { StudyPage } from '../../components/case-study/StudyPage';
 import { StudySection } from '../../components/case-study/StudySection';
-import { StudyGrid } from '../../components/case-study/StudyGrid';
-import { StudyCell } from '../../components/case-study/StudyCell';
 import { StudyBody } from '../../components/case-study/StudyBody';
+import { StudyBulletList } from '../../components/case-study/StudyBulletList';
 import { StudyImage } from '../../components/case-study/StudyImage';
+
+type Cols = number;
+
+/** Single column — set `cols` (1–12) for desktop width. */
+function Col({ children, cols = 6 }: { children: ReactNode; cols?: Cols }) {
+	return (
+		<Box
+			sx={{
+				width: '100%',
+				maxWidth: { md: `${(cols / 12) * 100}%` },
+				mb: 2,
+			}}>
+			{children}
+		</Box>
+	);
+}
 
 export function ApprenticeEvaluationPage() {
 	return (
 		<StudyPage
 			slug='apprentice-evaluation'
-			title='Apprentice Evaluation & Reflection System'
+			title='Apprenticeship Platform'
 			subtitle='Competency evaluations, reflection journals, and progress tracking for teacher apprenticeship programs.'
-			intro='This system supports mentor evaluations, apprentice reflection journals, and progress tracking for teacher apprenticeship programs. Programs differ in competencies, evaluation schedules, scoring methods, and documentation requirements; the platform handles those variations through configuration rather than custom builds per organization.'>
-			<StudySection id='evaluation-forms' title='Evaluation Forms'>
-				<StudyBody>
-					Competencies are maintained in a configurable table with standardized codes, organized into groups that control what mentors see
-					on the evaluation page. Groups also customize terminology so the interface matches each organization's language. Program
-					configuration is stored separately from apprentice records, so administrators can adjust requirements without migrating existing
-					evaluation data.
-				</StudyBody>
-				<StudyBody>
-					Evaluation scales support multiple rating levels and can be enabled or disabled per competency. The evaluation page is
-					mobile-first so mentors can complete observations from phones or tablets. Mentors can access evaluation pages via unique links
-					with an optional-auth flow: a private-information warning and name entry when the mentor is not signed in, with audit trail
-					logging tying ratings to the correct reviewer.
-				</StudyBody>
+			intro={
+				<Col cols={8}>
+					<StudyBody>
+						While the Learning Platform manages coursework, grading, and student progress, the Apprenticeship Platform supports the field
+						experience required throughout teacher preparation programs.
+					</StudyBody>
+					<StudyBody>
+						Mentors evaluate apprentices through classroom observations while apprentices complete scheduled reflections documenting their
+						experiences and professional growth. Because every organization defines competencies, evaluation schedules, scoring methods,
+						and documentation requirements differently, the platform is built around configuration rather than organization-specific
+						development.
+					</StudyBody>
+					<StudyBody>
+						Evaluation results, reflections, and coursework progress are combined into a single apprentice record, giving mentors and
+						administrators a complete view of each apprentice's development throughout the program.
+					</StudyBody>
+				</Col>
+			}>
+			<StudySection id='program-configuration' title='Program Configuration'>
+				<Col cols={8}>
+					<StudyBody>
+						Every apprenticeship program defines its own competencies, terminology, evaluation scales, and reflection schedule.
+					</StudyBody>
+					<StudyBody>
+						Competencies are organized into configurable groups that determine how evaluations are presented to mentors. Groups also
+						customize terminology throughout the interface so each organization can use language that matches its existing evaluation
+						process.
+					</StudyBody>
+					<StudyBody>
+						Evaluation scales support multiple rating levels and can be enabled or disabled for individual competencies. Program
+						configuration is stored independently from apprentice records, allowing administrators to update program requirements without
+						affecting historical evaluation data.
+					</StudyBody>
+					<StudyBody>
+						Rather than creating custom implementations for each organization, administrators configure competencies, evaluation
+						schedules, terminology, rating scales, and reflection requirements directly within the application.
+					</StudyBody>
+				</Col>
+				<StudyImage src='apprentice-evaluation/evaluation.jpg' alt='Program configuration' />
+			</StudySection>
+
+			<StudySection id='mentor-evaluations' title='Mentor Evaluations'>
+				<Col cols={8}>
+					<StudyBody>
+						Mentors complete classroom observations using mobile-friendly evaluation forms designed for use on phones, tablets, and
+						desktop devices.
+					</StudyBody>
+					<StudyBody>
+						Evaluations can be accessed through unique links, allowing mentors to complete observations without creating an account. When
+						accessing an evaluation while signed out, mentors acknowledge a privacy notice and identify themselves before submitting
+						ratings. Every submission is recorded in an audit trail to preserve reviewer history.
+					</StudyBody>
+					<StudyBody>
+						Evaluation forms present competencies using the organization's configured terminology and rating scales, providing a
+						consistent experience across different apprenticeship programs.
+					</StudyBody>
+				</Col>
 			</StudySection>
 
 			<StudySection id='reflection-journals' title='Reflection Journals'>
-				<StudyGrid>
-					<StudyCell size={{ xs: 12, md: 'grow' }}>
-						<StudyBody>
-							Reflections are scheduled across the program with administrator-configured prompts and instructions. Responses attach to
-							each apprentice's record for mentor review. The system supports daily and weekly reflection schedules.
-						</StudyBody>
-						<StudyBody>
-							Weekly reflections support micro-narratives: short entries made several times per week that roll into the weekly comment
-							flow. Mentors see an unlock button reminding them to complete micro-narratives before the weekly reflection opens. A
-							weeks-to-run setting limits submissions based on reflection entry count rather than exact calendar weeks, accommodating
-							holidays and scheduling gaps.
-						</StudyBody>
-					</StudyCell>
-					<StudyCell size={{ xs: 12, md: 'auto' }}>
-						<StudyImage src='apprentice-evaluation/reflection.gif' alt='Apprentice reflection journal with scheduled prompts' />
-					</StudyCell>
-				</StudyGrid>
+				<Col cols={8}>
+					<StudyBody>Reflection journals guide apprentices through structured self-reflection throughout the program.</StudyBody>
+					<StudyBody>
+						Administrators schedule reflection prompts and instructions in advance, with support for both daily and weekly reflection
+						schedules.
+					</StudyBody>
+					<StudyBody>
+						Weekly reflections also support micro-narratives—short entries completed throughout the week that are collected into the final
+						weekly reflection. Mentors receive reminders when required micro-narratives have not yet been completed, encouraging
+						apprentices to reflect consistently instead of writing everything at the end of the week.
+					</StudyBody>
+					<StudyBody>
+						Reflection schedules can also be limited by the number of required entries rather than calendar weeks, allowing programs to
+						accommodate holidays, school breaks, and other scheduling variations without changing reflection requirements.
+					</StudyBody>
+				</Col>
+				<StudyImage src='apprentice-evaluation/reflection.gif' alt='Apprentice reflection journal' />
 			</StudySection>
 
-			<StudySection id='progress-tracker' title='Progress Tracker'>
-				<StudyGrid>
-					<StudyCell size={{ xs: 12 }}>
-						<StudyBody>
-							Each apprentice has a progress dashboard aggregating evaluations, reflections, required observations, coursework, and
-							outstanding requirements. Evaluation history shows who rated changes and when ratings moved between levels. Evaluations
-							and reflections feed into this tracker alongside coursework completion from the student learning experience.
-						</StudyBody>
-						<StudyBody>
-							The system is in use across MathTrack teacher apprenticeship programs. Program administrators configure competencies and
-							reflection schedules per organization without custom development.
-						</StudyBody>
-					</StudyCell>
-					<StudyCell size={{ xs: 12, md: 'auto' }}>
-						<StudyImage src='apprentice-evaluation/evaluation_rating.gif' alt='Evaluation rating history with level-change tracking' />
-					</StudyCell>
-				</StudyGrid>
+			<StudySection id='apprentice-progress' title='Apprentice Progress'>
+				<Col cols={8}>
+					<StudyBody>Each apprentice has a centralized progress dashboard combining every part of the apprenticeship experience.</StudyBody>
+					<StudyBody>The dashboard brings together:</StudyBody>
+					<StudyBulletList
+						items={[
+							'Coursework progress from the Learning Platform',
+							'Mentor evaluations',
+							'Reflection journals',
+							'Required classroom observations',
+							'Outstanding program requirements',
+						]}
+					/>
+					<StudyBody>
+						Evaluation history records how competency ratings change over time, including who submitted each evaluation and when rating
+						levels changed. This provides mentors and program administrators with a complete record of each apprentice's professional
+						growth throughout the program.
+					</StudyBody>
+					<StudyBody>
+						Because coursework, evaluations, and reflections all contribute to the same apprentice record, administrators can monitor
+						progress across the entire teacher preparation program from a single interface.
+					</StudyBody>
+				</Col>
+				<StudyImage src='apprentice-evaluation/evaluation_rating.gif' alt='Apprentice progress dashboard' />
 			</StudySection>
 		</StudyPage>
 	);

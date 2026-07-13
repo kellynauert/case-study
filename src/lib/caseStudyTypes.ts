@@ -20,6 +20,10 @@ export interface StatItem {
 export interface CaseStudyMeta {
 	slug: string;
 	title: string;
+	/** Shorter label for site nav; falls back to title when omitted. */
+	navTitle?: string;
+	/** Platform group under Systems in site nav. */
+	systemGroup: 'Learning Management Platform' | 'Apprenticeship Platform';
 	subtitle: string;
 	summary: string;
 	years: string;

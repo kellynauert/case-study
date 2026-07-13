@@ -6,7 +6,7 @@ export const author = {
 
 export const project = {
 	name: 'MathTrack',
-	fullName: 'The MathTrack App',
+	fullName: 'An Education Operations Platform',
 	years: '2020-2026',
 	disciplines: ['UX Design', 'Product Design', 'React', 'TypeScript', 'Node.js', 'PostgreSQL'],
 } as const;
@@ -29,25 +29,66 @@ export const hero = {
 export const platformStory = {
 	heading: project.fullName,
 	paragraphs: [
-		'MathTrack Institute is an education startup whose offerings have changed a lot over the years, and I was the sole designer and engineer of our web application. As the company pivoted and introduced new programs, I adapted the platform alongside it, adding, redesigning, and retiring features to match what the business needed.',
-		'Today the work is focused on teacher apprenticeship programs: coursework for college credit and licensure, and tools that help mentors evaluate, support, and communicate with apprentices.This site showcases a small selection of features that I have built over the years, with a focus on the systems that support the teacher apprenticeship program.',
+		'MathTrack Institute is an education startup where I spent five years as the sole designer and engineer of its education operations platform. As the company evolved, I evolved the platform alongside it, creating, adapting, and retiring systems to support changing business needs.',
 	],
+	timelineIntro: 'The platform has evolved through several major phases:',
+	timelineRange: { start: 2020, end: 2027 },
+	timeline: [
+		{
+			title: 'Student assessment analytics',
+			detail: 'Data importing and interactive visualizations of standardized assessment data',
+			start: 2020,
+			end: 2021,
+			phase: false,
+		},
+		{
+			title: 'Student Information System',
+			detail: 'Student and school mass data importing, attendance tracking, SIS integrations, school admin dashboards',
+			start: 2021,
+			end: 2022,
+			phase: true,
+		},
+
+		{
+			title: 'Employee Management System',
+			detail: 'Scheduling, time tracking, advisor assignments, and staff workflows',
+			start: 2022,
+			end: 2023,
+			phase: true,
+		},
+		{
+			title: 'Learning Management Platform',
+			detail: 'Curriculum authoring, enrollment, student learning, grading, and transcript generation',
+			start: 2024,
+			end: null,
+			phase: true,
+		},
+		{
+			title: 'Apprenticeship Platform',
+			detail: 'Mentor evaluations, reflection journals, competency tracking, and apprentice progress',
+			start: 2026,
+			end: null,
+			phase: true,
+		},
+	],
+	closing: ['This site highlights the two active systems: the Learning Management Platform and the Apprenticeship Platform.'],
 	continuation: [] as const,
 } as const;
 
 /** Production scale — shown on the landing page */
 export const platformStats = [
-	{ value: '400+', label: 'Active users on the platform' },
+	{ value: '5', label: 'Years of continuous development' },
 	{ value: '160+', label: 'Courses created' },
-	{ value: '250K+', label: 'Activity records per year' },
+	{ value: '250K+', label: 'Activity records processed each year' },
+	{ value: '400+', label: 'Active users' },
 ] as const;
 
 /** Short homepage teasers — system summaries for the platform index */
 export const caseStudyTeasers = {
-	'course-authoring': 'Curriculum authoring built into the platform—structure, typed items, reuse, and versioning across 160+ courses.',
-	'unified-experience': 'Consistent navigation, progress tracking, and grade visibility across every enrollment.',
-	grading: 'Assignment-first queue, course and student gradebooks, automatic scoring, and AI-assisted open response review.',
-	'apprentice-evaluation': 'Configurable competency evaluations, reflection journals, and apprentice progress tracking.',
+	'course-authoring': 'An integrated curriculum authoring system for creating, organizing, and maintaining college-credit courses.',
+	'unified-experience': 'A unified learning experience built around Page-based coursework, progress tracking, feedback, and communication.',
+	grading: 'Submission review, Page-based grading, AI-assisted evaluation, and instructor workflows.',
+	'apprentice-evaluation': 'Competency evaluations, reflection journals, and progress tracking for teacher apprenticeship programs.',
 } as const;
 
 export const site = {

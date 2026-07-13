@@ -9,11 +9,16 @@ interface StatsProps {
 }
 
 export function Stats({ items, compact = false }: StatsProps) {
+	const count = items.length;
+
 	return (
 		<Box
 			sx={{
 				display: 'grid',
-				gridTemplateColumns: 'repeat(3, 1fr)',
+				gridTemplateColumns: {
+					xs: count > 3 ? 'repeat(2, 1fr)' : `repeat(${Math.min(count, 3)}, 1fr)`,
+					sm: `repeat(${count}, 1fr)`,
+				},
 				gap: { xs: 1, sm: 1.5 },
 				my: compact ? 0 : 3,
 			}}>

@@ -9,7 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
 import { alpha } from '@mui/material/styles';
-import { getAllCaseStudies } from '../../lib/caseStudyRegistry';
+import { getCaseStudiesBySystemGroup, getCaseStudyNavTitle } from '../../lib/caseStudyRegistry';
 import type { TocHeading } from '../../lib/caseStudyTypes';
 import { hero } from '../../lib/site';
 import { isShowcaseViewed } from '../../lib/viewedShowcases';
@@ -54,7 +54,7 @@ const studyItemGridSx = {
 	pr: 1,
 } as const;
 
-function ProgressDot({ size = 5, color = tokens.accentPink }: { size?: number; color?: string }) {
+function ProgressDot({ size = 5, color = tokens.accent }: { size?: number; color?: string }) {
 	return (
 		<Box
 			sx={{
@@ -98,8 +98,6 @@ function StudyReadIndicator({ read, active }: { read: boolean; active?: boolean 
 			}}>
 			{read ?
 				<ReadCheck color={active ? tokens.accent : tokens.accentPink} />
-			: active ?
-				<ProgressDot size={6} />
 			:	null}
 		</Box>
 	);
@@ -120,7 +118,7 @@ function SectionReadIndicator({ status }: { status: ReadStatus }) {
 			{status === 'read' ?
 				<ProgressDot size={2} />
 			: status === 'reading-again' ?
-				<ProgressDot size={2} color={tokens.accent} />
+				<ProgressDot size={2} />
 			: status === 'reading-first' ?
 				<ProgressDot size={2} />
 			:	null}
@@ -154,16 +152,15 @@ function sectionReadStatus(sectionId: string, children: TocHeading[], activeIds:
 	return 'unread';
 }
 
-const navGroupLabelSx = {
+const systemSubgroupLabelSx = {
 	display: 'block',
 	px: 1,
-	mb: 0.75,
-	mt: 0.25,
+	mb: 0.5,
+	mt: 1.25,
 	fontFamily: tokens.fontBody,
-	fontSize: '0.85rem',
+	fontSize: '0.75rem',
 	fontWeight: 600,
-	letterSpacing: '0.1em',
-	textTransform: 'uppercase',
+	letterSpacing: '0.04em',
 	color: tokens.textMuted,
 	lineHeight: 1.4,
 } as const;
@@ -294,7 +291,7 @@ function NavContent({
 	const location = useLocation();
 	const viewed = useViewedShowcases();
 	const pageToc = usePageToc();
-	const studies = getAllCaseStudies();
+	const systemGroups = getCaseStudiesBySystemGroup();
 	const isHomeActive = location.pathname === '/';
 
 	return (
@@ -326,65 +323,68 @@ function NavContent({
 				</Box>
 			</Box>
 
-			<Typography component='p' sx={{ ...navGroupLabelSx, mt: 0.5 }}>
-				Systems
-			</Typography>
+			{systemGroups.map(({ group, studies }) => (
+				<Box key={group} sx={{ display: 'flex', flexDirection: 'column', gap: 0.25 }}>
+					<Typography component='p' sx={{ ...systemSubgroupLabelSx, mt: group === systemGroups[0]?.group ? 0.5 : 1.75 }}>
+						{group}
+					</Typography>
 
-			<Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.25 }}>
-				{studies.map((study) => {
-					const href = `/case-studies/${study.slug}`;
-					const isActive = location.pathname === href;
-					const read = isShowcaseViewed(study.slug, viewed);
-					const showPageToc = isActive && pageToc && pageToc.headings.length > 0;
+					{studies.map((study) => {
+						const href = `/case-studies/${study.slug}`;
+						const isActive = location.pathname === href;
+						const read = isShowcaseViewed(study.slug, viewed);
+						const showPageToc = isActive && pageToc && pageToc.headings.length > 0;
+						const navTitle = getCaseStudyNavTitle(study);
 
-					return (
-						<Box key={study.slug}>
-							<Box
-								component={Link}
-								to={href}
-								onClick={onNavigate}
-								aria-current={isActive ? 'page' : undefined}
-								aria-label={`${study.title}${read ? ', read' : ', unread'}`}
-								sx={{
-									...studyItemGridSx,
-									alignItems: 'center',
-									py: showPageToc ? 0.75 : 1,
-									minHeight: showPageToc ? 36 : 44,
-									textDecoration: 'none',
-									borderLeft: `2px solid ${isActive ? tokens.accent : 'transparent'}`,
-									transition: 'color 200ms ease, border-color 200ms ease',
-									'&:hover': { '& .global-nav-title': { color: tokens.accent } },
-									'&:focus-visible': {
-										outline: `2px solid ${tokens.accent}`,
-										outlineOffset: 2,
-									},
-								}}>
-								<StudyReadIndicator read={read} active={isActive} />
-								<Typography
-									className='global-nav-title'
+						return (
+							<Box key={study.slug}>
+								<Box
+									component={Link}
+									to={href}
+									onClick={onNavigate}
+									aria-current={isActive ? 'page' : undefined}
+									aria-label={`${navTitle}${read ? ', read' : ', unread'}`}
 									sx={{
-										m: 0,
-										fontSize: '0.8125rem',
-										fontWeight: isActive ? 600 : 400,
-										lineHeight: 1.45,
-										color: isActive ? tokens.accent : tokens.textNav,
-										transition: 'color 200ms ease',
+										...studyItemGridSx,
+										alignItems: 'center',
+										py: showPageToc ? 0.75 : 1,
+										minHeight: showPageToc ? 36 : 44,
+										textDecoration: 'none',
+										borderLeft: `2px solid ${isActive ? tokens.accent : 'transparent'}`,
+										transition: 'color 200ms ease, border-color 200ms ease',
+										'&:hover': { '& .global-nav-title': { color: tokens.accent } },
+										'&:focus-visible': {
+											outline: `2px solid ${tokens.accent}`,
+											outlineOffset: 2,
+										},
 									}}>
-									{study.title}
-								</Typography>
+									<StudyReadIndicator read={read} active={isActive} />
+									<Typography
+										className='global-nav-title'
+										sx={{
+											m: 0,
+											fontSize: '0.8125rem',
+											fontWeight: isActive ? 600 : 400,
+											lineHeight: 1.45,
+											color: isActive ? tokens.accent : tokens.textNav,
+											transition: 'color 200ms ease',
+										}}>
+										{navTitle}
+									</Typography>
+								</Box>
+								{showPageToc ?
+									<PageSectionLinks
+										slug={pageToc.slug}
+										headings={pageToc.headings}
+										activeIds={pageToc.activeIds}
+										onNavigate={onNavigate}
+									/>
+								:	null}
 							</Box>
-							{showPageToc ?
-								<PageSectionLinks
-									slug={pageToc.slug}
-									headings={pageToc.headings}
-									activeIds={pageToc.activeIds}
-									onNavigate={onNavigate}
-								/>
-							:	null}
-						</Box>
-					);
-				})}
-			</Box>
+						);
+					})}
+				</Box>
+			))}
 		</Box>
 	);
 }

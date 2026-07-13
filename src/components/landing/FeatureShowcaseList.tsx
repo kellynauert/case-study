@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { formatReadingTime, type CaseStudyMeta } from '../../lib/caseStudyTypes';
+import { caseStudyTeasers } from '../../lib/site';
 import { scrollMarginTop } from '../../lib/styles';
 import { useViewedShowcases } from '../../hooks/useViewedShowcases';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
@@ -13,6 +14,8 @@ import { tokens } from '../../theme/theme';
 interface FeatureShowcaseListProps {
 	studies: CaseStudyMeta[];
 	nested?: boolean;
+	/** 1-based start index for card numbering across grouped sections. */
+	startIndex?: number;
 }
 
 const shinyBorderKeyframes = {
@@ -72,7 +75,11 @@ function getCardSx(nested: boolean) {
 		:	plainCardSx;
 }
 
-export function FeatureShowcaseList({ studies, nested = false }: FeatureShowcaseListProps) {
+function getCardDescription(study: CaseStudyMeta): string {
+	return caseStudyTeasers[study.slug as keyof typeof caseStudyTeasers] ?? study.subtitle;
+}
+
+export function FeatureShowcaseList({ studies, nested = false, startIndex = 1 }: FeatureShowcaseListProps) {
 	const viewed = useViewedShowcases();
 	const reducedMotion = useReducedMotion();
 	const unreadCardSx = getCardSx(nested);
@@ -97,9 +104,10 @@ export function FeatureShowcaseList({ studies, nested = false }: FeatureShowcase
 				gap: { xs: 1.5, sm: 1.75, md: 1.5 },
 			}}>
 			{studies.map((study, index) => {
-				const number = String(index + 1).padStart(2, '0');
+				const number = String(startIndex + index).padStart(2, '0');
 				const viewedStudy = isShowcaseViewed(study.slug, viewed);
 				const readingTime = formatReadingTime(study.readingMinutes);
+				const description = getCardDescription(study);
 
 				const cardContent = (
 					<>
@@ -114,13 +122,16 @@ export function FeatureShowcaseList({ studies, nested = false }: FeatureShowcase
 								{number}
 							</Typography>
 
-							<Typography className='feature-title' variant='displayTitle' sx={{ flex: 1, minWidth: 0, transition: 'color 200ms ease' }}>
+							<Typography
+								className='feature-title'
+								variant='displayTitle'
+								sx={{ flex: 1, minWidth: 0, transition: 'color 200ms ease' }}>
 								{study.title}
 							</Typography>
 						</Box>
 
 						<Typography variant='subtitle1' sx={{ m: 0, mb: 1.25, flex: 1 }}>
-							{study.subtitle}
+							{description}
 						</Typography>
 
 						<Box
@@ -176,7 +187,7 @@ export function FeatureShowcaseList({ studies, nested = false }: FeatureShowcase
 				);
 
 				return (
-					<FadeIn key={study.slug} delay={index * 30}>
+					<FadeIn key={study.slug} delay={(startIndex + index - 1) * 30}>
 						{viewedStudy ?
 							<Box
 								sx={{
@@ -193,7 +204,7 @@ export function FeatureShowcaseList({ studies, nested = false }: FeatureShowcase
 									component={Link}
 									to={`/case-studies/${study.slug}`}
 									id={`feature-${study.slug}`}
-									aria-label={`${study.title}: ${study.subtitle}. ${readingTime}. Read`}
+									aria-label={`${study.title}: ${description}. ${readingTime}. Read`}
 									sx={readInnerSx}>
 									{cardContent}
 								</Box>
@@ -202,7 +213,7 @@ export function FeatureShowcaseList({ studies, nested = false }: FeatureShowcase
 								component={Link}
 								to={`/case-studies/${study.slug}`}
 								id={`feature-${study.slug}`}
-								aria-label={`${study.title}: ${study.subtitle}. ${readingTime}. Unread`}
+								aria-label={`${study.title}: ${description}. ${readingTime}. Unread`}
 								sx={unreadCardSx}>
 								{cardContent}
 							</Box>
