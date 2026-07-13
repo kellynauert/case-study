@@ -8,7 +8,6 @@ import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { alpha } from '@mui/material/styles';
 import { getAllCaseStudies } from '../../lib/caseStudyRegistry';
 import type { TocHeading } from '../../lib/caseStudyTypes';
@@ -39,24 +38,53 @@ function scrollToSection(id: string) {
 	if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-type ReadStatus = 'unread' | 'progress' | 'done';
+/**
+ * reading-first / reading-again — active (pink filled circle)
+ * read — marked read, not active (check)
+ * unread — not read, not active (no mark)
+ */
+type ReadStatus = 'unread' | 'reading-first' | 'reading-again' | 'read';
 
-function ReadIndicator({
-	status,
-	read,
-	active,
-	size = 'md',
-}: {
-	status?: ReadStatus;
-	/** Study-level convenience — treated as done/unread when `status` is omitted. */
-	read?: boolean;
-	active?: boolean;
-	size?: 'sm' | 'md';
-}) {
-	const finalStatus: ReadStatus = status ?? (read ? 'done' : 'unread');
-	const iconSize = size === 'sm' ? '0.75rem' : '1rem';
-	const boxSize = size === 'sm' ? '0.875rem' : '1.25rem';
+/** Systems page rows — indicator column + title. */
+const studyItemGridSx = {
+	display: 'grid',
+	gridTemplateColumns: '1.25rem 1fr',
+	columnGap: 0.75,
+	pl: 2,
+	pr: 1,
+} as const;
 
+function ProgressDot({ size = 5, color = tokens.accentPink }: { size?: number; color?: string }) {
+	return (
+		<Box
+			sx={{
+				width: size,
+				height: size,
+				borderRadius: '50%',
+				bgcolor: color,
+				flexShrink: 0,
+			}}
+		/>
+	);
+}
+
+function ReadCheck({ size = '1rem', color = tokens.accentPink }: { size?: string; color?: string }) {
+	return (
+		<CheckIcon
+			sx={{
+				fontSize: size,
+				color,
+				'& path': {
+					stroke: 'currentColor',
+					strokeWidth: 0.75,
+					paintOrder: 'stroke fill',
+				},
+			}}
+		/>
+	);
+}
+
+function StudyReadIndicator({ read, active }: { read: boolean; active?: boolean }) {
 	return (
 		<Box
 			aria-hidden
@@ -64,51 +92,40 @@ function ReadIndicator({
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'center',
-				width: boxSize,
-				height: boxSize,
-				mt: size === 'sm' ? '0.1em' : '0.05em',
+				width: '100%',
+				height: '1.25rem',
 				flexShrink: 0,
 			}}>
-			{finalStatus === 'done' ?
-				<CheckIcon
-					sx={{
-						fontSize: iconSize,
-						color: active ? tokens.accent : alpha(tokens.accentPink, 0.65),
-						'& path': {
-							stroke: 'currentColor',
-							strokeWidth: 0.75,
-							paintOrder: 'stroke fill',
-						},
-					}}
-				/>
-			: finalStatus === 'progress' ?
-				<RadioButtonUncheckedIcon
-					sx={{
-						fontSize: iconSize,
-						color: active ? tokens.accent : alpha(tokens.accent, 0.55),
-					}}
-				/>
+			{read ?
+				<ReadCheck color={active ? tokens.accent : tokens.accentPink} />
+			: active ?
+				<ProgressDot size={6} />
 			:	null}
 		</Box>
 	);
 }
 
-function leafReadStatus(id: string, activeId: string, readIds: ReadonlySet<string>): ReadStatus {
-	if (readIds.has(id)) return 'done';
-	if (activeId === id) return 'progress';
-	return 'unread';
-}
-
-function sectionReadStatus(sectionId: string, children: TocHeading[], activeId: string, readIds: ReadonlySet<string>): ReadStatus {
-	if (children.length === 0) {
-		return leafReadStatus(sectionId, activeId, readIds);
-	}
-
-	const childStatuses = children.map((child) => leafReadStatus(child.id, activeId, readIds));
-	if (childStatuses.every((s) => s === 'done')) return 'done';
-	if (childStatuses.some((s) => s === 'progress')) return 'progress';
-	if (childStatuses.some((s) => s === 'done') || activeId === sectionId) return 'progress';
-	return 'unread';
+function SectionReadIndicator({ status }: { status: ReadStatus }) {
+	return (
+		<Box
+			aria-hidden
+			sx={{
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'center',
+				width: '100%',
+				height: '0.95em',
+				flexShrink: 0,
+			}}>
+			{status === 'read' ?
+				<ProgressDot size={2} />
+			: status === 'reading-again' ?
+				<ProgressDot size={2} color={tokens.accent} />
+			: status === 'reading-first' ?
+				<ProgressDot size={2} />
+			:	null}
+		</Box>
+	);
 }
 
 function groupHeadings(headings: TocHeading[]) {
@@ -127,13 +144,23 @@ function groupHeadings(headings: TocHeading[]) {
 	return groups;
 }
 
+/** Section is active while the section or any of its subsections is on screen. Multiple may be active. */
+function sectionReadStatus(sectionId: string, children: TocHeading[], activeIds: ReadonlySet<string>, readIds: ReadonlySet<string>): ReadStatus {
+	const isActive = activeIds.has(sectionId) || children.some((child) => activeIds.has(child.id));
+	const isRead = readIds.has(sectionId);
+	if (isActive && !isRead) return 'reading-first';
+	if (isActive && isRead) return 'reading-again';
+	if (isRead) return 'read';
+	return 'unread';
+}
+
 const navGroupLabelSx = {
 	display: 'block',
 	px: 1,
 	mb: 0.75,
 	mt: 0.25,
 	fontFamily: tokens.fontBody,
-	fontSize: '0.75rem',
+	fontSize: '0.85rem',
 	fontWeight: 600,
 	letterSpacing: '0.1em',
 	textTransform: 'uppercase',
@@ -157,7 +184,7 @@ function navLinkSx(active: boolean, level: 'primary' | 'sub' = 'primary') {
 			: 400,
 		color: active ? tokens.accent : tokens.textNav,
 		lineHeight: 1.45,
-		transition: 'color 200ms ease',
+		transition: 'color 200ms ease, border-color 200ms ease',
 		'&:hover': { color: tokens.accent },
 		'&:focus-visible': {
 			outline: `2px solid ${tokens.accent}`,
@@ -169,75 +196,18 @@ function navLinkSx(active: boolean, level: 'primary' | 'sub' = 'primary') {
 function PageSectionLinks({
 	slug,
 	headings,
-	activeId,
+	activeIds,
 	onNavigate,
 }: {
 	slug: string;
 	headings: TocHeading[];
-	activeId: string;
+	activeIds: string[];
 	onNavigate?: () => void;
 }) {
 	const viewed = useViewedSections(slug);
 	const readIds = new Set(viewed);
+	const activeIdSet = new Set(activeIds);
 	const groups = groupHeadings(headings);
-
-	const renderLink = (item: TocHeading, nested: boolean, status: ReadStatus) => {
-		const isActive = activeId === item.id;
-		return (
-			<Box
-				key={item.id}
-				component='a'
-				href={`#${item.id}`}
-				onClick={(e) => {
-					e.preventDefault();
-					scrollToSection(item.id);
-					onNavigate?.();
-				}}
-				aria-current={isActive ? 'location' : undefined}
-				aria-label={`${item.title}${
-					status === 'done' ? ', read'
-					: status === 'progress' ? ', in progress'
-					: ''
-				}`}
-				sx={{
-					display: 'grid',
-					gridTemplateColumns: nested ? '0.875rem 1fr' : '0.875rem 1fr',
-					gap: 0.5,
-					alignItems: 'start',
-					py: nested ? 0.35 : 0.45,
-					pl: nested ? 0.75 : 0.35,
-					pr: 0.5,
-					borderLeft: nested ? 'none' : `2px solid ${isActive ? tokens.accent : 'transparent'}`,
-					textDecoration: 'none',
-					'&:hover .page-toc-label': { color: tokens.accent },
-					'&:focus-visible': {
-						outline: `2px solid ${tokens.accent}`,
-						outlineOffset: 1,
-					},
-				}}>
-				<ReadIndicator status={status} active={isActive} size='sm' />
-				<Box
-					className='page-toc-label'
-					sx={{
-						fontFamily: tokens.fontBody,
-						fontSize: nested ? '0.6875rem' : '0.75rem',
-						fontWeight:
-							isActive ? 600
-							: nested ? 400
-							: 500,
-						letterSpacing: '0.01em',
-						lineHeight: 1.35,
-						color:
-							isActive ? tokens.accent
-							: nested ? tokens.textMuted
-							: tokens.textNav,
-						transition: 'color 160ms ease',
-					}}>
-					{item.title}
-				</Box>
-			</Box>
-		);
-	};
 
 	return (
 		<Box
@@ -247,30 +217,63 @@ function PageSectionLinks({
 				display: 'flex',
 				flexDirection: 'column',
 				gap: 0,
-				pl: '2.15rem',
+				ml: 6,
+				pl: 1.5,
 				pr: 0.5,
-				pb: 1,
 				mt: -0.15,
 			}}>
 			{groups.map((group, index) => {
-				const sectionStatus = sectionReadStatus(group.section.id, group.children, activeId, readIds);
-				const groupActive = group.children.some((item) => item.id === activeId) || activeId === group.section.id;
-
+				const status = sectionReadStatus(group.section.id, group.children, activeIdSet, readIds);
+				const isActive = status === 'reading-first' || status === 'reading-again';
 				return (
-					<Box key={group.section.id} sx={{ mt: index > 0 ? 0.75 : 0 }}>
-						{renderLink(group.section, false, sectionStatus)}
-						{group.children.length > 0 ?
-							<Box
-								sx={{
-									mt: 0.15,
-									mb: 0.15,
-									ml: 0.35,
-									pl: 0.25,
-									borderLeft: `2px solid ${groupActive ? alpha(tokens.accent, 0.45) : tokens.border}`,
-								}}>
-								{group.children.map((child) => renderLink(child, true, leafReadStatus(child.id, activeId, readIds)))}
-							</Box>
-						:	null}
+					<Box
+						key={group.section.id}
+						component='a'
+						href={`#${group.section.id}`}
+						onClick={(e) => {
+							e.preventDefault();
+							scrollToSection(group.section.id);
+							onNavigate?.();
+						}}
+						aria-current={isActive ? 'location' : undefined}
+						aria-label={`${group.section.title}${
+							status === 'read' ? ', read'
+							: status === 'reading-first' ? ', reading'
+							: status === 'reading-again' ? ', reading again'
+							: ''
+						}`}
+						sx={{
+							display: 'grid',
+							gridTemplateColumns: '0.55rem 1fr',
+							columnGap: 0.4,
+							alignItems: 'start',
+							py: 0.35,
+							mt: index > 0 ? 0.55 : 0,
+							pl: 0.75,
+							pr: 1,
+							textDecoration: 'none',
+							borderLeft: `1px solid ${isActive ? tokens.accent : 'transparent'}`,
+							transition: 'border-color 160ms ease',
+							'&:hover .page-toc-label': { color: tokens.accent },
+							'&:focus-visible': {
+								outline: `2px solid ${tokens.accent}`,
+								outlineOffset: 1,
+							},
+						}}>
+						<SectionReadIndicator status={status} />
+						<Box
+							className='page-toc-label'
+							sx={{
+								fontFamily: tokens.fontBody,
+								fontSize: '0.75rem',
+								fontWeight: isActive ? 600 : 400,
+								letterSpacing: '0.01em',
+								lineHeight: 1.35,
+								color: isActive ? tokens.accent : tokens.textNav,
+								transition: 'color 160ms ease',
+							}}>
+							{group.section.title}
+						</Box>
 					</Box>
 				);
 			})}
@@ -343,24 +346,20 @@ function NavContent({
 								aria-current={isActive ? 'page' : undefined}
 								aria-label={`${study.title}${read ? ', read' : ', unread'}`}
 								sx={{
-									display: 'grid',
-									gridTemplateColumns: '1.25rem 1fr',
-									gap: 0.75,
+									...studyItemGridSx,
 									alignItems: 'center',
 									py: showPageToc ? 0.75 : 1,
-									pl: 2,
-									pr: 1,
 									minHeight: showPageToc ? 36 : 44,
 									textDecoration: 'none',
 									borderLeft: `2px solid ${isActive ? tokens.accent : 'transparent'}`,
-									transition: 'color 200ms ease',
+									transition: 'color 200ms ease, border-color 200ms ease',
 									'&:hover': { '& .global-nav-title': { color: tokens.accent } },
 									'&:focus-visible': {
 										outline: `2px solid ${tokens.accent}`,
 										outlineOffset: 2,
 									},
 								}}>
-								<ReadIndicator read={read} active={isActive} />
+								<StudyReadIndicator read={read} active={isActive} />
 								<Typography
 									className='global-nav-title'
 									sx={{
@@ -378,7 +377,7 @@ function NavContent({
 								<PageSectionLinks
 									slug={pageToc.slug}
 									headings={pageToc.headings}
-									activeId={pageToc.activeId}
+									activeIds={pageToc.activeIds}
 									onNavigate={onNavigate}
 								/>
 							:	null}

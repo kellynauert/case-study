@@ -5,6 +5,9 @@ export function ScrollToTopOnNavigate() {
 	const { pathname } = useLocation();
 
 	useLayoutEffect(() => {
+		if ('scrollRestoration' in history) {
+			history.scrollRestoration = 'manual';
+		}
 		window.scrollTo(0, 0);
 	}, [pathname]);
 

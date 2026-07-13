@@ -39,8 +39,9 @@ export function getViewedShowcases(): string[] {
 
 export function markShowcaseViewed(slug: string) {
 	const current = readSlugs();
-	if (current.includes(slug)) return;
+	if (current.includes(slug)) return false;
 	writeSlugs([...current, slug]);
+	return true;
 }
 
 export function isShowcaseViewed(slug: string, viewed: readonly string[] = readSlugs()): boolean {

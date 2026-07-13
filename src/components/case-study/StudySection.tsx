@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import type { ReactNode } from 'react';
+import { SECTION_COMPLETE_ATTR } from '../../lib/viewedSections';
 import { scrollMarginTop } from '../../lib/styles';
 
 export const OUTLINE_ATTR = 'data-study-outline';
@@ -34,6 +35,20 @@ export function StudySection({ id, title, children }: StudySectionProps) {
 				<StudySectionHeading>{title}</StudySectionHeading>
 			:	null}
 			{children}
+			{title ?
+				<Box
+					component='span'
+					aria-hidden
+					{...{ [SECTION_COMPLETE_ATTR]: id }}
+					sx={{
+						display: 'block',
+						width: '100%',
+						height: 1,
+						mt: 0,
+						pointerEvents: 'none',
+					}}
+				/>
+			:	null}
 		</Box>
 	);
 }

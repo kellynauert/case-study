@@ -1,5 +1,8 @@
 const STORAGE_KEY = 'mathtrack-viewed-sections';
 
+/** End-of-section sentinel attr — intersection marks the section read. */
+export const SECTION_COMPLETE_ATTR = 'data-section-complete';
+
 type ViewedSectionsMap = Record<string, string[]>;
 
 let cachedRaw: string | null = null;

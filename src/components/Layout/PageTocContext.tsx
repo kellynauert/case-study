@@ -4,7 +4,7 @@ import type { TocHeading } from '../../lib/caseStudyTypes';
 export interface PageTocState {
 	slug: string;
 	headings: TocHeading[];
-	activeId: string;
+	activeIds: string[];
 }
 
 interface PageTocContextValue {

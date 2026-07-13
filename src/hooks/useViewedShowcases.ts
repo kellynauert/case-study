@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useSyncExternalStore } from 'react';
 import { getViewedShowcases, markShowcaseViewed } from '../lib/viewedShowcases';
 
@@ -28,10 +27,9 @@ export function useViewedShowcases() {
 	return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
-export function useMarkShowcaseViewed(slug: string | undefined) {
-	useEffect(() => {
-		if (!slug) return;
-		markShowcaseViewed(slug);
+/** Persist study-level completion and notify subscribers (nav / landing cards). */
+export function markShowcaseViewedAndNotify(slug: string) {
+	if (markShowcaseViewed(slug)) {
 		emitChange();
-	}, [slug]);
+	}
 }

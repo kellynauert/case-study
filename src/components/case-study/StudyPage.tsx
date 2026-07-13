@@ -2,13 +2,18 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useScrollSpy } from '../../hooks/useScrollSpy';
-import { useMarkSectionViewed } from '../../hooks/useViewedSections';
+import { useSectionReadTracker } from '../../hooks/useViewedSections';
 import type { StudySectionItem, TocHeading } from '../../lib/caseStudyTypes';
+import { scrollMarginTop } from '../../lib/styles';
+import { SECTION_COMPLETE_ATTR } from '../../lib/viewedSections';
 import { tokens } from '../../theme/theme';
 import { useSetPageToc } from '../Layout/PageTocContext';
 import { PageShell } from '../Layout/PageShell';
 import { OUTLINE_ATTR } from './StudySection';
 import { CaseStudyPager } from './CaseStudyPager';
+
+const INTRO_SECTION_ID = 'intro';
+const INTRO_OUTLINE_TITLE = 'Intro';
 
 interface StudyPageProps {
 	slug: string;
@@ -41,10 +46,10 @@ export function StudyPage({ slug, title, subtitle, intro, children }: StudyPageP
 	const contentRef = useRef<HTMLDivElement>(null);
 	const [sections, setSections] = useState<StudySectionItem[]>([]);
 	const sectionIds = useMemo(() => sections.map((section) => section.id), [sections]);
-	const activeId = useScrollSpy(sectionIds);
+	const activeIds = useScrollSpy(sectionIds);
 	const setPageToc = useSetPageToc();
 
-	useMarkSectionViewed(slug, activeId);
+	useSectionReadTracker(slug, contentRef, sections.length);
 
 	useLayoutEffect(() => {
 		const root = contentRef.current;
@@ -61,7 +66,7 @@ export function StudyPage({ slug, title, subtitle, intro, children }: StudyPageP
 			attributeFilter: ['id', OUTLINE_ATTR, 'data-outline-title'],
 		});
 		return () => observer.disconnect();
-	}, [slug, children]);
+	}, [slug, intro, children]);
 
 	useEffect(() => {
 		if (sections.length === 0) {
@@ -73,9 +78,9 @@ export function StudyPage({ slug, title, subtitle, intro, children }: StudyPageP
 			title: section.title,
 			level: section.level ?? 1,
 		}));
-		setPageToc({ slug, headings, activeId });
+		setPageToc({ slug, headings, activeIds });
 		return () => setPageToc(null);
-	}, [slug, sections, activeId, setPageToc]);
+	}, [slug, sections, activeIds, setPageToc]);
 
 	return (
 		<PageShell footer={<CaseStudyPager slug={slug} currentTitle={title} />}>
@@ -89,12 +94,33 @@ export function StudyPage({ slug, title, subtitle, intro, children }: StudyPageP
 							{subtitle}
 						</Typography>
 					)}
-					{intro &&
-						(typeof intro === 'string' ?
-							<Typography variant='body1' sx={{ maxWidth: tokens.layout.readableWidth }}>
-								{intro}
-							</Typography>
-						:	<Box sx={{ width: '100%', '& > p': { m: 0 } }}>{intro}</Box>)}
+					{intro ?
+						<Box
+							id={INTRO_SECTION_ID}
+							{...{
+								[OUTLINE_ATTR]: '1',
+								'data-outline-title': INTRO_OUTLINE_TITLE,
+							}}
+							sx={{ scrollMarginTop, width: '100%' }}>
+							{typeof intro === 'string' ?
+								<Typography variant='body1' sx={{ maxWidth: tokens.layout.readableWidth }}>
+									{intro}
+								</Typography>
+							:	<Box sx={{ width: '100%', '& > p': { m: 0 } }}>{intro}</Box>}
+							<Box
+								component='span'
+								aria-hidden
+								{...{ [SECTION_COMPLETE_ATTR]: INTRO_SECTION_ID }}
+								sx={{
+									display: 'block',
+									width: '100%',
+									height: 1,
+									mt: 0,
+									pointerEvents: 'none',
+								}}
+							/>
+						</Box>
+					:	null}
 				</Box>
 				{children}
 			</Box>
