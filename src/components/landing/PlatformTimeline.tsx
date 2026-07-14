@@ -139,7 +139,7 @@ export function PlatformTimeline() {
 					px: { xs: 0.5, sm: 0 },
 					py: { xs: 5, md: 7 },
 				}}>
-				<Box sx={{ position: 'relative', minWidth: { xs: 720, sm: 0 } }}>
+				<Box sx={{ position: 'relative', minWidth: { xs: 820, sm: 0 } }}>
 					<YearAxis />
 
 					<Box
@@ -189,6 +189,8 @@ function YearAxis() {
 							letterSpacing: '0.04em',
 							color: tokens.textSecondary,
 							lineHeight: 1.2,
+							// Last year is layout padding so ongoing bars have room — keep the column, hide the label.
+							visibility: year === YEAR_END ? 'hidden' : 'visible',
 						}}>
 						{year}
 					</Typography>

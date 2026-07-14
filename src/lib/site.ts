@@ -38,7 +38,7 @@ export const platformStory = {
 	],
 	timelineIntro:
 		'The platform has evolved through several major iterations; this portfolio highlights the two systems that are currently in production: the Learning Management Platform and the Apprenticeship Platform.',
-	timelineRange: { start: 2021, end: 2026 },
+	timelineRange: { start: 2021, end: 2027 },
 	timeline: [
 		{
 			title: 'Student assessment analytics',
@@ -107,20 +107,24 @@ export const site = {
 /** Tongue-in-cheek homepage aside */
 export const devNotes = {
 	heading: 'Dev Notes',
-	commentTitle: 'Dev Notes',
+	commentTitle: '',
+	introTitle: 'Personal Status Update',
 	items: [
 		{
 			status: 'info',
+			icon: 'gaming',
 			summary: 'Gaming backlog reduction is progressing well.',
 			notes: ['Recent schedule changes have improved throughput.'],
 		},
 		{
 			status: 'info',
+			icon: 'cat',
 			summary: 'Legacy cat naming convention remains in production.',
 			notes: ['Original architecture assumed coat color was a unique identifier.'],
 		},
 		{
 			status: 'warn',
+			icon: 'teacup',
 			summary: 'Teacup collection is scaling uncontrollably.',
 			notes: ['Issue acknowledged.'],
 		},
