@@ -11,7 +11,13 @@ interface StudyCellProps {
 
 export function StudyCell({ children, size = 12, sx }: StudyCellProps) {
 	return (
-		<Grid size={size} sx={{ minWidth: 0, ...sx }}>
+		<Grid
+			// @ts-ignore
+			size={{
+				xs: 12,
+				...(typeof size === 'object' ? size : { lg: size }),
+			}}
+			sx={{ minWidth: 0, ...sx }}>
 			{children}
 		</Grid>
 	);
