@@ -2,11 +2,16 @@ export const author = {
 	name: 'Kelly Nauert',
 	role: 'Design Engineer',
 	title: 'Sole Design Engineer',
+	aboutLead: '',
+	about: [
+		`I'm a Design Engineer with 13 years of experience spanning UX design and full-stack engineering.`,
+		`I enjoy working through complex problems and turning rough ideas into products people actually enjoy using. I'm equally comfortable working independently or collaborating with diverse teams in fast-paced environments.`,
+	],
 } as const;
 
 export const project = {
 	name: 'MathTrack',
-	fullName: 'An Education Operations Platform',
+	fullName: 'Evolving Platform Context',
 	years: '2020-2026',
 	disciplines: ['UX Design', 'Product Design', 'React', 'TypeScript', 'Node.js', 'PostgreSQL'],
 } as const;
@@ -31,29 +36,30 @@ export const platformStory = {
 	paragraphs: [
 		'MathTrack Institute is an education startup where I spent five years as the sole designer and engineer of its education operations platform. As the company evolved, I evolved the platform alongside it, creating, adapting, and retiring systems to support changing business needs.',
 	],
-	timelineIntro: 'The platform has evolved through several major phases:',
-	timelineRange: { start: 2020, end: 2027 },
+	timelineIntro:
+		'The platform has evolved through several major iterations; this portfolio highlights the two systems that are currently in production: the Learning Management Platform and the Apprenticeship Platform.',
+	timelineRange: { start: 2021, end: 2026 },
 	timeline: [
 		{
 			title: 'Student assessment analytics',
 			detail: 'Data importing and interactive visualizations of standardized assessment data',
-			start: 2020,
-			end: 2021,
+			start: 2021,
+			end: 2022,
 			phase: false,
 		},
 		{
 			title: 'Student Information System',
 			detail: 'Student and school mass data importing, attendance tracking, SIS integrations, school admin dashboards',
-			start: 2021,
-			end: 2022,
+			start: 2022,
+			end: 2024,
 			phase: true,
 		},
 
 		{
 			title: 'Employee Management System',
 			detail: 'Scheduling, time tracking, advisor assignments, and staff workflows',
-			start: 2022,
-			end: 2023,
+			start: 2023,
+			end: 2024,
 			phase: true,
 		},
 		{
@@ -71,7 +77,7 @@ export const platformStory = {
 			phase: true,
 		},
 	],
-	closing: ['This site highlights the two active systems: the Learning Management Platform and the Apprenticeship Platform.'],
+	closing: [] as string[],
 	continuation: [] as const,
 } as const;
 
@@ -93,8 +99,42 @@ export const caseStudyTeasers = {
 
 export const site = {
 	headline: 'Platform',
+	portfolioTitle: 'About Me',
 	tagline: 'Production systems from MathTrack',
 	intro: platformStory.paragraphs[0].trim(),
+} as const;
+
+/** Tongue-in-cheek homepage aside */
+export const devNotes = {
+	heading: 'Dev Notes',
+	commentTitle: 'Developer Notes',
+	items: [
+		{
+			status: 'ok',
+			summary: 'UX and engineering continue to coexist peacefully.',
+		},
+		{
+			status: 'ok',
+			summary: 'Extensive collection of metaphorical hats.',
+			notes: ['Selection determined dynamically based on project requirements.'],
+		},
+		{
+			status: 'warn',
+			summary: 'Legacy cat naming convention remains in production.',
+			notes: [
+				`Original implementation:`,
+				`- White Cat`,
+				`- Grey Cat`,
+				`- New Cat (also gray)`,
+				`		Alias standardization (Newbie vs. Noobie) remains unresolved.`,
+			],
+		},
+		{
+			status: 'warn',
+			summary: 'Teacup collection has entered an uncontrolled scaling phase.',
+			notes: ['Issue acknowledged. No mitigation planned.'],
+		},
+	],
 } as const;
 
 /** @deprecated Use author, project, or story instead */

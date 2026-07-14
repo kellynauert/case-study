@@ -158,7 +158,7 @@ const systemSubgroupLabelSx = {
 	mb: 0.5,
 	mt: 1.25,
 	fontFamily: tokens.fontBody,
-	fontSize: '0.75rem',
+	fontSize: '0.8125rem',
 	fontWeight: 600,
 	letterSpacing: '0.04em',
 	color: tokens.textMuted,

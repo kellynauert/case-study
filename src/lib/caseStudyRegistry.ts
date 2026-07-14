@@ -14,7 +14,7 @@ export const caseStudies = [
 			'Integrated curriculum authoring for college-credit courses: structure, item types, reuse, versioning, and locking across 160+ courses.',
 		years: '2020–Present',
 		order: 1,
-		readingMinutes: 4,
+		readingMinutes: 6,
 		component: CourseAuthoringPage,
 	},
 	{
@@ -26,7 +26,7 @@ export const caseStudies = [
 		summary: 'Consistent navigation, progress tracking, and grade visibility across every enrollment.',
 		years: '2020–Present',
 		order: 2,
-		readingMinutes: 2,
+		readingMinutes: 5,
 		component: UnifiedExperiencePage,
 	},
 	{
@@ -38,7 +38,7 @@ export const caseStudies = [
 			'Assignment-first grading queue, course and student gradebooks, automatic scoring, and AI-assisted review with instructor-controlled final grades.',
 		years: '2020–Present',
 		order: 3,
-		readingMinutes: 3,
+		readingMinutes: 4,
 		component: GradingPage,
 	},
 	{

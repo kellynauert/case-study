@@ -1,13 +1,16 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { getCaseStudiesBySystemGroup } from '../lib/caseStudyRegistry';
-import { platformStory } from '../lib/site';
-import { pagePaddingX, scrollMarginTop } from '../lib/styles';
+import { author, platformStory, site } from '../lib/site';
+import { scrollMarginTop } from '../lib/styles';
 import { SiteLayout } from '../components/Layout/SiteLayout';
+import { PageShell } from '../components/Layout/PageShell';
 import { SiteHeroIntro } from '../components/Layout/SiteHeroIntro';
+import { StudyGrid } from '../components/case-study/StudyGrid';
+import { StudyCell } from '../components/case-study/StudyCell';
 import { FeatureShowcaseList } from '../components/landing/FeatureShowcaseList';
 import { PlatformTimeline } from '../components/landing/PlatformTimeline';
-import { tokens } from '../theme/theme';
+import { DevNotes } from '../components/landing/DevNotes';
 
 export function LandingPage() {
 	const systemGroups = getCaseStudiesBySystemGroup();
@@ -24,12 +27,30 @@ export function LandingPage() {
 				<SiteHeroIntro />
 			</Box>
 
-			<Box
-				sx={{
-					maxWidth: tokens.layout.pageMaxWidth,
-					px: pagePaddingX,
-					pt: { xs: 0, md: 5 },
-				}}>
+			<PageShell>
+				<StudyGrid spacing={3} sx={{ mb: { xs: 4, md: 5 }, alignItems: 'stretch' }}>
+					<StudyCell size={{ xs: 12, md: 7 }}>
+						<Box sx={{ mb: 0, height: '100%' }}>
+							<Typography variant='pageTitle' sx={{ mb: 0.75 }}>
+								{site.portfolioTitle}
+							</Typography>
+							<Typography variant='pageSubtitle' sx={{ mb: 1.5 }}>
+								{author.aboutLead}
+							</Typography>
+							<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+								{author.about.map((paragraph) => (
+									<Typography key={paragraph.slice(0, 40)} variant='body1' sx={{ m: 0 }}>
+										{paragraph}
+									</Typography>
+								))}
+							</Box>
+						</Box>
+					</StudyCell>
+					<StudyCell size={{ xs: 12, md: 5 }}>
+						<DevNotes />
+					</StudyCell>
+				</StudyGrid>
+
 				<Box
 					component='section'
 					id='case-studies'
@@ -38,29 +59,33 @@ export function LandingPage() {
 						position: 'relative',
 						scrollMarginTop,
 					}}>
-					<Typography id='platform-story-heading' variant='pageTitle' sx={{ mb: { xs: 2, md: 2.5 } }}>
-						{platformStory.heading}
-					</Typography>
-
-					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 2 }}>
-						{platformStory.paragraphs.map((paragraph) => (
-							<Typography key={paragraph.slice(0, 40)} variant='body1' sx={{ m: 0 }}>
-								{paragraph}
+					<StudyGrid spacing={3} sx={{ mb: 0 }}>
+						<StudyCell size={{ xs: 12 }}>
+							<Typography id='platform-story-heading' variant='pageTitle' sx={{ mb: { xs: 2, md: 2.5 } }}>
+								{platformStory.heading}
 							</Typography>
-						))}
-					</Box>
 
-					<PlatformTimeline />
+							<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 2 }}>
+								{platformStory.paragraphs.map((paragraph) => (
+									<Typography key={paragraph.slice(0, 40)} variant='body1' sx={{ m: 0 }}>
+										{paragraph}
+									</Typography>
+								))}
+							</Box>
 
-					{platformStory.closing.map((paragraph) => (
-						<Typography key={paragraph.slice(0, 40)} variant='body1' sx={{ m: 0, mt: 2 }}>
-							{paragraph}
-						</Typography>
-					))}
+							<PlatformTimeline />
 
-					<Box sx={{ mt: { xs: 3, md: 3.5 }, display: 'flex', flexDirection: 'column', gap: { xs: 3, md: 3.5 } }}>
+							{platformStory.closing.map((paragraph) => (
+								<Typography key={paragraph.slice(0, 40)} variant='body1' sx={{ m: 0, mt: 2 }}>
+									{paragraph}
+								</Typography>
+							))}
+						</StudyCell>
+					</StudyGrid>
+
+					<StudyGrid spacing={3} sx={{ mt: { xs: 3, md: 3.5 }, mb: 0 }}>
 						{systemGroups.map(({ group, studies }, groupIndex) => (
-							<Box key={group}>
+							<StudyCell key={group} size={{ xs: 12 }}>
 								<Typography
 									component='h2'
 									variant='subsectionHeading'
@@ -71,11 +96,11 @@ export function LandingPage() {
 									{group}
 								</Typography>
 								<FeatureShowcaseList studies={studies} startIndex={groupStartIndexes[groupIndex]} />
-							</Box>
+							</StudyCell>
 						))}
-					</Box>
+					</StudyGrid>
 				</Box>
-			</Box>
+			</PageShell>
 		</SiteLayout>
 	);
 }

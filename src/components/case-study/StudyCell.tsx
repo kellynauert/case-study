@@ -9,7 +9,7 @@ interface StudyCellProps {
 	sx?: SxProps<Theme>;
 }
 
-export function StudyCell({ children, size = { xs: 12 }, sx }: StudyCellProps) {
+export function StudyCell({ children, size = 12, sx }: StudyCellProps) {
 	return (
 		<Grid size={size} sx={{ minWidth: 0, ...sx }}>
 			{children}

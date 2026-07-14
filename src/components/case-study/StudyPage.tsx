@@ -6,11 +6,11 @@ import { useSectionReadTracker } from '../../hooks/useViewedSections';
 import type { StudySectionItem, TocHeading } from '../../lib/caseStudyTypes';
 import { scrollMarginTop } from '../../lib/styles';
 import { SECTION_COMPLETE_ATTR } from '../../lib/viewedSections';
-import { tokens } from '../../theme/theme';
 import { useSetPageToc } from '../Layout/PageTocContext';
 import { PageShell } from '../Layout/PageShell';
 import { OUTLINE_ATTR } from './StudySection';
 import { CaseStudyPager } from './CaseStudyPager';
+import { StudyGrid } from './StudyGrid';
 
 const INTRO_SECTION_ID = 'intro';
 const INTRO_OUTLINE_TITLE = 'Intro';
@@ -90,7 +90,7 @@ export function StudyPage({ slug, title, subtitle, intro, children }: StudyPageP
 						{title}
 					</Typography>
 					{subtitle && (
-						<Typography variant='pageSubtitle' sx={{ maxWidth: tokens.layout.readableWidth, mb: intro ? 1.5 : 0 }}>
+						<Typography variant='pageSubtitle' sx={{ mb: intro ? 1.5 : 0 }}>
 							{subtitle}
 						</Typography>
 					)}
@@ -103,10 +103,11 @@ export function StudyPage({ slug, title, subtitle, intro, children }: StudyPageP
 							}}
 							sx={{ scrollMarginTop, width: '100%' }}>
 							{typeof intro === 'string' ?
-								<Typography variant='body1' sx={{ maxWidth: tokens.layout.readableWidth }}>
+								<Typography variant='body1'>{intro}</Typography>
+							:	<StudyGrid spacing={2} sx={{ mb: 0 }}>
 									{intro}
-								</Typography>
-							:	<Box sx={{ width: '100%', '& > p': { m: 0 } }}>{intro}</Box>}
+								</StudyGrid>
+							}
 							<Box
 								component='span'
 								aria-hidden
@@ -122,7 +123,9 @@ export function StudyPage({ slug, title, subtitle, intro, children }: StudyPageP
 						</Box>
 					:	null}
 				</Box>
-				{children}
+				<StudyGrid spacing={0} columnSpacing={{ xs: 3, md: 5 }} sx={{ mb: 0 }}>
+					{children}
+				</StudyGrid>
 			</Box>
 		</PageShell>
 	);

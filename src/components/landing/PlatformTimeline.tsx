@@ -1,6 +1,15 @@
+import { useState, type ComponentType } from 'react';
 import Box from '@mui/material/Box';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { alpha } from '@mui/material/styles';
+import BarChartRoundedIcon from '@mui/icons-material/BarChartRounded';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
+import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
+import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
+import type { SvgIconProps } from '@mui/material/SvgIcon';
 import { platformStory } from '../../lib/site';
 import { tokens } from '../../theme/theme';
 
@@ -11,9 +20,13 @@ const YEAR_END = platformStory.timelineRange.end;
 const YEAR_SPAN = YEAR_END - YEAR_START + 1;
 const YEARS = Array.from({ length: YEAR_SPAN }, (_, i) => YEAR_START + i);
 
-/** Minimum label width so title + detail can wrap without clipping. */
-const MIN_LABEL_PCT = 38;
-const ROW_PX = { xs: 1.5, sm: 2 } as const;
+const LANE_H = 58;
+const BAR_H = 42;
+/** Visual lanes for the cascading flow (matches reference rhythm). */
+const LANES = [0, 1, 2, 0, 1] as const;
+const LANE_COUNT = Math.max(...LANES) + 1;
+
+const ITEM_ICONS: ComponentType<SvgIconProps>[] = [BarChartRoundedIcon, PersonRoundedIcon, WorkRoundedIcon, SchoolRoundedIcon, GroupsRoundedIcon];
 
 function formatRange(item: TimelineItem): string {
 	if (item.end === null) return `${item.start}–Present`;
@@ -26,26 +39,92 @@ function yearLeftPct(year: number) {
 
 function barPlacement(item: TimelineItem) {
 	const ongoing = item.end === null;
-	const endExclusive = ongoing ? YEAR_END + 1 : item.end + 1;
-	const startPct = yearLeftPct(item.start);
-	const endPct = yearLeftPct(endExclusive);
-	const durationPct = endPct - startPct;
+	const left = yearLeftPct(item.start);
+	const width = ongoing ? 100 - left : Math.max(yearLeftPct(item.end + 1) - left, 5);
+	return { ongoing, left, width, end: left + width };
+}
 
-	let labelLeft = startPct;
-	let labelWidth = ongoing ? 100 - startPct : Math.max(durationPct, MIN_LABEL_PCT);
+function barColor(item: TimelineItem) {
+	return item.end === null ? tokens.accentPink : tokens.accent;
+}
 
-	if (!ongoing && labelLeft + labelWidth > 100) {
-		labelLeft = Math.max(0, 100 - labelWidth);
-	}
+function laneTop(lane: number) {
+	return lane * LANE_H + (LANE_H - BAR_H) / 2;
+}
 
-	return {
-		ongoing,
-		labelLeft: `${labelLeft}%`,
-		labelWidth: `${labelWidth}%`,
-	};
+function DetailPopover({ item, range }: { item: TimelineItem; range: string }) {
+	return (
+		<Box
+			sx={{
+				width: 260,
+				borderRadius: '1.15rem',
+				border: `1.5px solid ${alpha(tokens.accentPink, 0.22)}`,
+				background: `linear-gradient(160deg, #FDF2F8 0%, #F5F3FF 45%, #F8F5FF 100%)`,
+				overflow: 'hidden',
+				boxShadow: `0 12px 28px ${alpha(tokens.textPrimary, 0.16)}`,
+			}}>
+			<Box
+				sx={{
+					display: 'flex',
+					alignItems: 'center',
+					gap: 0.85,
+					px: 1.25,
+					py: 0.8,
+					borderBottom: `1px dashed ${alpha(tokens.accent, 0.18)}`,
+					bgcolor: tokens.surface,
+				}}>
+				<Box sx={{ display: 'flex', gap: 0.55 }} aria-hidden>
+					{(
+						[
+							{ color: tokens.accentPink, label: 'close' },
+							{ color: '#EAB308', label: 'minimize' },
+							{ color: '#22C55E', label: 'maximize' },
+						] as const
+					).map((dot) => (
+						<Box
+							key={dot.label}
+							sx={{
+								width: 8,
+								height: 8,
+								borderRadius: '50%',
+								bgcolor: dot.color,
+								border: `1px solid ${alpha('#000', 0.06)}`,
+							}}
+						/>
+					))}
+				</Box>
+				<Typography variant='devNotesTitle' sx={{ m: 0, flex: 1, minWidth: 0 }} noWrap>
+					{item.title.toLowerCase()}
+				</Typography>
+			</Box>
+
+			<Box sx={{ px: 1.15, py: 1.15, bgcolor: 'transparent' }}>
+				<Box
+					sx={{
+						px: 1,
+						py: 0.75,
+						borderRadius: '0.85rem',
+						bgcolor: tokens.surface,
+						border: `1px solid ${alpha(tokens.accent, 0.22)}`,
+					}}>
+					<Typography variant='devNotesMeta' sx={{ m: 0, mb: 0.4, color: tokens.accent, fontWeight: 700 }}>
+						{range}
+					</Typography>
+					<Typography variant='devNotesBody' sx={{ m: 0 }}>
+						{item.detail}
+					</Typography>
+				</Box>
+			</Box>
+		</Box>
+	);
 }
 
 export function PlatformTimeline() {
+	const items = platformStory.timeline;
+	const [activeTitle, setActiveTitle] = useState<string | null>(null);
+
+	const placements = items.map(barPlacement);
+
 	return (
 		<Box aria-label='Platform evolution'>
 			<Typography variant='body1' sx={{ m: 0, mb: 1.75 }}>
@@ -58,24 +137,29 @@ export function PlatformTimeline() {
 					WebkitOverflowScrolling: 'touch',
 					mx: { xs: -0.5, sm: 0 },
 					px: { xs: 0.5, sm: 0 },
-					pb: { xs: 0.5, sm: 0 },
+					py: { xs: 5, md: 7 },
 				}}>
-				<Box
-					sx={{
-						minWidth: { xs: 640, sm: 0 },
-						border: `1px solid ${tokens.border}`,
-						borderRadius: 1.25,
-						bgcolor: tokens.surface,
-						overflow: 'hidden',
-					}}>
+				<Box sx={{ position: 'relative', minWidth: { xs: 720, sm: 0 } }}>
 					<YearAxis />
-					<Box component='ol' sx={{ m: 0, p: 0, listStyle: 'none' }}>
-						{platformStory.timeline.map((item, index) => (
-							<TimelineRow
+
+					<Box
+						sx={{
+							position: 'relative',
+							height: LANE_COUNT * LANE_H,
+							mt: 0.5,
+						}}>
+						<GuideLines />
+
+						{items.map((item, index) => (
+							<FlowBar
 								key={item.title}
 								item={item}
-								color={item.end === null ? tokens.accentPink : tokens.accent}
-								isLast={index === platformStory.timeline.length - 1}
+								placement={placements[index]}
+								lane={LANES[index] ?? 0}
+								color={barColor(item)}
+								Icon={ITEM_ICONS[index] ?? BarChartRoundedIcon}
+								activeTitle={activeTitle}
+								setActiveTitle={setActiveTitle}
 							/>
 						))}
 					</Box>
@@ -87,82 +171,63 @@ export function PlatformTimeline() {
 
 function YearAxis() {
 	return (
-		<Box
-			sx={{
-				display: 'grid',
-				gridTemplateColumns: `repeat(${YEAR_SPAN}, minmax(0, 1fr))`,
-				px: ROW_PX,
-				py: 1.25,
-				borderBottom: `1px solid ${tokens.border}`,
-				bgcolor: tokens.surfaceRaised,
-				position: 'relative',
-			}}>
-			{YEARS.map((year) =>
-				year === YEAR_END ?
-					<Box key={year} />
-				:	<Typography
+		<Box sx={{ position: 'relative', pb: 1.25 }}>
+			<Box
+				sx={{
+					display: 'grid',
+					gridTemplateColumns: `repeat(${YEAR_SPAN}, minmax(0, 1fr))`,
+					mb: 1,
+				}}>
+				{YEARS.map((year) => (
+					<Typography
 						key={year}
 						component='span'
 						sx={{
 							m: 0,
-							fontSize: { xs: '0.7rem', sm: '0.75rem' },
+							fontSize: { xs: '0.6875rem', sm: '0.75rem' },
 							fontWeight: 600,
 							letterSpacing: '0.04em',
-							color: tokens.textMuted,
+							color: tokens.textSecondary,
+							lineHeight: 1.2,
 						}}>
 						{year}
 					</Typography>
-			)}
-			<Typography
-				component='span'
-				sx={{
-					position: 'absolute',
-					right: ROW_PX,
-					top: '50%',
-					transform: 'translateY(-50%)',
-					m: 0,
-					fontSize: { xs: '0.7rem', sm: '0.75rem' },
-					fontWeight: 600,
-					letterSpacing: '0.04em',
-					color: tokens.textMuted,
-				}}>
-				{YEAR_END}+
-			</Typography>
-		</Box>
-	);
-}
+				))}
+			</Box>
 
-function TimelineRow({ item, color, isLast }: { item: TimelineItem; color: string; isLast: boolean }) {
-	const { ongoing, labelLeft, labelWidth } = barPlacement(item);
-	const range = formatRange(item);
-
-	return (
-		<Box
-			component='li'
-			sx={{
-				position: 'relative',
-				px: ROW_PX,
-				py: 1.5,
-				borderBottom: isLast ? 'none' : `1px solid ${tokens.border}`,
-			}}>
-			<GuideLines />
-
-			<Box
-				title={range}
-				sx={{
-					position: 'relative',
-					ml: labelLeft,
-					// Ongoing bars keep the same row padding as everyone else, then bleed
-					// into the right gutter so they meet the chart edge.
-					width: ongoing ? { xs: `calc(100% - ${labelLeft} + 12px)`, sm: `calc(100% - ${labelLeft} + 16px)` } : labelWidth,
-					mr: ongoing ? { xs: -1.5, sm: -2 } : 0,
-					bgcolor: color,
-					px: { xs: 1.5, sm: 2 },
-					py: 1.25,
-					borderRadius: ongoing ? '10px 0 0 10px' : '10px',
-					boxShadow: `inset 0 0 0 1px ${alpha('#000', 0.06)}`,
-				}}>
-				<BarCopy item={item} />
+			<Box sx={{ position: 'relative', height: 10 }}>
+				<Box
+					aria-hidden
+					sx={{
+						position: 'absolute',
+						left: 0,
+						right: 0,
+						top: '50%',
+						height: 2,
+						mt: '-1px',
+						borderRadius: 1,
+						bgcolor: alpha(tokens.textSecondary, 0.14),
+					}}
+				/>
+				{YEARS.map((year) => (
+					<Box
+						key={year}
+						aria-hidden
+						sx={{
+							position: 'absolute',
+							left: `${yearLeftPct(year)}%`,
+							top: '50%',
+							width: 8,
+							height: 8,
+							ml: '-4px',
+							mt: '-4px',
+							borderRadius: '50%',
+							bgcolor: tokens.surface,
+							border: `2px solid ${alpha(tokens.textSecondary, 0.35)}`,
+							zIndex: 1,
+						}}
+					/>
+				))}
 			</Box>
 		</Box>
 	);
@@ -170,60 +235,168 @@ function TimelineRow({ item, color, isLast }: { item: TimelineItem; color: strin
 
 function GuideLines() {
 	return (
-		<Box
-			aria-hidden
-			sx={{
-				position: 'absolute',
-				inset: 0,
-				px: ROW_PX,
-				pointerEvents: 'none',
-			}}>
-			<Box sx={{ position: 'relative', height: '100%' }}>
-				{YEARS.map((year) =>
-					year === YEAR_START || year === YEAR_END ?
-						null
-					:	<Box
-							key={year}
-							sx={{
-								position: 'absolute',
-								top: 0,
-								bottom: 0,
-								left: `${yearLeftPct(year)}%`,
-								borderLeft: `1px solid ${alpha(tokens.borderHover, 0.45)}`,
-							}}
-						/>
-				)}
-			</Box>
+		<Box aria-hidden sx={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+			{YEARS.map((year) => (
+				<Box
+					key={year}
+					sx={{
+						position: 'absolute',
+						top: 0,
+						bottom: 0,
+						left: `${yearLeftPct(year)}%`,
+						borderLeft: `1px dashed ${alpha(tokens.accent, 0.16)}`,
+					}}
+				/>
+			))}
 		</Box>
 	);
 }
 
-function BarCopy({ item }: { item: TimelineItem }) {
+function FlowBar({
+	item,
+	placement,
+	lane,
+	color,
+	Icon,
+	activeTitle,
+	setActiveTitle,
+}: {
+	item: TimelineItem;
+	placement: ReturnType<typeof barPlacement>;
+	lane: number;
+	color: string;
+	Icon: ComponentType<SvgIconProps>;
+	activeTitle: string | null;
+	setActiveTitle: (title: string | null) => void;
+}) {
+	const range = formatRange(item);
+	const [hovered, setHovered] = useState(false);
+	const [pinned, setPinned] = useState(false);
+	const open = hovered || pinned;
+	const isActive = activeTitle === item.title;
+	const dimmed = activeTitle !== null && !isActive;
+
 	return (
-		<>
-			<Typography
-				component='p'
-				sx={{
-					m: 0,
-					fontSize: { xs: '0.8125rem', sm: '0.9375rem' },
-					fontWeight: 700,
-					lineHeight: 1.3,
-					color: '#fff',
+		<ClickAwayListener
+			onClickAway={() => {
+				setPinned(false);
+				if (!hovered) setActiveTitle(null);
+			}}>
+			<Tooltip
+				open={open}
+				disableHoverListener
+				disableFocusListener
+				disableTouchListener
+				title={<DetailPopover item={item} range={range} />}
+				placement='top'
+				slotProps={{
+					tooltip: {
+						sx: {
+							p: 0,
+							bgcolor: 'transparent',
+							boxShadow: 'none',
+							maxWidth: 'none',
+						},
+					},
+					popper: {
+						sx: {
+							'& .MuiTooltip-tooltip': {
+								p: 0,
+								bgcolor: 'transparent',
+								boxShadow: 'none',
+							},
+						},
+					},
 				}}>
-				{item.title}
-			</Typography>
-			<Typography
-				component='p'
-				sx={{
-					m: 0,
-					mt: 0.4,
-					fontSize: { xs: '0.75rem', sm: '0.8125rem' },
-					fontWeight: 500,
-					lineHeight: 1.45,
-					color: alpha('#fff', 0.92),
-				}}>
-				{item.detail}
-			</Typography>
-		</>
+				<Box
+					component='button'
+					type='button'
+					aria-label={`${item.title}, ${range}. ${item.detail}`}
+					aria-expanded={open}
+					onMouseEnter={() => {
+						setHovered(true);
+						setActiveTitle(item.title);
+					}}
+					onMouseLeave={() => {
+						setHovered(false);
+						if (!pinned) setActiveTitle(null);
+					}}
+					onFocus={() => {
+						setHovered(true);
+						setActiveTitle(item.title);
+					}}
+					onBlur={() => {
+						setHovered(false);
+						if (!pinned) setActiveTitle(null);
+					}}
+					onClick={() => {
+						setPinned((value) => {
+							const next = !value;
+							setActiveTitle(next ? item.title : null);
+							return next;
+						});
+					}}
+					sx={{
+						position: 'absolute',
+						top: laneTop(lane),
+						left: `${placement.left}%`,
+						width: `${placement.width}%`,
+						height: BAR_H,
+						zIndex: isActive ? 3 : 2,
+						display: 'flex',
+						alignItems: 'center',
+						gap: 1,
+						pl: 0.85,
+						pr: 1,
+						m: 0,
+						border: 'none',
+						borderRadius: placement.ongoing ? '999px 0 0 999px' : '999px',
+						bgcolor: color,
+						opacity: dimmed ? 0.78 : 1,
+						cursor: 'pointer',
+						textAlign: 'left',
+						font: 'inherit',
+						appearance: 'none',
+						overflow: 'hidden',
+						transition: 'opacity 280ms ease, filter 280ms ease',
+						'&:hover': { filter: 'brightness(1.02)' },
+						'&:focus-visible': {
+							outline: `2px solid ${tokens.textPrimary}`,
+							outlineOffset: 2,
+						},
+					}}>
+					<Box
+						aria-hidden
+						sx={{
+							width: 26,
+							height: 26,
+							flexShrink: 0,
+							borderRadius: '50%',
+							display: 'grid',
+							placeItems: 'center',
+							bgcolor: '#fff',
+							color,
+						}}>
+						<Icon sx={{ fontSize: 15 }} />
+					</Box>
+					<Typography
+						component='span'
+						sx={{
+							m: 0,
+							minWidth: 0,
+							fontFamily: tokens.fontBody,
+							fontSize: { xs: '0.6875rem', sm: '0.75rem' },
+							fontWeight: 700,
+							lineHeight: 1.15,
+							color: '#fff',
+							whiteSpace: 'normal',
+							overflowWrap: 'break-word',
+							hyphens: 'auto',
+						}}>
+						{item.title}
+					</Typography>
+				</Box>
+			</Tooltip>
+		</ClickAwayListener>
 	);
 }

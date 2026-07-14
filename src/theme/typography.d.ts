@@ -9,6 +9,10 @@ declare module '@mui/material/styles' {
 		displayTitle: CSSObject;
 		pageTitle: CSSObject;
 		pageSubtitle: CSSObject;
+		devNotesTitle: CSSObject;
+		devNotesBody: CSSObject;
+		devNotesMeta: CSSObject;
+		devNotesMark: CSSObject;
 	}
 
 	interface TypographyVariantsOptions {
@@ -19,6 +23,10 @@ declare module '@mui/material/styles' {
 		displayTitle?: CSSObject;
 		pageTitle?: CSSObject;
 		pageSubtitle?: CSSObject;
+		devNotesTitle?: CSSObject;
+		devNotesBody?: CSSObject;
+		devNotesMeta?: CSSObject;
+		devNotesMark?: CSSObject;
 	}
 }
 
@@ -31,6 +39,10 @@ declare module '@mui/material/Typography' {
 		displayTitle: true;
 		pageTitle: true;
 		pageSubtitle: true;
+		devNotesTitle: true;
+		devNotesBody: true;
+		devNotesMeta: true;
+		devNotesMark: true;
 	}
 }
 

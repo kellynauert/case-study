@@ -26,6 +26,7 @@ export const shadowElevated = 'none';
 export const shadowImage = 'none';
 export const fontDisplay = '"Fraunces", Georgia, "Times New Roman", serif';
 export const fontBody = '"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+export const fontMono = '"Kode Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
 
 export const layout = {
 	navWidth: 360,
@@ -161,6 +162,37 @@ export const theme = createTheme({
 			color: textMuted,
 			fontWeight: 500,
 		},
+		devNotesTitle: {
+			fontFamily: fontBody,
+			fontSize: '0.75rem',
+			fontWeight: 600,
+			letterSpacing: '0.02em',
+			lineHeight: 1.3,
+			color: accentPink,
+		},
+		devNotesBody: {
+			fontFamily: fontBody,
+			fontSize: '0.85rem',
+			fontWeight: 500,
+			lineHeight: 1.45,
+			color: textPrimary,
+		},
+		devNotesMeta: {
+			fontFamily: fontBody,
+			fontSize: '0.75rem',
+			fontWeight: 400,
+			lineHeight: 1.45,
+			color: textSecondary,
+			whiteSpace: 'pre-wrap',
+			tabSize: 2,
+		},
+		devNotesMark: {
+			fontFamily: fontBody,
+			fontSize: '0.75rem',
+			fontWeight: 700,
+			lineHeight: 1.45,
+			textAlign: 'center',
+		},
 	},
 	shape: { borderRadius: 8 },
 	components: {
@@ -185,6 +217,10 @@ export const theme = createTheme({
 					displayTitle: 'h3',
 					pageTitle: 'h1',
 					pageSubtitle: 'p',
+					devNotesTitle: 'p',
+					devNotesBody: 'p',
+					devNotesMeta: 'p',
+					devNotesMark: 'span',
 				},
 			},
 		},
@@ -212,5 +248,6 @@ export const tokens = {
 	shadowImage,
 	fontDisplay,
 	fontBody,
+	fontMono,
 	layout,
 };
