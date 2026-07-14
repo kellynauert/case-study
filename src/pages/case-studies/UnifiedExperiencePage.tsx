@@ -132,12 +132,12 @@ export function UnifiedExperiencePage() {
 					the application. Whether students are reading content, completing assignments, uploading files, or participating in discussions,
 					every interaction follows the same design language.
 				</StudyBody>
-				<StudyImage size={12} src='unified-experience/file-upload.jpg' alt='Grading feedback' />
+				<StudyImage size={10} src='unified-experience/quiz_retake.gif' alt='Grading feedback' />
 			</StudySection>
 
-			<StudySection id='feedback' size={6}>
-				<StudySectionTitle id='feedback' title='Feedback' />
-				<StudyBody size={12}>
+			<StudySection id='feedback' size={12}>
+				<StudyBody size={4}>
+					<StudySectionTitle id='feedback' title='Feedback' />
 					Students receive feedback throughout the learning experience without leaving the Page where work was completed.
 					<br />
 					<br />
@@ -152,11 +152,12 @@ export function UnifiedExperiencePage() {
 					Because instructors grade entire Pages rather than individual Items, students review feedback in the same context in which the
 					work was originally completed.
 				</StudyBody>
+				<StudyImage size={8} src='unified-experience/passed-quiz.jpg' alt='Passed quiz' />
 			</StudySection>
 
-			<StudySection id='communication' size={6}>
-				<StudySectionTitle id='communication' title='Communication' />
-				<StudyBody size={12}>
+			<StudySection id='communication' size={12}>
+				<StudyBody size={7}>
+					<StudySectionTitle id='communication' title='Communication' />
 					Every Page includes a built-in conversation between students and graders.
 					<br />
 					<br />
@@ -166,23 +167,26 @@ export function UnifiedExperiencePage() {
 					<br />
 					<br />
 					The messaging system supports:
+					<StudyBulletList
+						size={12}
+						items={['Conversations between students and graders', '@mentions', 'Emoji reactions', 'Replies to Discussion Items']}
+					/>
+					Students also receive notifications when:
+					<StudyBulletList
+						size={12}
+						items={[
+							'A Page has been graded',
+							'A graded Page has been updated',
+							'They are mentioned in a comment',
+							'Someone replies to one of their Discussion Items',
+							'A grader comments on one of their submitted Pages',
+						]}
+					/>
 				</StudyBody>
-				<StudyBulletList
-					size={12}
-					items={['Conversations between students and graders', '@mentions', 'Emoji reactions', 'Replies to Discussion Items']}
-				/>
-				<StudyBody size={12}>Students also receive notifications when:</StudyBody>
-				<StudyBulletList
-					size={12}
-					items={[
-						'A Page has been graded',
-						'A graded Page has been updated',
-						'They are mentioned in a comment',
-						'Someone replies to one of their Discussion Items',
-						'A grader comments on one of their submitted Pages',
-					]}
-				/>
-				<StudyImage size={12} src='unified-experience/notifications.gif' alt='Page conversation and notifications' maxWidth={441} />
+				<StudyBody size={5}>
+					<StudyImage size={12} src='unified-experience/notifications.gif' alt='Page conversation and notifications' maxWidth={441} />
+					<StudyImage size={12} src='unified-experience/submission-issues.png' alt='Submission issues' maxWidth={1200} />
+				</StudyBody>
 			</StudySection>
 		</StudyPage>
 	);

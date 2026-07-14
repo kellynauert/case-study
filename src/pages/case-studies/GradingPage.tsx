@@ -55,7 +55,7 @@ export function GradingPage() {
 			</StudySection>
 
 			<StudySection id='gradebooks' size={12}>
-				<StudyBody size={4}>
+				<StudyBody size={5}>
 					<StudySectionTitle id='gradebooks' title='Gradebooks' />
 					The platform provides two gradebook views designed around different grading workflows.
 					<br />
@@ -74,8 +74,8 @@ export function GradingPage() {
 					<br />
 					<br />
 				</StudyBody>
-				<StudyImage size={8} src='grading/course_gradebook.gif' alt='Course gradebook' maxWidth={828} />
-				<StudyImage size={12} src='grading/student_gradebook.gif' alt='Student gradebook' maxWidth={1223} />{' '}
+				<StudyImage size={7} src='grading/course_gradebook.gif' alt='Course gradebook' maxWidth={700} />
+				<StudyImage size={12} src='grading/student_gradebook.gif' alt='Student gradebook' maxWidth={900} />{' '}
 			</StudySection>
 
 			<StudySection id='scoring' size={12}>

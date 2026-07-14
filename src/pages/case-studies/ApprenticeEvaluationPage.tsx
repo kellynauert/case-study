@@ -56,6 +56,7 @@ export function ApprenticeEvaluationPage() {
 					accessing the tracker while signed out, mentors acknowledge a privacy notice and identify themselves before submitting ratings.
 					Every submission is recorded in an audit trail to preserve reviewer history.
 				</StudyBody>
+				<StudyImage size={12} src='apprentice-evaluation/ferpa.png' alt='FERPA notice' maxWidth={1107} />
 			</StudySection>
 			<StudyImage size={8} src='apprentice-evaluation/evaluation_rating.gif' alt='Apprentice progress dashboard' maxWidth={1107} />
 			<StudySection id='reflection-journals' size={12}>

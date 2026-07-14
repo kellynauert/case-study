@@ -1,9 +1,28 @@
 import { useEffect, useState } from 'react';
 import { whenScrollAtTop, type ScrollTopWaitSignal } from '../lib/whenScrollAtTop';
 
+function idsEqual(a: string[], b: string[]) {
+	return a.length === b.length && a.every((id, i) => id === b[i]);
+}
+
 /**
- * Returns every section id whose element currently intersects the viewport
- * (below the sticky offset). Multiple sections can be active at once.
+ * Last outline heading whose top has scrolled past the sticky offset.
+ * Keeps a highlight while reading a long section whose title has left the viewport.
+ */
+function lastPassedId(sectionIds: string[], offset: number): string | null {
+	let passed: string | null = null;
+	for (const id of sectionIds) {
+		const el = document.getElementById(id);
+		if (!el) continue;
+		if (el.getBoundingClientRect().top <= offset) passed = id;
+	}
+	return passed;
+}
+
+/**
+ * Returns active section ids for the page TOC.
+ * Prefer headings currently intersecting below the sticky offset; if none,
+ * keep the last heading that has scrolled past so the nav highlight never clears.
  * Waits until scroll is at the top so a previous page's Y can't false-highlight.
  */
 export function useScrollSpy(sectionIds: string[], offset = 120) {
@@ -25,7 +44,13 @@ export function useScrollSpy(sectionIds: string[], offset = 120) {
 			if (elements.length === 0) return;
 
 			const sync = () => {
-				setActiveIds(sectionIds.filter((id) => visible.has(id)));
+				const intersecting = sectionIds.filter((id) => visible.has(id));
+				let next = intersecting;
+				if (next.length === 0) {
+					const fallback = lastPassedId(sectionIds, offset) ?? sectionIds[0] ?? null;
+					next = fallback ? [fallback] : [];
+				}
+				setActiveIds((prev) => (idsEqual(prev, next) ? prev : next));
 			};
 
 			observer = new IntersectionObserver(
@@ -52,6 +77,14 @@ export function useScrollSpy(sectionIds: string[], offset = 120) {
 			);
 
 			elements.forEach((el) => observer!.observe(el));
+			sync();
+
+			window.addEventListener('scroll', sync, { passive: true });
+			window.addEventListener('resize', sync);
+			signal.onCancel = () => {
+				window.removeEventListener('scroll', sync);
+				window.removeEventListener('resize', sync);
+			};
 		});
 
 		return () => {
