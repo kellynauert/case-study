@@ -22,16 +22,7 @@ interface StudyImageProps {
 	size?: GridProps['size'];
 }
 
-export function StudyImage({
-	src,
-	alt,
-	gallery,
-	galleryIndex = 0,
-	align = 'start',
-	maxWidth,
-	cols = 12,
-	size,
-}: StudyImageProps) {
+export function StudyImage({ src, alt, gallery, galleryIndex = 0, align = 'start', maxWidth, cols = 12, size }: StudyImageProps) {
 	const { open } = useLightbox();
 	const resolved = imageSrc(src);
 	const label = alt ?? src;
@@ -69,7 +60,7 @@ export function StudyImage({
 					m: 0,
 					p: 0,
 					border: `1px solid ${tokens.border}`,
-					borderRadius: 2,
+					borderRadius: 1,
 					overflow: 'hidden',
 					cursor: 'zoom-in',
 					bgcolor: tokens.surfaceRaised,

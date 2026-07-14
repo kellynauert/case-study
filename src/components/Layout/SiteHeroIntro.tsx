@@ -29,7 +29,7 @@ const secondaryButtonSx = {
 	'&:focus-visible': {
 		outline: `2px solid ${tokens.accentPink}`,
 		outlineOffset: 3,
-		borderRadius: 0.5,
+		borderRadius: 1,
 	},
 } as const;
 

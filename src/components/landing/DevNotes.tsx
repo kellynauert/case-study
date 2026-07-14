@@ -7,6 +7,12 @@ import { tokens } from '../../theme/theme';
 const statusMark = {
 	ok: {
 		symbol: '✓',
+		color: tokens.green,
+		wash: alpha(tokens.green, 0.1),
+		border: alpha(tokens.green, 0.22),
+	},
+	info: {
+		symbol: 'ℹ',
 		color: tokens.accent,
 		wash: alpha(tokens.accent, 0.1),
 		border: alpha(tokens.accent, 0.22),
@@ -29,9 +35,9 @@ export function DevNotes() {
 				height: '100%',
 				display: 'flex',
 				flexDirection: 'column',
-				borderRadius: '1.15rem',
+				borderRadius: 1,
 				border: `1.5px solid ${alpha(tokens.accentPink, 0.18)}`,
-				background: `linear-gradient(160deg, ${alpha(tokens.accentPink, 0.07)} 0%, ${alpha(tokens.accent, 0.05)} 45%, ${alpha(tokens.accentLight, 0.08)} 100%)`,
+				background: `linear-gradient(160deg, #FDF2F8 0%, #F5F3FF 45%, #F8F5FF 100%)`,
 				overflow: 'hidden',
 			}}>
 			<Box
@@ -42,7 +48,7 @@ export function DevNotes() {
 					px: 1.25,
 					py: 0.8,
 					borderBottom: `1px dashed ${alpha(tokens.accent, 0.18)}`,
-					bgcolor: alpha('#fff', 0.45),
+					bgcolor: alpha('#fff', 0.35),
 				}}>
 				<Box sx={{ display: 'flex', gap: 0.55 }} aria-hidden>
 					{(
@@ -95,7 +101,7 @@ export function DevNotes() {
 								alignItems: 'start',
 								px: 1,
 								py: 0.75,
-								borderRadius: '0.85rem',
+								borderRadius: 1,
 								bgcolor: mark.wash,
 								border: `1px solid ${mark.border}`,
 							}}>

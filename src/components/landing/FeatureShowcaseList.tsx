@@ -36,7 +36,7 @@ const innerCardSx = {
 	textDecoration: 'none',
 	color: 'inherit',
 	bgcolor: tokens.surface,
-	borderRadius: 0.875,
+	borderRadius: 1,
 	transition: 'background-color 180ms ease',
 	'&:hover': {
 		bgcolor: tokens.surfaceRaised,

@@ -99,7 +99,7 @@ export const caseStudyTeasers = {
 
 export const site = {
 	headline: 'Platform',
-	portfolioTitle: 'About Me',
+	portfolioTitle: 'Introduction',
 	tagline: 'Production systems from MathTrack',
 	intro: platformStory.paragraphs[0].trim(),
 } as const;
@@ -107,32 +107,22 @@ export const site = {
 /** Tongue-in-cheek homepage aside */
 export const devNotes = {
 	heading: 'Dev Notes',
-	commentTitle: 'Developer Notes',
+	commentTitle: 'Dev Notes',
 	items: [
 		{
-			status: 'ok',
-			summary: 'UX and engineering continue to coexist peacefully.',
+			status: 'info',
+			summary: 'Gaming backlog reduction is progressing well.',
+			notes: ['Recent schedule changes have improved throughput.'],
 		},
 		{
-			status: 'ok',
-			summary: 'Extensive collection of metaphorical hats.',
-			notes: ['Selection determined dynamically based on project requirements.'],
-		},
-		{
-			status: 'warn',
+			status: 'info',
 			summary: 'Legacy cat naming convention remains in production.',
-			notes: [
-				`Original implementation:`,
-				`- White Cat`,
-				`- Grey Cat`,
-				`- New Cat (also gray)`,
-				`		Alias standardization (Newbie vs. Noobie) remains unresolved.`,
-			],
+			notes: ['Original architecture assumed coat color was a unique identifier.'],
 		},
 		{
 			status: 'warn',
-			summary: 'Teacup collection has entered an uncontrolled scaling phase.',
-			notes: ['Issue acknowledged. No mitigation planned.'],
+			summary: 'Teacup collection is scaling uncontrollably.',
+			notes: ['Issue acknowledged.'],
 		},
 	],
 } as const;

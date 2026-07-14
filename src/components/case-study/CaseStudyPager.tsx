@@ -9,7 +9,6 @@ import { tokens } from '../../theme/theme';
 
 interface CaseStudyPagerProps {
 	slug: string;
-	currentTitle: string;
 }
 
 const pagerLinkSx = {
@@ -66,46 +65,20 @@ function PagerLink({ study, direction }: { study: CaseStudyMeta; direction: 'pre
 	);
 }
 
-export function CaseStudyPager({ slug, currentTitle }: CaseStudyPagerProps) {
+export function CaseStudyPager({ slug }: CaseStudyPagerProps) {
 	const { previous, next } = getAdjacentCaseStudies(slug);
 
 	return (
-		<Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.5, md: 2 } }}>
-			<Typography
-				variant='caption'
-				sx={{
-					m: 0,
-					textAlign: 'center',
-					color: tokens.textSecondary,
-					display: { xs: 'block', md: 'none' },
-				}}>
-				{currentTitle}
-			</Typography>
-
-			<Box
-				sx={{
-					display: 'grid',
-					gridTemplateColumns: { xs: '1fr 1fr', md: 'minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr)' },
-					gap: { xs: 1, md: 2 },
-					alignItems: 'center',
-				}}>
-				<Box sx={{ justifySelf: 'start', minWidth: 0 }}>{previous && <PagerLink study={previous} direction='previous' />}</Box>
-
-				<Typography
-					variant='caption'
-					sx={{
-						...pagerLabelSx,
-						px: 1,
-						textAlign: 'center',
-						color: tokens.textSecondary,
-						display: { xs: 'none', md: 'block' },
-					}}>
-					{currentTitle}
-				</Typography>
-
-				<Box sx={{ justifySelf: 'end', minWidth: 0, display: 'flex', justifyContent: 'flex-end' }}>
-					{next && <PagerLink study={next} direction='next' />}
-				</Box>
+		<Box
+			sx={{
+				display: 'grid',
+				gridTemplateColumns: '1fr 1fr',
+				gap: { xs: 1, md: 2 },
+				alignItems: 'center',
+			}}>
+			<Box sx={{ justifySelf: 'start', minWidth: 0 }}>{previous && <PagerLink study={previous} direction='previous' />}</Box>
+			<Box sx={{ justifySelf: 'end', minWidth: 0, display: 'flex', justifyContent: 'flex-end' }}>
+				{next && <PagerLink study={next} direction='next' />}
 			</Box>
 		</Box>
 	);

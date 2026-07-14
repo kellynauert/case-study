@@ -3,6 +3,7 @@ import { createTheme, alpha } from '@mui/material/styles';
 export const accent = '#7C3AED';
 export const accentPink = '#DB2777';
 export const accentLight = '#A78BFA';
+export const green = '#22C55E';
 export const background = '#FDFBFF';
 export const surface = '#FFFFFF';
 export const surfaceRaised = '#F8F5FF';
@@ -228,6 +229,7 @@ export const theme = createTheme({
 });
 
 export const tokens = {
+	green,
 	accent,
 	accentPink,
 	accentLight,

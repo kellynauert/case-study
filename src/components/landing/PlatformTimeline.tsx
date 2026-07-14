@@ -57,7 +57,7 @@ function DetailPopover({ item, range }: { item: TimelineItem; range: string }) {
 		<Box
 			sx={{
 				width: 260,
-				borderRadius: '1.15rem',
+				borderRadius: 1,
 				border: `1.5px solid ${alpha(tokens.accentPink, 0.22)}`,
 				background: `linear-gradient(160deg, #FDF2F8 0%, #F5F3FF 45%, #F8F5FF 100%)`,
 				overflow: 'hidden',
@@ -103,7 +103,7 @@ function DetailPopover({ item, range }: { item: TimelineItem; range: string }) {
 					sx={{
 						px: 1,
 						py: 0.75,
-						borderRadius: '0.85rem',
+						borderRadius: 1,
 						bgcolor: tokens.surface,
 						border: `1px solid ${alpha(tokens.accent, 0.22)}`,
 					}}>
@@ -390,8 +390,9 @@ function FlowBar({
 							lineHeight: 1.15,
 							color: '#fff',
 							whiteSpace: 'normal',
-							overflowWrap: 'break-word',
-							hyphens: 'auto',
+							overflowWrap: 'normal',
+							wordBreak: 'normal',
+							hyphens: 'none',
 						}}>
 						{item.title}
 					</Typography>

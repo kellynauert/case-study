@@ -83,7 +83,7 @@ export function StudyPage({ slug, title, subtitle, intro, children }: StudyPageP
 	}, [slug, sections, activeIds, setPageToc]);
 
 	return (
-		<PageShell footer={<CaseStudyPager slug={slug} currentTitle={title} />}>
+		<PageShell footer={<CaseStudyPager slug={slug} />}>
 			<Box ref={contentRef}>
 				<Box sx={{ mb: { xs: 2.5, md: 3 } }}>
 					<Typography variant='pageTitle' sx={{ mb: subtitle ? 0.75 : 0 }}>
