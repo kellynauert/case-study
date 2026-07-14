@@ -126,7 +126,7 @@ export const devNotes = {
 			status: 'warn',
 			icon: 'teacup',
 			summary: 'Teacup collection is scaling uncontrollably.',
-			notes: ['Issue acknowledged.'],
+			notes: ['Issue acknowledged. No mitigation planned.'],
 		},
 	],
 } as const;
