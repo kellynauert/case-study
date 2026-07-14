@@ -1,8 +1,9 @@
 name: Deploy to GitHub Pages
 
-# Manual publish only — commits to main do not update the live site.
-# To publish: Actions → "Deploy to GitHub Pages" → Run workflow (on main).
+# Publishes on push to main, or manually via Actions → Run workflow.
 on:
+    push:
+        branches: [main]
     workflow_dispatch:
 
 permissions:
