@@ -11,7 +11,7 @@ export const author = {
 
 export const project = {
 	name: 'MathTrack',
-	fullName: 'Evolving Platform Context',
+	fullName: 'One Platform, Many Systems',
 	years: '2020-2026',
 	disciplines: ['UX Design', 'Product Design', 'React', 'TypeScript', 'Node.js', 'PostgreSQL'],
 } as const;
@@ -34,10 +34,10 @@ export const hero = {
 export const platformStory = {
 	heading: project.fullName,
 	paragraphs: [
-		'MathTrack Institute is an education startup where I spent five years as the sole designer and engineer of its education operations platform. As the company evolved, I evolved the platform alongside it, creating, adapting, and retiring systems to support changing business needs.',
+		'MathTrack Institute is an education startup where I spent five years as the sole designer and engineer of its education operations platform. During that time, I created, adapted, and retired entire systems within this platform to support the company as it evolved.',
 	],
 	timelineIntro:
-		'The platform has evolved through several major iterations; this portfolio highlights the two systems that are currently in production: the Learning Management Platform and the Apprenticeship Platform.',
+		"In an effort to show the scale of the platform, I\'ve put together a rough timeline of how it was used and where my development efforts were focused over the years. This website will focus on just the two most recent systems that are still in production.",
 	timelineRange: { start: 2021, end: 2027 },
 	timeline: [
 		{
@@ -99,7 +99,7 @@ export const caseStudyTeasers = {
 
 export const site = {
 	headline: 'Platform',
-	portfolioTitle: 'Introduction',
+	portfolioTitle: 'About the Developer',
 	tagline: 'Production systems from MathTrack',
 	intro: platformStory.paragraphs[0].trim(),
 } as const;
