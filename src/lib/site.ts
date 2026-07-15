@@ -41,7 +41,7 @@ export const platformStory = {
 	timelineRange: { start: 2021, end: 2027 },
 	timeline: [
 		{
-			title: 'Student assessment analytics',
+			title: 'Student Assessment Analytics',
 			detail: 'Data importing and interactive visualizations of standardized assessment data',
 			start: 2021,
 			end: 2022,
