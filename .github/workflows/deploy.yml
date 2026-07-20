@@ -1,9 +1,8 @@
 name: Deploy to GitHub Pages
 
-# Publishes on push to main, or manually via Actions → Run workflow.
+# Production deploys are intentional only — not on every push to main.
+# Run from Actions → Deploy to GitHub Pages → Run workflow.
 on:
-    push:
-        branches: [main]
     workflow_dispatch:
 
 permissions:
