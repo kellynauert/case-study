@@ -36,10 +36,10 @@ export function DevNotes() {
 	return (
 		<Box
 			component='section'
-			aria-label={devNotes.heading}
+			aria-label={devNotes.introTitle}
 			sx={{
 				width: '100%',
-				height: '100%',
+				maxWidth: '42rem',
 				display: 'flex',
 				flexDirection: 'column',
 				borderRadius: 1,
@@ -77,9 +77,6 @@ export function DevNotes() {
 						/>
 					))}
 				</Box>
-				<Typography variant='devNotesTitle' sx={{ m: 0 }}>
-					{`${devNotes.commentTitle.toLowerCase()}`}
-				</Typography>
 			</Box>
 
 			<Box
@@ -90,7 +87,6 @@ export function DevNotes() {
 					display: 'flex',
 					flexDirection: 'column',
 					gap: 0.75,
-					flex: 1,
 				}}>
 				<Box
 					sx={{
@@ -135,7 +131,6 @@ export function DevNotes() {
 						display: 'flex',
 						flexDirection: 'column',
 						gap: 0.75,
-						flex: 1,
 					}}>
 					{devNotes.items.map((item) => {
 						const mark = statusMark[item.status];

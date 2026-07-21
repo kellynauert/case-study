@@ -1,37 +1,9 @@
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import DownloadIcon from '@mui/icons-material/Download';
-import { hero, links, resumeFilename } from '../../lib/site';
+import { hero } from '../../lib/site';
 import { tokens } from '../../theme/theme';
-
-const secondaryButtonSx = {
-	display: 'inline-flex',
-	alignItems: 'center',
-	gap: 0.75,
-	px: 1,
-	py: 0.75,
-	m: 0,
-	minHeight: 44,
-	fontSize: '0.875rem',
-	fontWeight: 600,
-	letterSpacing: '0.02em',
-	color: tokens.accentPink,
-	bgcolor: 'transparent',
-	border: 'none',
-	textDecoration: 'none',
-	cursor: 'pointer',
-	transition: 'color 180ms ease, opacity 180ms ease',
-	'&:hover': {
-		color: tokens.accent,
-		'& .global-nav-resume-icon': { transform: 'translateY(1px)' },
-	},
-	'&:focus-visible': {
-		outline: `2px solid ${tokens.accentPink}`,
-		outlineOffset: 3,
-		borderRadius: 1,
-	},
-} as const;
+import { ResumeDownloadLink } from './ResumeDownloadLink';
 
 interface SiteHeroIntroProps {
 	/** Called when the name link is clicked — e.g. close mobile drawer */
@@ -85,17 +57,8 @@ export function SiteHeroIntro({ onNavigate }: SiteHeroIntroProps) {
 					{hero.roleLine}
 				</Typography>
 
-				<Box
-					component='a'
-					href={links.resume}
-					download={resumeFilename}
-					target='_blank'
-					rel='noopener noreferrer'
-					aria-label='Download resume PDF'
-					sx={{ ...secondaryButtonSx, flexShrink: 0, whiteSpace: 'nowrap' }}>
-					<DownloadIcon className='global-nav-resume-icon' sx={{ fontSize: '1rem', transition: 'transform 180ms ease' }} />
-					{hero.secondaryCta}
-				</Box>
+				{/* Download lives in the mobile top bar; keep it in the desktop sidebar. */}
+				<ResumeDownloadLink sx={{ display: { xs: 'none', md: 'inline-flex' }, flexShrink: 0 }} />
 			</Box>
 		</Box>
 	);

@@ -7,6 +7,7 @@ export const green = '#22C55E';
 export const background = '#FDFBFF';
 export const surface = '#FFFFFF';
 export const surfaceRaised = '#F8F5FF';
+export const fieldBackground = '#cf3aed27';
 export const border = alpha('#4C1D95', 0.1);
 export const borderHover = alpha('#7C3AED', 0.28);
 export const textPrimary = '#1E1033';
@@ -53,7 +54,7 @@ export const theme = createTheme({
 		fontFamily: fontBody,
 		h1: {
 			fontFamily: fontDisplay,
-			fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+			fontSize: '3rem',
 			fontWeight: 600,
 			letterSpacing: '-0.035em',
 			lineHeight: 1.08,
@@ -61,7 +62,7 @@ export const theme = createTheme({
 		},
 		h2: {
 			fontFamily: fontDisplay,
-			fontSize: 'clamp(1.625rem, 3vw, 2rem)',
+			fontSize: '1.875rem',
 			fontWeight: 600,
 			letterSpacing: '-0.025em',
 			lineHeight: 1.2,
@@ -122,11 +123,14 @@ export const theme = createTheme({
 		},
 		pageTitle: {
 			fontFamily: fontDisplay,
-			fontSize: 'clamp(1.625rem, 3vw, 2rem)',
+			fontSize: '1.5rem',
 			fontWeight: 600,
 			letterSpacing: '-0.025em',
 			lineHeight: 1.15,
 			color: textPrimary,
+			'@media (min-width:900px)': {
+				fontSize: '1.875rem',
+			},
 		},
 		pageSubtitle: {
 			fontFamily: fontBody,
@@ -216,7 +220,7 @@ export const theme = createTheme({
 					detailHeading: 'h4',
 					panelHeading: 'h3',
 					displayTitle: 'h3',
-					pageTitle: 'h1',
+					pageTitle: 'h2',
 					pageSubtitle: 'p',
 					devNotesTitle: 'p',
 					devNotesBody: 'p',
@@ -248,6 +252,7 @@ export const tokens = {
 	shadowSubtle,
 	shadowElevated,
 	shadowImage,
+	fieldBackground,
 	fontDisplay,
 	fontBody,
 	fontMono,
