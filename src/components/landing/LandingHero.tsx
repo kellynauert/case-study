@@ -35,8 +35,8 @@ function pickDifferentOption<T extends string>(options: readonly T[], current: T
 }
 
 /**
- * Match h1 line-height so spinner glyphs share the same line box as “Sole” / suffix.
- * Reel transforms use a measured px copy of this box — see fieldHeightPx.
+ * Shared h1 + spinner line-height. Shells lock height to this em value so wrapped
+ * flex lines stay even; reel transforms use a measured px copy — see fieldHeightPx.
  */
 const compareFieldLineHeight = 1.2;
 
@@ -68,6 +68,13 @@ const widthFitTransition = 'width 0.48s cubic-bezier(0.34, 1.3, 0.64, 1)';
  * `transitionend`. 0 = begin fit on settle (timeout at durationMs / transitionend fallback).
  */
 const widthFitLeadMs = 0;
+/**
+ * Extra shell width past measured text — absorbs glyph ink / letter-spacing bleed and
+ * keeps fit-overshoot from clipping into the neighbor through a too-tight box.
+ */
+const shellWidthPadPx = 2;
+/** Gap between paired spinners — must clear horizontal width overshoot / subpixel overlap. */
+const compareSpinnerGap = '8px';
 
 const autoSoloSpinMs = 15000;
 const diceWiggleDurationMs = 560;
@@ -78,11 +85,10 @@ const diceWiggleDurationMs = 560;
  * finishes (widthFitLeadMs before transitionend; 0 = on settle). Horizontal overshoot on width only.
  * The reel decelerates and stops cleanly — no vertical bounce on the strip or settled label.
  *
- * Alignment: invisible in-flow strut owns the baseline (same font/line-height as h1). Reel + settled
- * share one absolute viewport: overflowY hidden only while the reel is visible (horizontal always
- * clipped). Settled stays mounted in the same top / height box as reel rows — ready is a visibility
- * swap only, so overflow toggle cannot remount-shift Y. Row boxes use 1.2em line-height (not a
- * locked px line box) so glyphs aren’t clipped by a too-tight height×lineHeight pair.
+ * Alignment: shell height is locked to h1 line-height (in-flow); strut owns width/baseline.
+ * Reel + settled share one absolute viewport. Settled stays mounted in the same top / height box
+ * as reel rows — ready is a visibility swap only, so overflow toggle cannot remount-shift Y.
+ * Row boxes use the shared line-height (px once measured) so glyphs aren’t clipped.
  */
 function HeroScrollingField({
 	options,
@@ -145,7 +151,7 @@ function HeroScrollingField({
 	const setShellWidthPx = (px: number, animate: false | 'expand' | 'fit' = false) => {
 		const shell = shellRef.current;
 		if (!shell || !(px > 0)) return;
-		const next = `${Math.ceil(px)}px`;
+		const next = `${Math.ceil(px) + shellWidthPadPx}px`;
 		if (!animate) {
 			shell.style.transition = 'none';
 			shell.style.width = next;
@@ -338,19 +344,26 @@ function HeroScrollingField({
 			sx={{
 				display: 'inline-block',
 				position: 'relative',
+				// Isolate paint so overflow clip stays in this shell during width overshoot.
+				isolation: 'isolate',
 				verticalAlign: 'baseline',
 				flexShrink: 0,
+				// Cap in-flow contribution to the title line box so wrapped flex lines stay even.
+				boxSizing: 'border-box',
+				height: `${compareFieldLineHeight}em`,
+				maxHeight: `${compareFieldLineHeight}em`,
 				color: tokens.accentPink,
 				font: 'inherit',
 				fontSize: 'inherit',
 				fontWeight: 'inherit',
 				fontFamily: 'inherit',
 				letterSpacing: 'inherit',
-				lineHeight: compareFieldLineHeight,
+				lineHeight: 'inherit',
 				textAlign: 'center',
 			}}>
 			{/*
-			  Invisible strut: owns the line box / baseline. Same metrics as surrounding h1 text.
+			  Invisible strut: owns width / baseline. Height is locked on the shell to h1 line-height
+			  so spinners cannot inflate only the first wrapped flex line.
 			  Overflow clip lives only on the absolute viewport so width animation cannot shift baseline.
 			*/}
 			<Box
@@ -358,12 +371,14 @@ function HeroScrollingField({
 				aria-hidden
 				sx={{
 					visibility: 'hidden',
-					display: 'inline',
+					display: 'block',
+					height: '100%',
+					overflow: 'hidden',
 					whiteSpace: 'nowrap',
 					pointerEvents: 'none',
 					font: 'inherit',
 					letterSpacing: 'inherit',
-					lineHeight: compareFieldLineHeight,
+					lineHeight: 'inherit',
 				}}>
 				{displayValue || '\u00a0'}
 			</Box>
@@ -381,7 +396,7 @@ function HeroScrollingField({
 					overflow: 'hidden',
 					font: 'inherit',
 					letterSpacing: 'inherit',
-					lineHeight: compareFieldLineHeight,
+					lineHeight: 'inherit',
 				}}
 			/>
 			{/*
@@ -399,7 +414,7 @@ function HeroScrollingField({
 					top: 0,
 					bottom: 0,
 					overflow: 'hidden',
-					lineHeight: compareFieldLineHeight,
+					lineHeight: 'inherit',
 					font: 'inherit',
 					letterSpacing: 'inherit',
 					textAlign: 'center',
@@ -566,6 +581,12 @@ export function LandingHero() {
 		};
 	}, [anySpinning]);
 
+	/** Keep last word + dice as one wrap unit (e.g. "Platform" never alone / dice never orphaned). */
+	const suffix = hero.heroCompareSuffix;
+	const suffixLastSpace = suffix.lastIndexOf(' ');
+	const suffixLead = suffixLastSpace >= 0 ? suffix.slice(0, suffixLastSpace + 1) : '';
+	const suffixLastWord = suffixLastSpace >= 0 ? suffix.slice(suffixLastSpace + 1) : suffix;
+
 	return (
 		<Box
 			id='landing-hero'
@@ -585,7 +606,7 @@ export function LandingHero() {
 						fontFamily: tokens.fontDisplay,
 						fontWeight: 600,
 						letterSpacing: '-0.03em',
-						lineHeight: 1.2,
+						lineHeight: compareFieldLineHeight,
 						fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.5rem' },
 						color: tokens.textPrimary,
 						display: 'flex',
@@ -593,9 +614,10 @@ export function LandingHero() {
 						// Baseline with strut shells: glyphs stay level when width animates.
 						alignItems: 'baseline',
 						columnGap: '8px',
-						rowGap: 0.5,
+						// No rowGap — wrapped flex lines must share the same line-height rhythm.
+						rowGap: 0,
 					}}>
-					<Box component='span' sx={{ whiteSpace: 'nowrap' }}>
+					<Box component='span' sx={{ whiteSpace: 'nowrap', lineHeight: 'inherit' }}>
 						{hero.heroComparePrefix}
 					</Box>
 					<Box
@@ -603,10 +625,12 @@ export function LandingHero() {
 						sx={{
 							display: 'inline-flex',
 							alignItems: 'baseline',
-							columnGap: '8px',
+							columnGap: compareSpinnerGap,
 							flexShrink: 0,
 							width: 'max-content',
 							maxWidth: '100%',
+							lineHeight: 'inherit',
+							height: `${compareFieldLineHeight}em`,
 						}}>
 						<HeroScrollingField
 							value={compareLeft}
@@ -636,82 +660,91 @@ export function LandingHero() {
 						/>
 					</Box>
 					{/* Full-basis row so the suffix always starts on the line after the spinner group.
-					    Dice lives inline inside the suffix so it wraps with the text, not as a solo flex item. */}
+					    Last word + dice share a nowrap unit so they never split across lines. */}
 					<Box
 						component='span'
 						sx={{
 							flexBasis: '100%',
 							width: '100%',
+							lineHeight: 'inherit',
 						}}>
-						{hero.heroCompareSuffix}
+						{suffixLead}
 						<Box
-							component='button'
-							type='button'
-							aria-label='Randomize title'
-							onClick={randomizeCompare}
+							component='span'
 							sx={{
-								display: 'inline-flex',
-								alignItems: 'center',
-								alignSelf: 'flex-end',
-								justifyContent: 'center',
-								verticalAlign: 'middle',
-								my: 0,
-								mr: 0,
-								ml: 0.75,
-								p: 0.4,
-								mb: -0.5,
-								border: 'none',
-								borderRadius: 1,
-								bgcolor: 'transparent',
-								boxShadow: 'none',
-								color: tokens.accentPink,
-								cursor: 'pointer',
-								lineHeight: 0,
-								outline: 'none',
-								WebkitTapHighlightColor: 'transparent',
-								transition: 'color 180ms ease, background-color 180ms ease, transform 180ms ease',
-								'&:hover': {
-									color: tokens.accent,
-
-									boxShadow: 'none',
-								},
-								'&:active': {
-									transform: 'rotate(-12deg) scale(0.94)',
-									boxShadow: 'none',
-								},
-								'&:focus': {
-									outline: 'none',
-									boxShadow: 'none',
-								},
-								// Keyboard only — no ring flash from mouse focus / idle wiggle.
-								'&:focus-visible': {
-									outline: `2px solid ${tokens.accentPink}`,
-									outlineOffset: 3,
-								},
-								'@media (prefers-reduced-motion: reduce)': {
-									'&:active': { transform: 'none' },
-								},
+								// Inline nowrap unit — same line box as surrounding suffix text (not a taller flex frame).
+								whiteSpace: 'nowrap',
+								lineHeight: 'inherit',
 							}}>
+							{suffixLastWord}
 							<Box
-								component='span'
+								component='button'
+								type='button'
+								aria-label='Randomize title'
+								onClick={randomizeCompare}
 								sx={{
 									display: 'inline-flex',
-									outline: 'none',
+									alignItems: 'center',
+									justifyContent: 'center',
+									verticalAlign: 'middle',
+									// Cancel vertical padding so the hit area doesn’t inflate this line box.
+									my: -0.4,
+									mr: 0,
+									ml: 0.75,
+									p: 0.4,
+									border: 'none',
+									borderRadius: 1,
+									bgcolor: 'transparent',
 									boxShadow: 'none',
-									'@keyframes diceIdleWiggle': {
-										'0%, 100%': { transform: 'rotate(0deg) translateX(0)' },
-										'12%': { transform: 'rotate(-20deg) translateX(-1.5px)' },
-										'28%': { transform: 'rotate(18deg) translateX(1.5px)' },
-										'44%': { transform: 'rotate(-16deg) translateX(-1px)' },
-										'60%': { transform: 'rotate(14deg) translateX(1px)' },
-										'76%': { transform: 'rotate(-8deg) translateX(-0.5px)' },
+									color: tokens.accentPink,
+									cursor: 'pointer',
+									lineHeight: 0,
+									outline: 'none',
+									WebkitTapHighlightColor: 'transparent',
+									transition: 'color 180ms ease, background-color 180ms ease, transform 180ms ease',
+									'&:hover': {
+										color: tokens.accent,
+
+										boxShadow: 'none',
 									},
-									animation: diceWiggle ? `diceIdleWiggle ${diceWiggleDurationMs}ms ease-in-out` : 'none',
+									'&:active': {
+										transform: 'rotate(-12deg) scale(0.94)',
+										boxShadow: 'none',
+									},
+									'&:focus': {
+										outline: 'none',
+										boxShadow: 'none',
+									},
+									// Keyboard only — no ring flash from mouse focus / idle wiggle.
+									'&:focus-visible': {
+										outline: `2px solid ${tokens.accentPink}`,
+										outlineOffset: 3,
+									},
 									'@media (prefers-reduced-motion: reduce)': {
-										animation: 'none',
+										'&:active': { transform: 'none' },
 									},
 								}}>
-								<CasinoRoundedIcon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' } }} />
+								<Box
+									component='span'
+									sx={{
+										display: 'inline-flex',
+										outline: 'none',
+										boxShadow: 'none',
+										'@keyframes diceIdleWiggle': {
+											'0%, 100%': { transform: 'rotate(0deg) translateX(0)' },
+											'12%': { transform: 'rotate(-20deg) translateX(-1.5px)' },
+											'28%': { transform: 'rotate(18deg) translateX(1.5px)' },
+											'44%': { transform: 'rotate(-16deg) translateX(-1px)' },
+											'60%': { transform: 'rotate(14deg) translateX(1px)' },
+											'76%': { transform: 'rotate(-8deg) translateX(-0.5px)' },
+										},
+										animation: diceWiggle ? `diceIdleWiggle ${diceWiggleDurationMs}ms ease-in-out` : 'none',
+										'@media (prefers-reduced-motion: reduce)': {
+											animation: 'none',
+										},
+									}}>
+									<CasinoRoundedIcon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' } }} />
+								</Box>
 							</Box>
 						</Box>
 					</Box>

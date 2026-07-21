@@ -57,7 +57,7 @@ export const platformStory = {
 	],
 	timelineIntro:
 		"In an effort to show the scale of the platform, I've put together a rough timeline of how it was used and where my development efforts were focused over the years. This website will focus on just the two most recent systems that are still in production.",
-	timelineRange: { start: 2021, end: 2027 },
+	timelineRange: { start: 2021, end: 2026 },
 	timeline: [
 		{
 			title: 'Student Assessment Analytics',
@@ -81,13 +81,13 @@ export const platformStory = {
 			title: 'Learning Management Platform',
 			detail: 'Curriculum authoring, enrollment, student learning, grading, and transcript generation',
 			start: 2024,
-			end: null,
+			end: 2026,
 		},
 		{
 			title: 'Apprenticeship Platform',
 			detail: 'Mentor evaluations, reflection journals, competency tracking, and apprentice progress',
 			start: 2026,
-			end: null,
+			end: 2026,
 		},
 	],
 	closing: [] as string[],

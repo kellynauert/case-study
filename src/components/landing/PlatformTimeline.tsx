@@ -1,6 +1,7 @@
 import { useState, type ComponentType } from 'react';
 import Box from '@mui/material/Box';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Fade from '@mui/material/Fade';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { alpha } from '@mui/material/styles';
@@ -62,7 +63,6 @@ function DetailPopover({ item, range }: { item: TimelineItem; range: string }) {
 				border: `1.5px solid ${alpha(tokens.accentPink, 0.22)}`,
 				background: `linear-gradient(160deg, #FDF2F8 0%, #F5F3FF 45%, #F8F5FF 100%)`,
 				overflow: 'hidden',
-				boxShadow: `0 12px 28px ${alpha(tokens.textPrimary, 0.16)}`,
 			}}>
 			<Box
 				sx={{
@@ -190,8 +190,6 @@ function YearAxis() {
 							letterSpacing: '0.04em',
 							color: tokens.textSecondary,
 							lineHeight: 1.2,
-							// Last year is layout padding so ongoing bars have room — keep the column, hide the label.
-							visibility: year === YEAR_END ? 'hidden' : 'visible',
 						}}>
 						{year}
 					</Typography>
@@ -292,7 +290,9 @@ function FlowBar({
 				disableTouchListener
 				title={<DetailPopover item={item} range={range} />}
 				placement='top'
+				slots={{ transition: Fade }}
 				slotProps={{
+					transition: { timeout: 160 },
 					tooltip: {
 						sx: {
 							p: 0,
@@ -302,6 +302,13 @@ function FlowBar({
 						},
 					},
 					popper: {
+						// Keep the card in a portal with fixed positioning so opening it
+						// never expands the timeline scroll container or shifts the bars.
+						disablePortal: false,
+						modifiers: [
+							{ name: 'offset', options: { offset: [0, 10] } },
+							{ name: 'preventOverflow', options: { altAxis: true, tether: false, padding: 8 } },
+						],
 						sx: {
 							'& .MuiTooltip-tooltip': {
 								p: 0,
@@ -361,8 +368,7 @@ function FlowBar({
 						font: 'inherit',
 						appearance: 'none',
 						overflow: 'hidden',
-						transition: 'opacity 280ms ease, filter 280ms ease',
-						'&:hover': { filter: 'brightness(1.02)' },
+						transition: 'opacity 280ms ease',
 						'&:focus-visible': {
 							outline: `2px solid ${tokens.textPrimary}`,
 							outlineOffset: 2,
