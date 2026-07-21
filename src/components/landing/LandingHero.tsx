@@ -85,7 +85,9 @@ function HeroVerbDropdown({
 					gap: 0,
 					m: 0,
 					p: 0,
+					pb: '0.02em',
 					border: 'none',
+					borderBottom: `3px solid ${tokens.accentPink}`,
 					borderRadius: 0,
 					bgcolor: 'transparent',
 					color: 'inherit',
@@ -94,12 +96,10 @@ function HeroVerbDropdown({
 					lineHeight: 'inherit',
 					cursor: 'pointer',
 					verticalAlign: 'baseline',
-					transition: 'color 180ms ease',
+					transition: 'border-color 180ms ease, color 180ms ease',
 					'&:hover': {
 						color: tokens.accentPink,
-						'& .hero-verb-label': {
-							borderBottomColor: tokens.accent,
-						},
+						borderBottomColor: tokens.accent,
 						'& .hero-verb-chevron': {
 							color: tokens.accent,
 						},
@@ -109,19 +109,7 @@ function HeroVerbDropdown({
 						outlineOffset: 3,
 					},
 				}}>
-				<Box
-					component='span'
-					className='hero-verb-label'
-					sx={{
-						borderBottom: `3px solid ${tokens.accentPink}`,
-						pb: '0.02em',
-						// Stop a few pixels short of the chevron
-						pr: '2px',
-						mr: '1px',
-						transition: 'border-color 180ms ease',
-					}}>
-					{value}
-				</Box>
+				{value}
 				<ArrowDropDownRoundedIcon
 					aria-hidden
 					className='hero-verb-chevron'
@@ -130,7 +118,7 @@ function HeroVerbDropdown({
 						color: tokens.accentPink,
 						position: 'relative',
 						top: '0.14em',
-						ml: '-0.05em',
+						ml: '-0.12em',
 						transition: 'transform 180ms ease, color 180ms ease',
 						transform: open ? 'rotate(180deg)' : 'none',
 					}}
