@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import KeyboardArrowDownIcon from '@mui/icons-material/ArrowDropDownRounded';
+import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import DesktopWindowsOutlinedIcon from '@mui/icons-material/DesktopWindowsOutlined';
 import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
 import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
@@ -82,12 +82,10 @@ function HeroVerbDropdown({
 				sx={{
 					display: 'inline-flex',
 					alignItems: 'baseline',
-					gap: 0.15,
+					gap: 0,
 					m: 0,
 					p: 0,
-					pb: '0.08em',
 					border: 'none',
-					borderBottom: `3px solid ${tokens.accentPink}`,
 					borderRadius: 0,
 					bgcolor: 'transparent',
 					color: 'inherit',
@@ -96,26 +94,44 @@ function HeroVerbDropdown({
 					lineHeight: 'inherit',
 					cursor: 'pointer',
 					verticalAlign: 'baseline',
-					transition: 'border-color 180ms ease, color 180ms ease',
+					transition: 'color 180ms ease',
 					'&:hover': {
 						color: tokens.accentPink,
-						borderBottomColor: tokens.accent,
+						'& .hero-verb-label': {
+							borderBottomColor: tokens.accent,
+						},
+						'& .hero-verb-chevron': {
+							color: tokens.accent,
+						},
 					},
 					'&:focus-visible': {
 						outline: `2px solid ${tokens.accentPink}`,
 						outlineOffset: 3,
 					},
 				}}>
-				{value}
-				<KeyboardArrowDownIcon
-					aria-hidden
+				<Box
+					component='span'
+					className='hero-verb-label'
 					sx={{
-						fontSize: '0.72em',
+						borderBottom: `3px solid ${tokens.accentPink}`,
+						pb: '0.02em',
+						// Stop a few pixels short of the chevron
+						pr: '2px',
+						mr: '1px',
+						transition: 'border-color 180ms ease',
+					}}>
+					{value}
+				</Box>
+				<ArrowDropDownRoundedIcon
+					aria-hidden
+					className='hero-verb-chevron'
+					sx={{
+						fontSize: '0.88em',
 						color: tokens.accentPink,
 						position: 'relative',
-						top: '0.12em',
-						ml: 0.05,
-						transition: 'transform 180ms ease',
+						top: '0.14em',
+						ml: '-0.05em',
+						transition: 'transform 180ms ease, color 180ms ease',
 						transform: open ? 'rotate(180deg)' : 'none',
 					}}
 				/>
