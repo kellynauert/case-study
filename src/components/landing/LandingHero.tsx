@@ -22,7 +22,8 @@ const capabilityIcons = {
 type HeroVerb = (typeof hero.heroVerbOptions)[number];
 
 function wavyUnderline(color: string) {
-	const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 4" preserveAspectRatio="none"><path d="M0 2.2 Q 3 0.5 6 2.2 T 12 2.2 T 18 2.2 T 24 2.2" fill="none" stroke="${color}" stroke-width="1.55" stroke-linecap="round"/></svg>`;
+	// Long-period wave (Google-style), not a dense editor squiggle
+	const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 6" preserveAspectRatio="none"><path d="M0 4.2 Q 10 1.4 20 4.2 T 40 4.2" fill="none" stroke="${color}" stroke-width="1.35" stroke-linecap="round"/></svg>`;
 	return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 }
 
@@ -90,14 +91,14 @@ function HeroVerbDropdown({
 					gap: 0.15,
 					m: 0,
 					p: 0,
-					pb: '0.14em',
+					pb: '0.18em',
 					border: 'none',
 					borderRadius: 0,
 					bgcolor: 'transparent',
 					backgroundImage: wavyUnderline(tokens.accentPink),
 					backgroundRepeat: 'repeat-x',
 					backgroundPosition: 'left bottom',
-					backgroundSize: '16px 4px',
+					backgroundSize: '28px 5px',
 					color: 'inherit',
 					font: 'inherit',
 					letterSpacing: 'inherit',
