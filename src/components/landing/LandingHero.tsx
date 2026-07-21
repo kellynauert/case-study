@@ -178,21 +178,19 @@ function HeroVerbDropdown({
 }
 
 export function LandingHero() {
-	const [lineOneVerb, setLineOneVerb] = useState<HeroVerb>('Designing');
-	const [lineTwoVerb, setLineTwoVerb] = useState<HeroVerb>('Engineering');
+	const [firstVerb, setFirstVerb] = useState<HeroVerb>('design');
+	const [secondVerb, setSecondVerb] = useState<HeroVerb>('build');
 
-	const chooseLineOne = (next: HeroVerb) => {
-		setLineOneVerb(next);
-		if (next === lineTwoVerb) {
-			setLineTwoVerb(next === 'Designing' ? 'Engineering' : 'Designing');
-		}
+	const otherVerb = (verb: HeroVerb): HeroVerb => (verb === 'design' ? 'build' : 'design');
+
+	const chooseFirst = (next: HeroVerb) => {
+		setFirstVerb(next);
+		if (next === secondVerb) setSecondVerb(otherVerb(next));
 	};
 
-	const chooseLineTwo = (next: HeroVerb) => {
-		setLineTwoVerb(next);
-		if (next === lineOneVerb) {
-			setLineOneVerb(next === 'Designing' ? 'Engineering' : 'Designing');
-		}
+	const chooseSecond = (next: HeroVerb) => {
+		setSecondVerb(next);
+		if (next === firstVerb) setFirstVerb(otherVerb(next));
 	};
 
 	return (
@@ -217,14 +215,11 @@ export function LandingHero() {
 						fontSize: { xs: 'clamp(2.125rem, 8vw, 2.75rem)', md: 'clamp(2.5rem, 4vw, 3.25rem)' },
 						color: tokens.textPrimary,
 					}}>
-					<Box component='span' sx={{ display: 'block' }}>
-						<HeroVerbDropdown value={lineOneVerb} label='Choose first headline verb' onChange={chooseLineOne} />{' '}
-						{hero.heroLineOneRest}
-					</Box>
-					<Box component='span' sx={{ display: 'block' }}>
-						<HeroVerbDropdown value={lineTwoVerb} label='Choose second headline verb' onChange={chooseLineTwo} />{' '}
-						{hero.heroLineTwoRest}
-					</Box>
+					{hero.heroLinePrefix}
+					<HeroVerbDropdown value={firstVerb} label='Choose first headline verb' onChange={chooseFirst} />
+					{hero.heroLineMiddle}
+					<HeroVerbDropdown value={secondVerb} label='Choose second headline verb' onChange={chooseSecond} />
+					{hero.heroLineSuffix}
 				</Typography>
 			</FadeIn>
 
