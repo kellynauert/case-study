@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import DesktopWindowsOutlinedIcon from '@mui/icons-material/DesktopWindowsOutlined';
 import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
 import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
@@ -110,14 +110,14 @@ function HeroVerbDropdown({
 					},
 				}}>
 				{value}
-				<ArrowDropDownRoundedIcon
+				<KeyboardArrowDownIcon
 					aria-hidden
 					className='hero-verb-chevron'
 					sx={{
 						fontSize: '0.88em',
 						color: tokens.accentPink,
 						position: 'relative',
-						top: '0.14em',
+						top: '0.1em',
 						ml: '-0.12em',
 						transition: 'transform 180ms ease, color 180ms ease',
 						transform: open ? 'rotate(180deg)' : 'none',
