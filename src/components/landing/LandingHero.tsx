@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import DesktopWindowsOutlinedIcon from '@mui/icons-material/DesktopWindowsOutlined';
 import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
 import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
@@ -20,6 +19,37 @@ const capabilityIcons = {
 } as const;
 
 type HeroVerb = (typeof hero.heroVerbOptions)[number];
+
+function RoundedChevronIcon({ open }: { open: boolean }) {
+	return (
+		<Box
+			aria-hidden
+			className='hero-verb-chevron'
+			component='svg'
+			viewBox='0 0 24 24'
+			sx={{
+				width: '0.72em',
+				height: '0.72em',
+				display: 'block',
+				flexShrink: 0,
+				color: tokens.accentPink,
+				position: 'relative',
+				top: '0.06em',
+				ml: '-0.08em',
+				transition: 'transform 180ms ease, color 180ms ease',
+				transform: open ? 'rotate(180deg)' : 'none',
+			}}>
+			<path
+				d='M6.5 9.25 L12 14.75 L17.5 9.25'
+				fill='none'
+				stroke='currentColor'
+				strokeWidth='2.4'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+		</Box>
+	);
+}
 
 function TimelineJumpLink({ children }: { children: React.ReactNode }) {
 	return (
@@ -110,19 +140,7 @@ function HeroVerbDropdown({
 					},
 				}}>
 				{value}
-				<KeyboardArrowDownIcon
-					aria-hidden
-					className='hero-verb-chevron'
-					sx={{
-						fontSize: '0.88em',
-						color: tokens.accentPink,
-						position: 'relative',
-						top: '0.1em',
-						ml: '-0.12em',
-						transition: 'transform 180ms ease, color 180ms ease',
-						transform: open ? 'rotate(180deg)' : 'none',
-					}}
-				/>
+				<RoundedChevronIcon open={open} />
 			</Box>
 			<Menu
 				id={menuId}
