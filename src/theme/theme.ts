@@ -7,6 +7,7 @@ export const green = '#22C55E';
 export const background = '#FDFBFF';
 export const surface = '#FFFFFF';
 export const surfaceRaised = '#F8F5FF';
+export const fieldBackground = '#cf3aed27';
 export const border = alpha('#4C1D95', 0.1);
 export const borderHover = alpha('#7C3AED', 0.28);
 export const textPrimary = '#1E1033';
@@ -248,6 +249,7 @@ export const tokens = {
 	shadowSubtle,
 	shadowElevated,
 	shadowImage,
+	fieldBackground,
 	fontDisplay,
 	fontBody,
 	fontMono,

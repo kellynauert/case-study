@@ -1,5 +1,7 @@
 import { useId, useState } from 'react';
 import Box from '@mui/material/Box';
+import Fade from '@mui/material/Fade';
+import type { FadeProps } from '@mui/material/Fade';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
@@ -10,6 +12,7 @@ import RocketLaunchRoundedIcon from '@mui/icons-material/RocketLaunchRounded';
 import { FadeIn } from '../Layout/FadeIn';
 import { hero } from '../../lib/site';
 import { tokens } from '../../theme/theme';
+import { alpha } from '@mui/material';
 
 const capabilityIcons = {
 	strategy: AutoAwesomeRoundedIcon,
@@ -19,6 +22,20 @@ const capabilityIcons = {
 } as const;
 
 type HeroVerb = (typeof hero.heroVerbOptions)[number];
+
+/** Shared spring timing for the chevron flip and menu pop. */
+const playfulSpring = {
+	duration: 480,
+	exitDuration: 150,
+	/** Snappy start, soft overshoot settle — used by the chevron. */
+	ease: 'cubic-bezier(0.16, 1.45, 0.3, 1)',
+	exitEase: 'cubic-bezier(0.4, 0, 1, 1)',
+} as const;
+
+/** Keeps the menu mounted long enough for the spring keyframes to finish. */
+function SpringMenuFade(props: FadeProps) {
+	return <Fade {...props} timeout={{ enter: playfulSpring.duration, exit: playfulSpring.exitDuration }} />;
+}
 
 function RoundedChevronIcon({ open }: { open: boolean }) {
 	return (
@@ -36,8 +53,14 @@ function RoundedChevronIcon({ open }: { open: boolean }) {
 				position: 'relative',
 				top: '0.06em',
 				ml: '-0.08em',
-				transition: 'transform 180ms ease, color 180ms ease',
-				transform: open ? 'rotate(180deg)' : 'none',
+				transformBox: 'fill-box',
+				transformOrigin: 'center',
+				transition: `transform ${playfulSpring.duration}ms ${playfulSpring.ease}, color 220ms ease`,
+				transform: open ? 'rotate(180deg) scale(1.12)' : 'rotate(0deg) scale(1)',
+				'@media (prefers-reduced-motion: reduce)': {
+					transition: 'none',
+					transform: open ? 'rotate(180deg)' : 'none',
+				},
 			}}>
 			<path
 				d='M6.5 9.25 L12 14.75 L17.5 9.25'
@@ -84,15 +107,7 @@ function TimelineJumpLink({ children }: { children: React.ReactNode }) {
 	);
 }
 
-function HeroVerbDropdown({
-	value,
-	label,
-	onChange,
-}: {
-	value: HeroVerb;
-	label: string;
-	onChange: (next: HeroVerb) => void;
-}) {
+function HeroVerbDropdown({ value, label, onChange }: { value: HeroVerb; label: string; onChange: (next: HeroVerb) => void }) {
 	const buttonId = useId();
 	const menuId = useId();
 	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -113,39 +128,24 @@ function HeroVerbDropdown({
 					display: 'inline-flex',
 					alignItems: 'baseline',
 					position: 'relative',
-					gap: 0,
+					gap: 1,
 					m: 0,
-					p: 0,
-					pb: '0.14em',
+					px: 2,
+
+					py: 0,
+					pr: 1,
 					border: 'none',
-					borderRadius: 0,
-					bgcolor: 'transparent',
+					borderRadius: 1,
+					bgcolor: alpha(tokens.accentPink, 0.1),
 					color: 'inherit',
 					font: 'inherit',
 					letterSpacing: 'inherit',
 					lineHeight: 'inherit',
 					cursor: 'pointer',
 					verticalAlign: 'baseline',
-					transition: 'color 180ms ease',
-					'&::after': {
-						content: '""',
-						position: 'absolute',
-						left: 0,
-						right: 0,
-						bottom: 0,
-						height: 3,
-						borderRadius: 999,
-						bgcolor: tokens.accentPink,
-						transition: 'background-color 180ms ease',
-					},
+					transition: 'background-color 180ms ease, color 180ms ease',
 					'&:hover': {
-						color: tokens.accentPink,
-						'&::after': {
-							bgcolor: tokens.accent,
-						},
-						'& .hero-verb-chevron': {
-							color: tokens.accent,
-						},
+						bgcolor: alpha(tokens.accentPink, 0.2),
 					},
 					'&:focus-visible': {
 						outline: `2px solid ${tokens.accentPink}`,
@@ -160,6 +160,8 @@ function HeroVerbDropdown({
 				anchorEl={anchorEl}
 				open={open}
 				onClose={() => setAnchorEl(null)}
+				disableScrollLock
+				slots={{ transition: SpringMenuFade }}
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
 				transformOrigin={{ vertical: 'top', horizontal: 'left' }}
 				slotProps={{
@@ -176,6 +178,25 @@ function HeroVerbDropdown({
 							border: `1px solid ${tokens.border}`,
 							boxShadow: '0 10px 28px rgba(30, 16, 51, 0.1)',
 							bgcolor: tokens.surface,
+							overflow: 'visible',
+							transformOrigin: 'top left',
+							animation:
+								open ?
+									`heroMenuSpringIn ${playfulSpring.duration}ms linear both`
+								:	`heroMenuSpringOut ${playfulSpring.exitDuration}ms ease-in both`,
+							'@keyframes heroMenuSpringIn': {
+								'0%': { transform: 'scale(0.86) translateY(-0.4rem)' },
+								'32%': { transform: 'scale(1.12) translateY(0.1rem)' },
+								'58%': { transform: 'scale(0.96) translateY(-0.03rem)' },
+								'100%': { transform: 'scale(1) translateY(0)' },
+							},
+							'@keyframes heroMenuSpringOut': {
+								'0%': { transform: 'scale(1) translateY(0)' },
+								'100%': { transform: 'scale(0.92) translateY(-0.28rem)' },
+							},
+							'@media (prefers-reduced-motion: reduce)': {
+								animation: 'none',
+							},
 						},
 					},
 				}}>
@@ -252,7 +273,9 @@ export function LandingHero() {
 					}}>
 					{hero.heroLinePrefix}
 					<HeroVerbDropdown value={firstVerb} label='Choose first headline verb' onChange={chooseFirst} />
-					{hero.heroLineMiddle}
+					{hero.heroLineAfterFirst}
+					<br />
+					{hero.heroLineAnd}
 					<HeroVerbDropdown value={secondVerb} label='Choose second headline verb' onChange={chooseSecond} />
 					{hero.heroLineSuffix}
 				</Typography>
