@@ -15,9 +15,34 @@ const capabilityIcons = {
 	devops: CloudOutlinedIcon,
 } as const;
 
-function Accent({ children }: { children: React.ReactNode }) {
+function TimelineJumpLink({ children }: { children: React.ReactNode }) {
 	return (
-		<Box component='span' sx={{ color: tokens.accentPink }}>
+		<Box
+			component='a'
+			href='#platform-timeline'
+			onClick={(event) => {
+				const el = document.getElementById('platform-timeline');
+				if (!el) return;
+				event.preventDefault();
+				el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+				history.replaceState(null, '', '#platform-timeline');
+			}}
+			sx={{
+				color: tokens.accentPink,
+				textDecoration: 'underline',
+				textDecorationColor: 'transparent',
+				textUnderlineOffset: '0.18em',
+				transition: 'color 180ms ease, text-decoration-color 180ms ease',
+				'&:hover': {
+					color: tokens.accent,
+					textDecorationColor: tokens.accent,
+				},
+				'&:focus-visible': {
+					outline: `2px solid ${tokens.accentPink}`,
+					outlineOffset: 2,
+					borderRadius: 0.5,
+				},
+			}}>
 			{children}
 		</Box>
 	);
@@ -69,7 +94,7 @@ export function LandingHero() {
 						color: tokens.textPrimary,
 					}}>
 					{hero.supportingBefore}
-					<Accent>{hero.supportingAccent}</Accent>
+					<TimelineJumpLink>{hero.supportingAccent}</TimelineJumpLink>
 					{hero.supportingAfter}
 				</Typography>
 			</FadeIn>

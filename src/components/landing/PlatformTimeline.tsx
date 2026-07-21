@@ -11,6 +11,7 @@ import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 import type { SvgIconProps } from '@mui/material/SvgIcon';
 import { platformStory } from '../../lib/site';
+import { scrollMarginTop } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
 type TimelineItem = (typeof platformStory.timeline)[number];
@@ -126,7 +127,7 @@ export function PlatformTimeline() {
 	const placements = items.map(barPlacement);
 
 	return (
-		<Box aria-label='Platform evolution'>
+		<Box id='platform-timeline' aria-label='Platform evolution' sx={{ scrollMarginTop }}>
 			<Typography variant='body1' sx={{ m: 0, mb: 1.75 }}>
 				{platformStory.timelineIntro}
 			</Typography>
