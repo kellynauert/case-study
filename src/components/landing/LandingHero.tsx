@@ -21,6 +21,11 @@ const capabilityIcons = {
 
 type HeroVerb = (typeof hero.heroVerbOptions)[number];
 
+function wavyUnderline(color: string) {
+	const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 4" preserveAspectRatio="none"><path d="M0 2.2 Q 3 0.5 6 2.2 T 12 2.2 T 18 2.2 T 24 2.2" fill="none" stroke="${color}" stroke-width="1.55" stroke-linecap="round"/></svg>`;
+	return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+}
+
 function TimelineJumpLink({ children }: { children: React.ReactNode }) {
 	return (
 		<Box
@@ -85,21 +90,24 @@ function HeroVerbDropdown({
 					gap: 0.15,
 					m: 0,
 					p: 0,
-					pb: '0.06em',
+					pb: '0.14em',
 					border: 'none',
-					borderBottom: `2px solid ${tokens.accentPink}`,
 					borderRadius: 0,
 					bgcolor: 'transparent',
+					backgroundImage: wavyUnderline(tokens.accentPink),
+					backgroundRepeat: 'repeat-x',
+					backgroundPosition: 'left bottom',
+					backgroundSize: '16px 4px',
 					color: 'inherit',
 					font: 'inherit',
 					letterSpacing: 'inherit',
 					lineHeight: 'inherit',
 					cursor: 'pointer',
 					verticalAlign: 'baseline',
-					transition: 'border-color 180ms ease, color 180ms ease',
+					transition: 'color 180ms ease, background-image 180ms ease',
 					'&:hover': {
 						color: tokens.accentPink,
-						borderBottomColor: tokens.accent,
+						backgroundImage: wavyUnderline(tokens.accent),
 					},
 					'&:focus-visible': {
 						outline: `2px solid ${tokens.accentPink}`,
