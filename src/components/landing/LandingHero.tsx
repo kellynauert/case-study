@@ -1,5 +1,9 @@
+import { useId, useState } from 'react';
 import Box from '@mui/material/Box';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import DesktopWindowsOutlinedIcon from '@mui/icons-material/DesktopWindowsOutlined';
 import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
 import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
@@ -14,6 +18,8 @@ const capabilityIcons = {
 	architecture: StorageOutlinedIcon,
 	devops: CloudOutlinedIcon,
 } as const;
+
+type HeroVerb = (typeof hero.heroVerbOptions)[number];
 
 function TimelineJumpLink({ children }: { children: React.ReactNode }) {
 	return (
@@ -48,75 +54,147 @@ function TimelineJumpLink({ children }: { children: React.ReactNode }) {
 	);
 }
 
-/** Hand-drawn editor mark suggesting the two headline lines should be swapped. */
-function EditorSwapArrow() {
+function HeroVerbDropdown({
+	value,
+	label,
+	onChange,
+}: {
+	value: HeroVerb;
+	label: string;
+	onChange: (next: HeroVerb) => void;
+}) {
+	const buttonId = useId();
+	const menuId = useId();
+	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+	const open = Boolean(anchorEl);
+
 	return (
-		<Box
-			aria-hidden
-			sx={{
-				position: 'absolute',
-				left: { xs: '8.75rem', sm: '10.5rem', md: '12.25rem' },
-				top: '50%',
-				width: { xs: 64, sm: 76, md: 86 },
-				height: { xs: 64, sm: 74, md: 84 },
-				transform: 'translateY(-50%) rotate(-6deg)',
-				pointerEvents: 'none',
-				'@keyframes heroSwapDraw': {
-					from: { strokeDashoffset: 1 },
-					to: { strokeDashoffset: 0 },
-				},
-				'& path': {
-					strokeDasharray: 1,
-					strokeDashoffset: 0,
-					animation: 'heroSwapDraw 700ms ease-out 280ms both',
-					'@media (prefers-reduced-motion: reduce)': {
-						animation: 'none',
+		<>
+			<Box
+				component='button'
+				type='button'
+				id={buttonId}
+				aria-haspopup='listbox'
+				aria-expanded={open}
+				aria-controls={open ? menuId : undefined}
+				aria-label={label}
+				onClick={(event) => setAnchorEl(event.currentTarget)}
+				sx={{
+					display: 'inline-flex',
+					alignItems: 'baseline',
+					gap: 0.15,
+					m: 0,
+					p: 0,
+					pb: '0.06em',
+					border: 'none',
+					borderBottom: `2px solid ${tokens.accentPink}`,
+					borderRadius: 0,
+					bgcolor: 'transparent',
+					color: 'inherit',
+					font: 'inherit',
+					letterSpacing: 'inherit',
+					lineHeight: 'inherit',
+					cursor: 'pointer',
+					verticalAlign: 'baseline',
+					transition: 'border-color 180ms ease, color 180ms ease',
+					'&:hover': {
+						color: tokens.accentPink,
+						borderBottomColor: tokens.accent,
 					},
-				},
-			}}>
-			<svg viewBox='0 0 90 90' width='100%' height='100%' overflow='visible'>
-				{/* Slightly wobbly S-curve — like a margin note to transpose the lines */}
-				<path
-					d='M 26 12
-						C 44 8, 70 14, 72 30
-						C 74 44, 58 48, 40 52
-						C 24 56, 16 62, 20 76'
-					fill='none'
-					stroke={tokens.accentPink}
-					strokeWidth='2.35'
-					strokeLinecap='round'
-					strokeLinejoin='round'
-					pathLength='1'
-					opacity='0.95'
+					'&:focus-visible': {
+						outline: `2px solid ${tokens.accentPink}`,
+						outlineOffset: 3,
+					},
+				}}>
+				{value}
+				<KeyboardArrowDownIcon
+					aria-hidden
+					sx={{
+						fontSize: '0.55em',
+						color: tokens.accentPink,
+						position: 'relative',
+						top: '0.08em',
+						ml: 0.15,
+						transition: 'transform 180ms ease',
+						transform: open ? 'rotate(180deg)' : 'none',
+					}}
 				/>
-				{/* Arrowhead toward Designing */}
-				<path
-					d='M 16 22 L 26 10 L 36 19'
-					fill='none'
-					stroke={tokens.accentPink}
-					strokeWidth='2.35'
-					strokeLinecap='round'
-					strokeLinejoin='round'
-					pathLength='1'
-					opacity='0.95'
-				/>
-				{/* Arrowhead toward Engineering */}
-				<path
-					d='M 12 70 L 20 78 L 30 71'
-					fill='none'
-					stroke={tokens.accentPink}
-					strokeWidth='2.35'
-					strokeLinecap='round'
-					strokeLinejoin='round'
-					pathLength='1'
-					opacity='0.95'
-				/>
-			</svg>
-		</Box>
+			</Box>
+			<Menu
+				id={menuId}
+				anchorEl={anchorEl}
+				open={open}
+				onClose={() => setAnchorEl(null)}
+				MenuListProps={{
+					'aria-labelledby': buttonId,
+					role: 'listbox',
+					dense: true,
+				}}
+				anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+				transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+				slotProps={{
+					paper: {
+						sx: {
+							mt: 0.75,
+							minWidth: 160,
+							borderRadius: 1.5,
+							border: `1px solid ${tokens.border}`,
+							boxShadow: '0 10px 28px rgba(30, 16, 51, 0.1)',
+							bgcolor: tokens.surface,
+						},
+					},
+				}}>
+				{hero.heroVerbOptions.map((option) => {
+					const selected = option === value;
+					return (
+						<MenuItem
+							key={option}
+							selected={selected}
+							role='option'
+							aria-selected={selected}
+							onClick={() => {
+								onChange(option);
+								setAnchorEl(null);
+							}}
+							sx={{
+								fontFamily: tokens.fontDisplay,
+								fontWeight: selected ? 600 : 500,
+								fontSize: '1.05rem',
+								color: selected ? tokens.accentPink : tokens.textPrimary,
+								py: 1.1,
+								'&:hover': { bgcolor: tokens.surfaceRaised },
+								'&.Mui-selected': {
+									bgcolor: tokens.surfaceRaised,
+									'&:hover': { bgcolor: tokens.surfaceRaised },
+								},
+							}}>
+							{option}
+						</MenuItem>
+					);
+				})}
+			</Menu>
+		</>
 	);
 }
 
 export function LandingHero() {
+	const [lineOneVerb, setLineOneVerb] = useState<HeroVerb>('Designing');
+	const [lineTwoVerb, setLineTwoVerb] = useState<HeroVerb>('Engineering');
+
+	const chooseLineOne = (next: HeroVerb) => {
+		setLineOneVerb(next);
+		if (next === lineTwoVerb) {
+			setLineTwoVerb(next === 'Designing' ? 'Engineering' : 'Designing');
+		}
+	};
+
+	const chooseLineTwo = (next: HeroVerb) => {
+		setLineTwoVerb(next);
+		if (next === lineOneVerb) {
+			setLineOneVerb(next === 'Designing' ? 'Engineering' : 'Designing');
+		}
+	};
+
 	return (
 		<Box
 			id='landing-hero'
@@ -127,27 +205,27 @@ export function LandingHero() {
 				pb: { xs: 3, md: 4 },
 			}}>
 			<FadeIn>
-				<Box sx={{ position: 'relative', display: 'inline-block', maxWidth: '100%', mb: { xs: 1.25, md: 1.5 } }}>
-					<Typography
-						component='h1'
-						sx={{
-							m: 0,
-							fontFamily: tokens.fontDisplay,
-							fontWeight: 600,
-							letterSpacing: '-0.03em',
-							lineHeight: 1.12,
-							fontSize: { xs: 'clamp(2.125rem, 8vw, 2.75rem)', md: 'clamp(2.5rem, 4vw, 3.25rem)' },
-							color: tokens.textPrimary,
-						}}>
-						<Box component='span' sx={{ display: 'block' }}>
-							{hero.heroLineOne}
-						</Box>
-						<Box component='span' sx={{ display: 'block' }}>
-							{hero.heroLineTwo}
-						</Box>
-					</Typography>
-					<EditorSwapArrow />
-				</Box>
+				<Typography
+					component='h1'
+					sx={{
+						m: 0,
+						mb: { xs: 1.25, md: 1.5 },
+						fontFamily: tokens.fontDisplay,
+						fontWeight: 600,
+						letterSpacing: '-0.03em',
+						lineHeight: 1.2,
+						fontSize: { xs: 'clamp(2.125rem, 8vw, 2.75rem)', md: 'clamp(2.5rem, 4vw, 3.25rem)' },
+						color: tokens.textPrimary,
+					}}>
+					<Box component='span' sx={{ display: 'block' }}>
+						<HeroVerbDropdown value={lineOneVerb} label='Choose first headline verb' onChange={chooseLineOne} />{' '}
+						{hero.heroLineOneRest}
+					</Box>
+					<Box component='span' sx={{ display: 'block' }}>
+						<HeroVerbDropdown value={lineTwoVerb} label='Choose second headline verb' onChange={chooseLineTwo} />{' '}
+						{hero.heroLineTwoRest}
+					</Box>
+				</Typography>
 			</FadeIn>
 
 			<FadeIn delay={80}>
