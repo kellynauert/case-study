@@ -54,7 +54,7 @@ export const theme = createTheme({
 		fontFamily: fontBody,
 		h1: {
 			fontFamily: fontDisplay,
-			fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+			fontSize: '3rem',
 			fontWeight: 600,
 			letterSpacing: '-0.035em',
 			lineHeight: 1.08,
@@ -62,7 +62,7 @@ export const theme = createTheme({
 		},
 		h2: {
 			fontFamily: fontDisplay,
-			fontSize: 'clamp(1.625rem, 3vw, 2rem)',
+			fontSize: '1.875rem',
 			fontWeight: 600,
 			letterSpacing: '-0.025em',
 			lineHeight: 1.2,
@@ -123,11 +123,14 @@ export const theme = createTheme({
 		},
 		pageTitle: {
 			fontFamily: fontDisplay,
-			fontSize: 'clamp(1.625rem, 3vw, 2rem)',
+			fontSize: '1.5rem',
 			fontWeight: 600,
 			letterSpacing: '-0.025em',
 			lineHeight: 1.15,
 			color: textPrimary,
+			'@media (min-width:900px)': {
+				fontSize: '1.875rem',
+			},
 		},
 		pageSubtitle: {
 			fontFamily: fontBody,
@@ -217,7 +220,7 @@ export const theme = createTheme({
 					detailHeading: 'h4',
 					panelHeading: 'h3',
 					displayTitle: 'h3',
-					pageTitle: 'h1',
+					pageTitle: 'h2',
 					pageSubtitle: 'p',
 					devNotesTitle: 'p',
 					devNotesBody: 'p',
