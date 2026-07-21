@@ -48,6 +48,74 @@ function TimelineJumpLink({ children }: { children: React.ReactNode }) {
 	);
 }
 
+/** Hand-drawn editor mark suggesting the two headline lines should be swapped. */
+function EditorSwapArrow() {
+	return (
+		<Box
+			aria-hidden
+			sx={{
+				position: 'absolute',
+				left: { xs: '8.75rem', sm: '10.5rem', md: '12.25rem' },
+				top: '50%',
+				width: { xs: 64, sm: 76, md: 86 },
+				height: { xs: 64, sm: 74, md: 84 },
+				transform: 'translateY(-50%) rotate(-6deg)',
+				pointerEvents: 'none',
+				'@keyframes heroSwapDraw': {
+					from: { strokeDashoffset: 1 },
+					to: { strokeDashoffset: 0 },
+				},
+				'& path': {
+					strokeDasharray: 1,
+					strokeDashoffset: 0,
+					animation: 'heroSwapDraw 700ms ease-out 280ms both',
+					'@media (prefers-reduced-motion: reduce)': {
+						animation: 'none',
+					},
+				},
+			}}>
+			<svg viewBox='0 0 90 90' width='100%' height='100%' overflow='visible'>
+				{/* Slightly wobbly S-curve — like a margin note to transpose the lines */}
+				<path
+					d='M 26 12
+						C 44 8, 70 14, 72 30
+						C 74 44, 58 48, 40 52
+						C 24 56, 16 62, 20 76'
+					fill='none'
+					stroke={tokens.accentPink}
+					strokeWidth='2.35'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+					pathLength='1'
+					opacity='0.95'
+				/>
+				{/* Arrowhead toward Designing */}
+				<path
+					d='M 16 22 L 26 10 L 36 19'
+					fill='none'
+					stroke={tokens.accentPink}
+					strokeWidth='2.35'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+					pathLength='1'
+					opacity='0.95'
+				/>
+				{/* Arrowhead toward Engineering */}
+				<path
+					d='M 12 70 L 20 78 L 30 71'
+					fill='none'
+					stroke={tokens.accentPink}
+					strokeWidth='2.35'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+					pathLength='1'
+					opacity='0.95'
+				/>
+			</svg>
+		</Box>
+	);
+}
+
 export function LandingHero() {
 	return (
 		<Box
@@ -59,25 +127,27 @@ export function LandingHero() {
 				pb: { xs: 3, md: 4 },
 			}}>
 			<FadeIn>
-				<Typography
-					component='h1'
-					sx={{
-						m: 0,
-						mb: { xs: 1.25, md: 1.5 },
-						fontFamily: tokens.fontDisplay,
-						fontWeight: 600,
-						letterSpacing: '-0.03em',
-						lineHeight: 1.12,
-						fontSize: { xs: 'clamp(2.125rem, 8vw, 2.75rem)', md: 'clamp(2.5rem, 4vw, 3.25rem)' },
-						color: tokens.textPrimary,
-					}}>
-					<Box component='span' sx={{ display: 'block' }}>
-						{hero.heroLineOne}
-					</Box>
-					<Box component='span' sx={{ display: 'block' }}>
-						{hero.heroLineTwo}
-					</Box>
-				</Typography>
+				<Box sx={{ position: 'relative', display: 'inline-block', maxWidth: '100%', mb: { xs: 1.25, md: 1.5 } }}>
+					<Typography
+						component='h1'
+						sx={{
+							m: 0,
+							fontFamily: tokens.fontDisplay,
+							fontWeight: 600,
+							letterSpacing: '-0.03em',
+							lineHeight: 1.12,
+							fontSize: { xs: 'clamp(2.125rem, 8vw, 2.75rem)', md: 'clamp(2.5rem, 4vw, 3.25rem)' },
+							color: tokens.textPrimary,
+						}}>
+						<Box component='span' sx={{ display: 'block' }}>
+							{hero.heroLineOne}
+						</Box>
+						<Box component='span' sx={{ display: 'block' }}>
+							{hero.heroLineTwo}
+						</Box>
+					</Typography>
+					<EditorSwapArrow />
+				</Box>
 			</FadeIn>
 
 			<FadeIn delay={80}>
