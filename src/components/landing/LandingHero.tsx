@@ -125,14 +125,14 @@ function HeroVerbDropdown({
 				anchorEl={anchorEl}
 				open={open}
 				onClose={() => setAnchorEl(null)}
-				MenuListProps={{
-					'aria-labelledby': buttonId,
-					role: 'listbox',
-					dense: true,
-				}}
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
 				transformOrigin={{ vertical: 'top', horizontal: 'left' }}
 				slotProps={{
+					list: {
+						'aria-labelledby': buttonId,
+						role: 'listbox',
+						dense: true,
+					},
 					paper: {
 						sx: {
 							mt: 0.75,
