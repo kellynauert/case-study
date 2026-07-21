@@ -18,6 +18,7 @@ import { useViewedSections } from '../../hooks/useViewedSections';
 import { mobileHeaderHeight } from '../../lib/styles';
 import { usePageToc } from './PageTocContext';
 import { SiteHeroIntro } from './SiteHeroIntro';
+import { ResumeDownloadLink } from './ResumeDownloadLink';
 import { tokens } from '../../theme/theme';
 
 interface NavDrawerContextValue {
@@ -422,7 +423,7 @@ export function MobileStickyNavBar() {
 			heroEl = document.getElementById('landing-hero');
 			if (!heroEl) return false;
 
-			setHeroScrolledPast(false);
+			setHeroScrolledPast(isHeroScrolledPast(heroEl));
 			update();
 
 			observer = new IntersectionObserver(update, { threshold: [0] });
@@ -450,19 +451,12 @@ export function MobileStickyNavBar() {
 		};
 	}, [isLanding, location.pathname]);
 
-	const showBar = !isLanding || heroScrolledPast;
-	const hiddenTop = `calc(-1 * (${mobileHeaderHeight}px + env(safe-area-inset-top, 0px)))`;
-
 	const bar = (
 		<Box
 			sx={{
 				display: { xs: 'flex', md: 'none' },
 				position: isLanding ? 'fixed' : 'sticky',
-				top:
-					isLanding ?
-						showBar ? 0
-						:	hiddenTop
-					:	0,
+				top: 0,
 				left: isLanding ? 0 : undefined,
 				right: isLanding ? 0 : undefined,
 				zIndex: 1200,
@@ -470,17 +464,15 @@ export function MobileStickyNavBar() {
 				height: `calc(${mobileHeaderHeight}px + env(safe-area-inset-top, 0px))`,
 				pt: 'env(safe-area-inset-top, 0px)',
 				px: 0.5,
+				pr: 1,
 				flexShrink: 0,
-				bgcolor: alpha(tokens.background, 0.92),
+				bgcolor: alpha(tokens.background, isLanding && !heroScrolledPast ? 0.72 : 0.92),
 				backdropFilter: 'blur(10px)',
-				borderBottom: `1px solid ${tokens.border}`,
-				...(isLanding && {
-					transition: 'top 200ms ease',
-					pointerEvents: showBar ? 'auto' : 'none',
-					'@media (prefers-reduced-motion: reduce)': {
-						transition: 'none',
-					},
-				}),
+				borderBottom: `1px solid ${isLanding && !heroScrolledPast ? 'transparent' : tokens.border}`,
+				transition: 'background-color 200ms ease, border-color 200ms ease',
+				'@media (prefers-reduced-motion: reduce)': {
+					transition: 'none',
+				},
 			}}>
 			<IconButton
 				onClick={openDrawer}
@@ -503,7 +495,7 @@ export function MobileStickyNavBar() {
 					minWidth: 0,
 					m: 0,
 					pl: 0.25,
-					pr: 1.5,
+					pr: 1,
 					fontFamily: tokens.fontDisplay,
 					fontSize: '1.125rem',
 					fontWeight: 600,
@@ -521,6 +513,14 @@ export function MobileStickyNavBar() {
 				}}>
 				{hero.headline}
 			</Typography>
+			<ResumeDownloadLink
+				sx={{
+					flexShrink: 0,
+					px: 0.75,
+					fontSize: '0.8125rem',
+					gap: 0.5,
+				}}
+			/>
 		</Box>
 	);
 

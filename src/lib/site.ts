@@ -25,10 +25,22 @@ export const links = {
 
 export const hero = {
 	headline: author.name,
-	title: 'Systems',
+	title: author.role,
 	roleLine: `${author.role}`,
+	taglineBefore: 'I design and build software people ',
+	taglineAccent: 'love',
+	taglineAfter: ' to use.',
+	supportingBefore: "For the past five years I've been the sole designer and engineer behind a ",
+	supportingAccent: 'multi-product SaaS platform',
+	supportingAfter: ' used by thousands of learners and educators.',
 	primaryCta: 'View Systems',
 	secondaryCta: 'Download Resume',
+	capabilities: [
+		{ label: 'UX + Product Strategy', icon: 'strategy' },
+		{ label: 'Full-Stack Engineering', icon: 'engineering' },
+		{ label: 'System Design & Architecture', icon: 'architecture' },
+		{ label: 'Deployment & DevOps', icon: 'devops' },
+	],
 } as const;
 
 export const platformStory = {

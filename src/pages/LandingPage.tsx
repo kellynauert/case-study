@@ -2,13 +2,13 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { getCaseStudiesBySystemGroup } from '../lib/caseStudyRegistry';
 import { author, platformStory, site } from '../lib/site';
-import { scrollMarginTop } from '../lib/styles';
+import { mobileHeaderHeight, scrollMarginTop } from '../lib/styles';
 import { SiteLayout } from '../components/Layout/SiteLayout';
 import { PageShell } from '../components/Layout/PageShell';
-import { SiteHeroIntro } from '../components/Layout/SiteHeroIntro';
 import { StudyGrid } from '../components/case-study/StudyGrid';
 import { StudyCell } from '../components/case-study/StudyCell';
 import { FeatureShowcaseList } from '../components/landing/FeatureShowcaseList';
+import { LandingHero } from '../components/landing/LandingHero';
 import { PlatformTimeline } from '../components/landing/PlatformTimeline';
 import { DevNotes } from '../components/landing/DevNotes';
 
@@ -23,9 +23,17 @@ export function LandingPage() {
 
 	return (
 		<SiteLayout>
-			<Box id='landing-hero' sx={{ display: { xs: 'block', md: 'none' }, pl: 1.5, pr: 2, pt: 2 }}>
-				<SiteHeroIntro />
-			</Box>
+			{/* Mobile top bar is fixed — reserve space so the hero sits below it. */}
+			<Box
+				aria-hidden
+				sx={{
+					display: { xs: 'block', md: 'none' },
+					height: `calc(${mobileHeaderHeight}px + env(safe-area-inset-top, 0px))`,
+					flexShrink: 0,
+				}}
+			/>
+
+			<LandingHero />
 
 			<PageShell>
 				<StudyGrid spacing={3} sx={{ mb: { xs: 4, md: 5 }, alignItems: 'stretch' }}>
