@@ -15,7 +15,10 @@ import { platformStory } from '../../lib/site';
 import { scrollMarginTop } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
 
-type TimelineItem = (typeof platformStory.timeline)[number];
+type TimelineItem = Omit<(typeof platformStory.timeline)[number], 'end'> & {
+	/** `null` = still ongoing (“Present”). */
+	end: number | null;
+};
 
 const YEAR_START = platformStory.timelineRange.start;
 const YEAR_END = platformStory.timelineRange.end;
@@ -40,10 +43,12 @@ function yearLeftPct(year: number) {
 }
 
 function barPlacement(item: TimelineItem) {
-	const ongoing = item.end === null;
 	const left = yearLeftPct(item.start);
-	const width = ongoing ? 100 - left : Math.max(yearLeftPct(item.end + 1) - left, 5);
-	return { ongoing, left, width, end: left + width };
+	if (item.end === null) {
+		return { ongoing: true as const, left, width: 100 - left, end: 100 };
+	}
+	const width = Math.max(yearLeftPct(item.end + 1) - left, 5);
+	return { ongoing: false as const, left, width, end: left + width };
 }
 
 function barColor(item: TimelineItem) {
