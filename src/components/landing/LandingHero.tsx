@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowDownIcon from '@mui/icons-material/ArrowDropDownRounded';
 import DesktopWindowsOutlinedIcon from '@mui/icons-material/DesktopWindowsOutlined';
 import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
 import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
@@ -85,9 +85,9 @@ function HeroVerbDropdown({
 					gap: 0.15,
 					m: 0,
 					p: 0,
-					pb: '0.06em',
+					pb: '0.08em',
 					border: 'none',
-					borderBottom: `2px solid ${tokens.accentPink}`,
+					borderBottom: `3px solid ${tokens.accentPink}`,
 					borderRadius: 0,
 					bgcolor: 'transparent',
 					color: 'inherit',
@@ -110,11 +110,11 @@ function HeroVerbDropdown({
 				<KeyboardArrowDownIcon
 					aria-hidden
 					sx={{
-						fontSize: '0.55em',
+						fontSize: '0.72em',
 						color: tokens.accentPink,
 						position: 'relative',
-						top: '0.08em',
-						ml: 0.15,
+						top: '0.12em',
+						ml: 0.05,
 						transition: 'transform 180ms ease',
 						transform: open ? 'rotate(180deg)' : 'none',
 					}}
