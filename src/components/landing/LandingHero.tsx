@@ -3,19 +3,19 @@ import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import DesktopWindowsOutlinedIcon from '@mui/icons-material/DesktopWindowsOutlined';
-import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
-import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
-import CloudOutlinedIcon from '@mui/icons-material/CloudOutlined';
+import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import DataObjectRoundedIcon from '@mui/icons-material/DataObjectRounded';
+import AccountTreeRoundedIcon from '@mui/icons-material/AccountTreeRounded';
+import RocketLaunchRoundedIcon from '@mui/icons-material/RocketLaunchRounded';
 import { FadeIn } from '../Layout/FadeIn';
 import { hero } from '../../lib/site';
 import { tokens } from '../../theme/theme';
 
 const capabilityIcons = {
-	strategy: DesktopWindowsOutlinedIcon,
-	engineering: CodeOutlinedIcon,
-	architecture: StorageOutlinedIcon,
-	devops: CloudOutlinedIcon,
+	strategy: AutoAwesomeRoundedIcon,
+	engineering: DataObjectRoundedIcon,
+	architecture: AccountTreeRoundedIcon,
+	devops: RocketLaunchRoundedIcon,
 } as const;
 
 type HeroVerb = (typeof hero.heroVerbOptions)[number];
@@ -301,14 +301,15 @@ export function LandingHero() {
 								sx={{
 									display: 'flex',
 									flexDirection: 'column',
-									alignItems: 'flex-start',
+									alignItems: 'center',
+									textAlign: 'center',
 									gap: 1,
 									minWidth: 0,
 								}}>
 								<Icon
 									aria-hidden
 									sx={{
-										fontSize: { xs: '1.5rem', md: '1.625rem' },
+										fontSize: { xs: '1.625rem', md: '1.75rem' },
 										color: tokens.accent,
 									}}
 								/>
