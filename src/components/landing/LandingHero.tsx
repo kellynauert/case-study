@@ -47,12 +47,10 @@ export function LandingHero() {
 						color: tokens.textPrimary,
 					}}>
 					<Box component='span' sx={{ display: 'block' }}>
-						{hero.title}
+						{hero.heroLineOne}
 					</Box>
 					<Box component='span' sx={{ display: 'block' }}>
-						{hero.taglineBefore}
-						<Accent>{hero.taglineAccent}</Accent>
-						{hero.taglineAfter}
+						{hero.heroLineTwo}
 					</Box>
 				</Typography>
 			</FadeIn>
