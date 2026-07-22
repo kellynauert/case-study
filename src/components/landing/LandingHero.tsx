@@ -784,7 +784,6 @@ export function LandingHero() {
 					aria-label='What the role covers'
 					sx={{
 						pt: { xs: 2.5, md: 3 },
-						borderTop: `1px solid ${tokens.border}`,
 					}}>
 					<Box
 						component='ul'
