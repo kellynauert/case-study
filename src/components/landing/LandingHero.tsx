@@ -897,8 +897,8 @@ export function LandingHero() {
 											justifyContent: 'center',
 											width: { xs: 36, md: 40 },
 											height: { xs: 36, md: 40 },
-											// Match label half-leading so the chip top meets glyph tops, not the line-box top.
-											mt: { xs: 'calc(0.9375rem * 0.15)', md: 'calc(1rem * 0.15)' },
+											// Match detailHeading half-leading so the chip top meets glyph tops.
+											mt: 'calc(1rem * 0.15)',
 											borderRadius: 1,
 											color: tokens.accentPink,
 											bgcolor: alpha(tokens.accentPink, 0.08),
@@ -907,30 +907,10 @@ export function LandingHero() {
 										<Icon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' } }} />
 									</Box>
 									<Box sx={{ minWidth: 0 }}>
-										<Typography
-											component='p'
-											sx={{
-												m: 0,
-												mb: 0.4,
-												fontFamily: tokens.fontBody,
-												fontSize: { xs: '0.9375rem', md: '1rem' },
-												fontWeight: 700,
-												letterSpacing: '-0.01em',
-												lineHeight: 1.3,
-												color: tokens.textPrimary,
-											}}>
+										<Typography variant='detailHeading' sx={{ m: 0, mb: 0.4, color: tokens.textPrimary }}>
 											{capability.label}
 										</Typography>
-										<Typography
-											component='p'
-											sx={{
-												m: 0,
-												fontFamily: tokens.fontBody,
-												fontSize: { xs: '0.8125rem', md: '0.875rem' },
-												fontWeight: 450,
-												lineHeight: 1.5,
-												color: tokens.textSecondary,
-											}}>
+										<Typography variant='caption' component='p' sx={{ m: 0, display: 'block', color: tokens.textSecondary }}>
 											{capability.detail}
 										</Typography>
 									</Box>
