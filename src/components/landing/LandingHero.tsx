@@ -477,7 +477,6 @@ function HeroScrollingField({
 						visibility: showReel ? 'hidden' : 'visible',
 						// Horizontal width overshoot lives on the shell; never bounce this label on Y.
 						transform: 'none',
-						animation: 'none',
 						...inkSx,
 					}}>
 					{displayValue}
