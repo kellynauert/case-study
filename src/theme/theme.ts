@@ -207,6 +207,7 @@ export const theme = createTheme({
 					backgroundColor: background,
 					scrollbarWidth: 'thin',
 					scrollbarColor: `${alpha(accent, 0.3)} transparent`,
+					textWrap: 'pretty',
 				},
 				'::selection': { backgroundColor: alpha(accentPink, 0.22), color: textPrimary },
 			},
