@@ -17,9 +17,9 @@ export const hero = {
 	heroCompareRightOptions: ['Engineer', 'Developer', 'Architect'] as const,
 	heroComparePrefix: 'Sole',
 	heroCompareSuffix: 'of an Evolving SaaS Platform',
-	supportingBefore: `I've picked up a lot of `,
-	supportingAccent: 'skills',
-	supportingAfter: ' building something this size.',
+	supportingBefore: `I enjoy working across a variety of `,
+	supportingAccent: 'UX and engineering',
+	supportingAfter: ' disciplines.',
 	secondaryCta: 'Download Resume',
 	capabilities: [
 		{

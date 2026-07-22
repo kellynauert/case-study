@@ -629,7 +629,7 @@ export function LandingHero() {
 					component='h1'
 					sx={{
 						m: 0,
-						mb: { xs: 2.5, md: 3 },
+						mb: { xs: 1.25, md: 1.5 },
 						fontFamily: tokens.fontDisplay,
 						fontWeight: 600,
 						letterSpacing: '-0.03em',
@@ -793,7 +793,7 @@ export function LandingHero() {
 					component='p'
 					sx={{
 						m: 0,
-						mb: { xs: 3, md: 3.5 },
+						mb: { xs: 1.5, md: 1.75 },
 						maxWidth: '38rem',
 						fontFamily: tokens.fontBody,
 						fontSize: { xs: '1.125rem', md: '1.25rem' },
@@ -814,7 +814,7 @@ export function LandingHero() {
 					component='section'
 					aria-label='What the role covers'
 					sx={{
-						pt: { xs: 2.5, md: 3 },
+						pt: { xs: 0.5, md: 0.75 },
 					}}>
 					<Box
 						component='ul'
