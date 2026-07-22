@@ -716,14 +716,14 @@ export function LandingHero() {
 								borderRadius: 1,
 								bgcolor: 'transparent',
 								boxShadow: 'none',
-								...reelInkSx(anySpinning),
+								color: tokens.accentPink,
 								cursor: 'pointer',
 								lineHeight: 1,
 								outline: 'none',
 								WebkitTapHighlightColor: 'transparent',
-								transition: 'background-color 180ms ease, transform 180ms ease',
+								transition: 'color 180ms ease, background-color 180ms ease, transform 180ms ease',
 								'&:hover': {
-									color: tokens.accent,
+									color: tokens.accentPink,
 									boxShadow: 'none',
 								},
 								'&:active': {
@@ -740,7 +740,6 @@ export function LandingHero() {
 									outlineOffset: 3,
 								},
 								'@media (prefers-reduced-motion: reduce)': {
-									animation: 'none',
 									'&:active': { transform: 'none' },
 								},
 							}}>
@@ -806,7 +805,7 @@ export function LandingHero() {
 						color: tokens.textPrimary,
 					}}>
 					{hero.supportingBefore}
-					<Box component='span' style={{ color: tokens.accentPink }}>
+					<Box component='span' style={{ color: tokens.accent }}>
 						{hero.supportingAccent}
 					</Box>
 					{hero.supportingAfter}
