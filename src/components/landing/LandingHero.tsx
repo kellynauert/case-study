@@ -78,6 +78,8 @@ const compareSpinnerGap = '8px';
 
 const autoSoloSpinMs = 15000;
 const diceWiggleDurationMs = 560;
+/** Looping wiggle while any reel is spinning. */
+const diceSpinWiggleDurationMs = 420;
 
 /**
  * Inline scrolling blank: plain text slot with reel animation (no wash / underline chrome).
@@ -547,7 +549,7 @@ export function LandingHero() {
 		return () => window.clearTimeout(timer);
 	}, [anySpinning]);
 
-	/** Occasional idle wiggle on the dice — paused while any spinner is active. */
+	/** Occasional idle wiggle on the dice — only while both spinners are settled. */
 	useEffect(() => {
 		if (anySpinning) {
 			setDiceWiggle(false);
@@ -723,7 +725,17 @@ export function LandingHero() {
 										'60%': { transform: 'translateY(0.08em) rotate(14deg) translateX(1px)' },
 										'76%': { transform: 'translateY(0.08em) rotate(-8deg) translateX(-0.5px)' },
 									},
-									animation: diceWiggle ? `diceIdleWiggle ${diceWiggleDurationMs}ms ease-in-out` : 'none',
+									'@keyframes diceSpinWiggle': {
+										'0%, 100%': { transform: 'translateY(0.08em) rotate(0deg) translateX(0)' },
+										'25%': { transform: 'translateY(0.08em) rotate(-22deg) translateX(-1.5px)' },
+										'50%': { transform: 'translateY(0.08em) rotate(20deg) translateX(1.5px)' },
+										'75%': { transform: 'translateY(0.08em) rotate(-14deg) translateX(-1px)' },
+									},
+									animation: anySpinning
+										? `diceSpinWiggle ${diceSpinWiggleDurationMs}ms ease-in-out infinite`
+										: diceWiggle
+											? `diceIdleWiggle ${diceWiggleDurationMs}ms ease-in-out`
+											: 'none',
 									'@media (prefers-reduced-motion: reduce)': {
 										animation: 'none',
 									},
