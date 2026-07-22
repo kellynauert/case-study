@@ -581,12 +581,6 @@ export function LandingHero() {
 		};
 	}, [anySpinning]);
 
-	/** Keep last word + dice as one wrap unit (e.g. "Platform" never alone / dice never orphaned). */
-	const suffix = hero.heroCompareSuffix;
-	const suffixLastSpace = suffix.lastIndexOf(' ');
-	const suffixLead = suffixLastSpace >= 0 ? suffix.slice(0, suffixLastSpace + 1) : '';
-	const suffixLastWord = suffixLastSpace >= 0 ? suffix.slice(suffixLastSpace + 1) : suffix;
-
 	return (
 		<Box
 			id='landing-hero'
@@ -596,7 +590,7 @@ export function LandingHero() {
 				pt: { xs: 3, md: 4 },
 				pb: { xs: 3, md: 4 },
 			}}>
-			{/* Sentence title: Sole [spin] [spin] / of an Evolving SaaS Platform. [dice] */}
+			{/* Sentence title: Sole [spin] [spin] [dice] / of an Evolving SaaS Platform. */}
 			<FadeIn>
 				<Box
 					component='h1'
@@ -658,9 +652,74 @@ export function LandingHero() {
 							easing={rightReelEasing}
 							spinKey={spinKeyRight}
 						/>
+						<Box
+							component='button'
+							type='button'
+							aria-label='Randomize title'
+							onClick={randomizeCompare}
+							sx={{
+								display: 'inline-flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								alignSelf: 'center',
+								flexShrink: 0,
+								ml: 0.25,
+								p: 0.4,
+								border: 'none',
+								borderRadius: 1,
+								bgcolor: 'transparent',
+								boxShadow: 'none',
+								color: tokens.accentPink,
+								cursor: 'pointer',
+								lineHeight: 0,
+								outline: 'none',
+								WebkitTapHighlightColor: 'transparent',
+								transition: 'color 180ms ease, background-color 180ms ease, transform 180ms ease',
+								'&:hover': {
+									color: tokens.accent,
+									boxShadow: 'none',
+								},
+								'&:active': {
+									transform: 'rotate(-12deg) scale(0.94)',
+									boxShadow: 'none',
+								},
+								'&:focus': {
+									outline: 'none',
+									boxShadow: 'none',
+								},
+								// Keyboard only — no ring flash from mouse focus / idle wiggle.
+								'&:focus-visible': {
+									outline: `2px solid ${tokens.accentPink}`,
+									outlineOffset: 3,
+								},
+								'@media (prefers-reduced-motion: reduce)': {
+									'&:active': { transform: 'none' },
+								},
+							}}>
+							<Box
+								component='span'
+								sx={{
+									display: 'inline-flex',
+									outline: 'none',
+									boxShadow: 'none',
+									'@keyframes diceIdleWiggle': {
+										'0%, 100%': { transform: 'rotate(0deg) translateX(0)' },
+										'12%': { transform: 'rotate(-20deg) translateX(-1.5px)' },
+										'28%': { transform: 'rotate(18deg) translateX(1.5px)' },
+										'44%': { transform: 'rotate(-16deg) translateX(-1px)' },
+										'60%': { transform: 'rotate(14deg) translateX(1px)' },
+										'76%': { transform: 'rotate(-8deg) translateX(-0.5px)' },
+									},
+									animation: diceWiggle ? `diceIdleWiggle ${diceWiggleDurationMs}ms ease-in-out` : 'none',
+									'@media (prefers-reduced-motion: reduce)': {
+										animation: 'none',
+									},
+								}}>
+								<CasinoRoundedIcon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' } }} />
+							</Box>
+						</Box>
 					</Box>
-					{/* Full-basis row so the suffix always starts on the line after the spinner group.
-					    Last word + dice share a nowrap unit so they never split across lines. */}
+					{/* Full-basis row so the suffix always starts on the line after the spinner group. */}
 					<Box
 						component='span'
 						sx={{
@@ -668,85 +727,7 @@ export function LandingHero() {
 							width: '100%',
 							lineHeight: 'inherit',
 						}}>
-						{suffixLead}
-						<Box
-							component='span'
-							sx={{
-								// Inline nowrap unit — same line box as surrounding suffix text (not a taller flex frame).
-								whiteSpace: 'nowrap',
-								lineHeight: 'inherit',
-							}}>
-							{suffixLastWord}
-							<Box
-								component='button'
-								type='button'
-								aria-label='Randomize title'
-								onClick={randomizeCompare}
-								sx={{
-									display: 'inline-flex',
-									alignItems: 'center',
-									justifyContent: 'center',
-									verticalAlign: 'middle',
-									// Cancel vertical padding so the hit area doesn’t inflate this line box.
-									my: -0.4,
-									mr: 0,
-									ml: 0.75,
-									p: 0.4,
-									border: 'none',
-									borderRadius: 1,
-									bgcolor: 'transparent',
-									boxShadow: 'none',
-									color: tokens.accentPink,
-									cursor: 'pointer',
-									lineHeight: 0,
-									outline: 'none',
-									WebkitTapHighlightColor: 'transparent',
-									transition: 'color 180ms ease, background-color 180ms ease, transform 180ms ease',
-									'&:hover': {
-										color: tokens.accent,
-
-										boxShadow: 'none',
-									},
-									'&:active': {
-										transform: 'rotate(-12deg) scale(0.94)',
-										boxShadow: 'none',
-									},
-									'&:focus': {
-										outline: 'none',
-										boxShadow: 'none',
-									},
-									// Keyboard only — no ring flash from mouse focus / idle wiggle.
-									'&:focus-visible': {
-										outline: `2px solid ${tokens.accentPink}`,
-										outlineOffset: 3,
-									},
-									'@media (prefers-reduced-motion: reduce)': {
-										'&:active': { transform: 'none' },
-									},
-								}}>
-								<Box
-									component='span'
-									sx={{
-										display: 'inline-flex',
-										outline: 'none',
-										boxShadow: 'none',
-										'@keyframes diceIdleWiggle': {
-											'0%, 100%': { transform: 'rotate(0deg) translateX(0)' },
-											'12%': { transform: 'rotate(-20deg) translateX(-1.5px)' },
-											'28%': { transform: 'rotate(18deg) translateX(1.5px)' },
-											'44%': { transform: 'rotate(-16deg) translateX(-1px)' },
-											'60%': { transform: 'rotate(14deg) translateX(1px)' },
-											'76%': { transform: 'rotate(-8deg) translateX(-0.5px)' },
-										},
-										animation: diceWiggle ? `diceIdleWiggle ${diceWiggleDurationMs}ms ease-in-out` : 'none',
-										'@media (prefers-reduced-motion: reduce)': {
-											animation: 'none',
-										},
-									}}>
-									<CasinoRoundedIcon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' } }} />
-								</Box>
-							</Box>
-						</Box>
+						{hero.heroCompareSuffix}
 					</Box>
 				</Box>
 			</FadeIn>
