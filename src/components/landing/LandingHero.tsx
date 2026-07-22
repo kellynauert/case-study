@@ -80,31 +80,25 @@ const autoSoloSpinMs = 15000;
 const diceWiggleDurationMs = 560;
 /** Full turns during a reel spin — decelerates with the same duration/easing as the reels. */
 const diceSpinTurns = 5;
-/** Pink ↔ purple ink morph while spinning — eases along the brand gradient. */
-const reelInkTransitionMs = 640;
-
 /**
- * Settled = purple, spinning = pink. Keyframes pass through accentLight so the
- * morph follows the brand gradient instead of a muddy RGB mid-blend / hard cut.
+ * Settled = purple. While spinning: pink while the strip is fast, then back to
+ * purple as it decelerates — same wall-clock as the reel, no pale mid stop.
  */
-function reelInkSx(spinning: boolean) {
+function reelInkSx(spinning: boolean, durationMs: number) {
+	const inkMid = `color-mix(in oklab, ${tokens.accentPink} 55%, ${tokens.accent} 45%)`;
 	return {
-		color: spinning ? tokens.accentPink : tokens.accent,
-		'@keyframes reelInkToPink': {
+		color: tokens.accent,
+		'@keyframes reelInkDuringSpin': {
 			'0%': { color: tokens.accent },
-			'45%': { color: tokens.accentLight },
-			'100%': { color: tokens.accentPink },
-		},
-		'@keyframes reelInkToPurple': {
-			'0%': { color: tokens.accentPink },
-			'45%': { color: tokens.accentLight },
+			'10%': { color: tokens.accentPink },
+			'48%': { color: tokens.accentPink },
+			'74%': { color: inkMid },
 			'100%': { color: tokens.accent },
 		},
-		animation: spinning
-			? `reelInkToPink ${reelInkTransitionMs}ms ${leftReelEasing} forwards`
-			: `reelInkToPurple ${reelInkTransitionMs}ms ${leftReelEasing} forwards`,
+		animation: spinning ? `reelInkDuringSpin ${durationMs}ms linear forwards` : 'none',
 		'@media (prefers-reduced-motion: reduce)': {
 			animation: 'none',
+			color: tokens.accent,
 		},
 	} as const;
 }
@@ -179,7 +173,7 @@ function HeroScrollingField({
 	const showReel = !ready && reelArmed;
 	const spinning = !ready;
 	const rowHeightPx = spinHeightRef.current > 0 ? spinHeightRef.current : fieldHeightPx;
-	const inkSx = reelInkSx(spinning);
+	const inkSx = reelInkSx(spinning, durationMs);
 
 	const setShellWidthPx = (px: number, animate: false | 'expand' | 'fit' = false) => {
 		const shell = shellRef.current;
@@ -386,7 +380,7 @@ function HeroScrollingField({
 				// Transparent so a neighboring reel can bleed through during width overshoot.
 				bgcolor: 'transparent',
 				// Fallback ink if background-clip text isn’t applied on a child.
-				color: ready ? tokens.accent : tokens.accentPink,
+				color: tokens.accent,
 				font: 'inherit',
 				fontSize: 'inherit',
 				fontWeight: 'inherit',
@@ -457,6 +451,7 @@ function HeroScrollingField({
 				<Box
 					component='span'
 					ref={settledRef}
+					key={`settled-ink-${spinKey}`}
 					sx={{
 						position: 'absolute',
 						left: 0,
@@ -484,6 +479,7 @@ function HeroScrollingField({
 				{!ready && (
 					<Box
 						ref={stripRef}
+						key={`strip-ink-${spinKey}`}
 						aria-hidden
 						sx={{
 							position: 'absolute',
@@ -496,6 +492,7 @@ function HeroScrollingField({
 							willChange: 'transform',
 							visibility: showReel ? 'visible' : 'hidden',
 							pointerEvents: 'none',
+							...inkSx,
 						}}>
 						{reelItems.map((option, index) => (
 							<Box
@@ -515,7 +512,7 @@ function HeroScrollingField({
 									letterSpacing: 'inherit',
 									lineHeight: rowHeightCss,
 									textAlign: 'center',
-									...inkSx,
+									color: 'inherit',
 								}}>
 								{option}
 							</Box>
