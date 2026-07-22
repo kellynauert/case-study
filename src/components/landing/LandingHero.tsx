@@ -844,7 +844,7 @@ export function LandingHero() {
 										display: 'grid',
 										gridTemplateColumns: 'auto 1fr',
 										columnGap: 1.5,
-										alignItems: 'center',
+										alignItems: 'start',
 										minWidth: 0,
 										opacity: 0,
 										animation: 'capabilityIn 480ms ease forwards',
@@ -866,6 +866,8 @@ export function LandingHero() {
 											justifyContent: 'center',
 											width: { xs: 36, md: 40 },
 											height: { xs: 36, md: 40 },
+											// Match label half-leading so the chip top meets glyph tops, not the line-box top.
+											mt: { xs: 'calc(0.9375rem * 0.15)', md: 'calc(1rem * 0.15)' },
 											borderRadius: 1,
 											color: tokens.accent,
 											bgcolor: alpha(tokens.accent, 0.08),
