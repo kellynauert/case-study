@@ -793,7 +793,7 @@ export function LandingHero() {
 					component='p'
 					sx={{
 						m: 0,
-						mb: { xs: 1.5, md: 1.75 },
+						mb: { xs: 2.5, md: 3 },
 						maxWidth: '38rem',
 						fontFamily: tokens.fontBody,
 						fontSize: { xs: '1rem', md: '1.25rem' },
