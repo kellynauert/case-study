@@ -42,6 +42,8 @@ const compareFieldLineHeight = 1.2;
 
 /** Shared wall-clock spin — both fields use this so they stop together. */
 const defaultReelDurationMs = 2800;
+/** Let the randomly seeded title read before the opening reels begin. */
+const initialReelHoldMs = 2000;
 /**
  * Different loop counts ⇒ different travel distance in the same duration ⇒
  * independent visual speeds with an identical stop time (no start-delay hacks).
@@ -546,11 +548,15 @@ const initialCompareRight: HeroCompareRight = 'Engineer';
 export function LandingHero() {
 	const [spinKeyLeft, setSpinKeyLeft] = useState(0);
 	const [spinKeyRight, setSpinKeyRight] = useState(0);
-	/** First auto-spin always lands on Design Engineer; dice randomizes after that. */
+	/** Start on random labels, then let the first delayed spin land on Design Engineer. */
 	const [targetLeft, setTargetLeft] = useState<HeroCompareLeft>(initialCompareLeft);
 	const [targetRight, setTargetRight] = useState<HeroCompareRight>(initialCompareRight);
-	const [compareLeft, setCompareLeft] = useState<HeroCompareLeft>(initialCompareLeft);
-	const [compareRight, setCompareRight] = useState<HeroCompareRight>(initialCompareRight);
+	const [compareLeft, setCompareLeft] = useState<HeroCompareLeft>(() =>
+		pickDifferentOption(hero.heroCompareLeftOptions, initialCompareLeft)
+	);
+	const [compareRight, setCompareRight] = useState<HeroCompareRight>(() =>
+		pickDifferentOption(hero.heroCompareRightOptions, initialCompareRight)
+	);
 	const [spinningLeft, setSpinningLeft] = useState(true);
 	const [spinningRight, setSpinningRight] = useState(true);
 	const [diceWiggle, setDiceWiggle] = useState(false);
@@ -708,7 +714,7 @@ export function LandingHero() {
 								onChange={(next) => setCompareLeft(next as HeroCompareLeft)}
 								onSpinningChange={setSpinningLeft}
 								onRequestSpin={spinLeftReel}
-								spinDelay={0}
+								spinDelay={spinKeyLeft === 0 ? initialReelHoldMs : 0}
 								durationMs={defaultReelDurationMs}
 								loops={leftReelLoops}
 								easing={leftReelEasing}
@@ -722,7 +728,7 @@ export function LandingHero() {
 								onChange={(next) => setCompareRight(next as HeroCompareRight)}
 								onSpinningChange={setSpinningRight}
 								onRequestSpin={spinRightReel}
-								spinDelay={0}
+								spinDelay={spinKeyRight === 0 ? initialReelHoldMs : 0}
 								durationMs={defaultReelDurationMs}
 								loops={rightReelLoops}
 								easing={rightReelEasing}
