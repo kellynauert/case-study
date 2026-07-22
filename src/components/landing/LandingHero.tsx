@@ -84,25 +84,25 @@ const diceSpinTurns = 5;
 const reelInkTransitionMs = 640;
 
 /**
- * Settled = pink, spinning = purple. Keyframes pass through accentLight so the
+ * Settled = purple, spinning = pink. Keyframes pass through accentLight so the
  * morph follows the brand gradient instead of a muddy RGB mid-blend / hard cut.
  */
 function reelInkSx(spinning: boolean) {
 	return {
-		color: spinning ? tokens.accent : tokens.accentPink,
-		'@keyframes reelInkToPurple': {
-			'0%': { color: tokens.accentPink },
-			'45%': { color: tokens.accentLight },
-			'100%': { color: tokens.accent },
-		},
+		color: spinning ? tokens.accentPink : tokens.accent,
 		'@keyframes reelInkToPink': {
 			'0%': { color: tokens.accent },
 			'45%': { color: tokens.accentLight },
 			'100%': { color: tokens.accentPink },
 		},
+		'@keyframes reelInkToPurple': {
+			'0%': { color: tokens.accentPink },
+			'45%': { color: tokens.accentLight },
+			'100%': { color: tokens.accent },
+		},
 		animation: spinning
-			? `reelInkToPurple ${reelInkTransitionMs}ms ${leftReelEasing} forwards`
-			: `reelInkToPink ${reelInkTransitionMs}ms ${leftReelEasing} forwards`,
+			? `reelInkToPink ${reelInkTransitionMs}ms ${leftReelEasing} forwards`
+			: `reelInkToPurple ${reelInkTransitionMs}ms ${leftReelEasing} forwards`,
 		'@media (prefers-reduced-motion: reduce)': {
 			animation: 'none',
 		},
@@ -386,7 +386,7 @@ function HeroScrollingField({
 				// Transparent so a neighboring reel can bleed through during width overshoot.
 				bgcolor: 'transparent',
 				// Fallback ink if background-clip text isn’t applied on a child.
-				color: ready ? tokens.accentPink : tokens.accent,
+				color: ready ? tokens.accent : tokens.accentPink,
 				font: 'inherit',
 				fontSize: 'inherit',
 				fontWeight: 'inherit',
@@ -867,9 +867,9 @@ export function LandingHero() {
 											width: { xs: 36, md: 40 },
 											height: { xs: 36, md: 40 },
 											borderRadius: 1,
-											color: tokens.accentPink,
-											bgcolor: alpha(tokens.accentPink, 0.08),
-											border: `1px solid ${alpha(tokens.accentPink, 0.16)}`,
+											color: tokens.accent,
+											bgcolor: alpha(tokens.accent, 0.08),
+											border: `1px solid ${alpha(tokens.accent, 0.16)}`,
 										}}>
 										<Icon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' } }} />
 									</Box>
