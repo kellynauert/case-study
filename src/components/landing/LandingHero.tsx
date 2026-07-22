@@ -73,8 +73,8 @@ const widthFitLeadMs = 0;
  * keeps fit-overshoot from clipping into the neighbor through a too-tight box.
  */
 const shellWidthPadPx = 2;
-/** Gap between paired spinners — must clear horizontal width overshoot / subpixel overlap. */
-const compareSpinnerGap = '8px';
+/** Gap between paired spinners — kept tight; shells allow horizontal glyph bleed during width anim. */
+const compareSpinnerGap = '2px';
 
 const autoSoloSpinMs = 15000;
 const diceWiggleDurationMs = 560;
@@ -346,14 +346,14 @@ function HeroScrollingField({
 			sx={{
 				display: 'inline-block',
 				position: 'relative',
-				// Isolate paint so overflow clip stays in this shell during width overshoot.
-				isolation: 'isolate',
 				verticalAlign: 'baseline',
 				flexShrink: 0,
 				// Cap in-flow contribution to the title line box so wrapped flex lines stay even.
 				boxSizing: 'border-box',
 				height: `${compareFieldLineHeight}em`,
 				maxHeight: `${compareFieldLineHeight}em`,
+				// Transparent so a neighboring reel can bleed through during width overshoot.
+				bgcolor: 'transparent',
 				color: tokens.accentPink,
 				font: 'inherit',
 				fontSize: 'inherit',
@@ -366,7 +366,6 @@ function HeroScrollingField({
 			{/*
 			  Invisible strut: owns width / baseline. Height is locked on the shell to h1 line-height
 			  so spinners cannot inflate only the first wrapped flex line.
-			  Overflow clip lives only on the absolute viewport so width animation cannot shift baseline.
 			*/}
 			<Box
 				component='span'
@@ -402,9 +401,9 @@ function HeroScrollingField({
 				}}
 			/>
 			{/*
-			  Viewport — always overflow:hidden (toggling visible shifted glyph Y).
-			  Settled label stays mounted and uses the same absolute top/height/line-height box as
-			  reel rows so ready=true is a visibility swap, not a remount with different metrics.
+			  Viewport — clip top/bottom only (reel strip) via clip-path so width animation can
+			  bleed horizontally instead of hard-cutting glyphs. Avoid overflow-x/y mix: CSS
+			  forces overflow-x to auto when overflow-y is hidden, which reintroduces the hard edge.
 			*/}
 			<Box
 				component='span'
@@ -415,7 +414,9 @@ function HeroScrollingField({
 					right: 0,
 					top: 0,
 					bottom: 0,
-					overflow: 'hidden',
+					overflow: 'visible',
+					clipPath: 'inset(0 -1.5em)',
+					bgcolor: 'transparent',
 					lineHeight: 'inherit',
 					font: 'inherit',
 					letterSpacing: 'inherit',
@@ -435,7 +436,7 @@ function HeroScrollingField({
 						minHeight: rowHeightCss,
 						maxHeight: rowHeightCss,
 						width: '100%',
-						overflow: 'hidden',
+						overflow: 'visible',
 						whiteSpace: 'nowrap',
 						font: 'inherit',
 						letterSpacing: 'inherit',
@@ -476,7 +477,7 @@ function HeroScrollingField({
 									maxHeight: rowHeightCss,
 									width: '100%',
 									flexShrink: 0,
-									overflow: 'hidden',
+									overflow: 'visible',
 									whiteSpace: 'nowrap',
 									font: 'inherit',
 									letterSpacing: 'inherit',
