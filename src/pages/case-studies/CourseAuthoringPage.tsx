@@ -7,6 +7,7 @@ import { StudyImage } from '../../components/case-study/StudyImage';
 import { StudyDetailTitle } from '../../components/case-study/StudyLayout';
 import { StudyCell } from '../../components/case-study/StudyCell';
 import { StudyGrid } from '../../components/case-study/StudyGrid';
+import { Accent } from '../../components/Accent';
 
 export function CourseAuthoringPage() {
 	return (
@@ -18,8 +19,12 @@ export function CourseAuthoringPage() {
 				<>
 					<StudyBody size={12}>
 						MathTrack Institute prepares aspiring teachers to earn their teaching license and bachelor's degree through a series of online
-						courses delivered through the MathTrack app. Rather than relying on a separate curriculum authoring application, every course
-						is created and maintained directly within the platform.
+						courses delivered through the MathTrack app.{' '}
+						<Accent>
+							Rather than relying on a separate curriculum authoring application, every course is created and maintained directly within
+							the platform
+						</Accent>
+						.
 						<br />
 						<br />
 						The authoring system is built around a simple hierarchy:
@@ -36,10 +41,10 @@ export function CourseAuthoringPage() {
 						</Typography>
 					</StudyCell>
 					<StudyBody size={12}>
-						Pages are the primary unit of learning, and every page is assembled from configurable Items. Rather than treating reading
-						pages, quizzes, assignments, discussions, and file uploads as separate entities with different editors, every learning
-						activity is built by combining Item types on a single page. This allows instructional content and student interaction to exist
-						together within the same editing workflow.
+						<Accent>Pages are the primary unit of learning</Accent>, and every page is assembled from configurable Items. Rather than
+						treating reading pages, quizzes, assignments, discussions, and file uploads as separate entities with different editors, every
+						learning activity is built by combining Item types on a single page. This allows instructional content and student interaction
+						to exist together within the same editing workflow.
 					</StudyBody>
 				</>
 			}>
@@ -119,7 +124,7 @@ export function CourseAuthoringPage() {
 							Every course follows the same hierarchy of Sections, Lessons, and Pages.
 							<br />
 							<br />
-							Authors create and organize this structure using a drag-and-drop editor while previewing exactly what students will see in
+							Authors create and organize this structure using a drag-and-drop editor while <Accent>previewing exactly what students will see</Accent> in
 							course navigation.
 							<br />
 							<br />
@@ -133,7 +138,7 @@ export function CourseAuthoringPage() {
 							Courses can be cloned for variants across states and programs.
 							<br />
 							<br />
-							When cloning a course, authors choose whether Items retain their original IDs or receive new Item IDs.
+							<Accent>When cloning a course, authors choose whether Items retain their original IDs or receive new Item IDs</Accent>.
 							<br />
 							<br />
 							Courses cloned with original Item IDs continue sharing those Items. Courses cloned with new Item IDs can evolve
@@ -252,8 +257,9 @@ export function CourseAuthoringPage() {
 								Minor revisions propagate to every instance of the Item sharing the same major version.
 								<br />
 								<br />
-								Major revisions create a new database entry for the Item, allowing historical page submissions to continue displaying
-								the original version while future submissions use the updated version.
+								Major revisions create a new database entry for the Item, allowing{' '}
+								<Accent>historical page submissions to continue displaying the original version</Accent> while future submissions use
+								the updated version.
 								<br />
 								<br />
 								The platform automatically classifies edits as major or minor, although authors can override the suggested version
@@ -280,8 +286,8 @@ export function CourseAuthoringPage() {
 					disconnected at any time to create an independent copy with a new ID.
 					<br />
 					<br />
-					Because grades are stored using both the Page ID and Item ID, Linked Items can be reused throughout the platform without sharing
-					student grades. This is especially useful for Items such as course feedback questions that appear in many courses but should
+					Because grades are stored using both the Page ID and Item ID,{' '}
+					<Accent>Linked Items can be reused throughout the platform without sharing student grades</Accent>. This is especially useful for Items such as course feedback questions that appear in many courses but should
 					record separate responses for each page.
 				</StudyBody>
 			</StudySection>
@@ -315,8 +321,8 @@ export function CourseAuthoringPage() {
 					Locked content displays the remaining requirements needed for access.
 					<br />
 					<br />
-					Slack notifications warn instructors when a lock may be broken, such as a student surpassing a lock requirement because they are
-					not enrolled in the prerequisite course. <br />
+					<Accent>Slack notifications warn instructors when a lock may be broken</Accent>, such as a student surpassing a lock requirement
+					because they are not enrolled in the prerequisite course. <br />
 					<br />
 					<StudyImage size={10} src='course-authoring/locked_course.png' alt='Locked course' />
 				</StudyBody>

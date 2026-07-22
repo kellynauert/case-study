@@ -2,6 +2,7 @@ import { StudyPage } from '../../components/case-study/StudyPage';
 import { StudySection, StudySectionTitle } from '../../components/case-study/StudySection';
 import { StudyBody } from '../../components/case-study/StudyBody';
 import { StudyImage } from '../../components/case-study/StudyImage';
+import { Accent } from '../../components/Accent';
 
 export function ApprenticeEvaluationPage() {
 	return (
@@ -17,11 +18,13 @@ export function ApprenticeEvaluationPage() {
 					<br />
 					Mentors evaluate apprentices through classroom observations while apprentices complete scheduled reflections documenting their
 					experiences and professional growth. Because every organization defines competencies, evaluation schedules, scoring methods, and
-					documentation requirements differently, the platform is built around configuration rather than organization-specific development.
+					documentation requirements differently, the platform is built around{' '}
+					<Accent>configuration rather than organization-specific development</Accent>.
 					<br />
 					<br />
-					Evaluation results, reflections, and coursework progress are combined into a single apprentice record, giving mentors and
-					administrators a complete view of each apprentice's development throughout the program.
+					Evaluation results, reflections, and coursework progress are combined into a{' '}
+					<Accent>single apprentice record</Accent>, giving mentors and administrators a complete view of each apprentice's development
+					throughout the program.
 				</StudyBody>
 			}>
 			<StudySection id='program-configuration' size={12}>
@@ -35,8 +38,8 @@ export function ApprenticeEvaluationPage() {
 					<br />
 					<br />
 					Evaluation scales support multiple rating levels and can be enabled or disabled for individual competencies. Program configuration
-					is stored independently from apprentice records, allowing administrators to update program requirements without affecting
-					historical evaluation data.
+					is stored independently from apprentice records, allowing administrators to{' '}
+					<Accent>update program requirements without affecting historical evaluation data</Accent>.
 					<br />
 					<br />
 					Rather than creating custom implementations for each organization, administrators configure competencies, evaluation schedules,
@@ -52,9 +55,13 @@ export function ApprenticeEvaluationPage() {
 					mentors to rate apprentices.
 					<br />
 					<br />
-					The tracker can be accessed through unique links, allowing mentors to complete observations without creating an account. When
-					accessing the tracker while signed out, mentors acknowledge a privacy notice and identify themselves before submitting ratings.
-					Every submission is recorded in an audit trail to preserve reviewer history.
+					The tracker can be accessed through unique links, allowing mentors to{' '}
+					<Accent>complete observations without creating an account</Accent>.{' '}
+					<Accent>
+						When accessing the tracker while signed out, mentors acknowledge a privacy notice and identify themselves before submitting
+						ratings
+					</Accent>
+					. <Accent>Every submission is recorded in an audit trail to preserve reviewer history</Accent>.
 				</StudyBody>
 				<StudyImage size={12} src='apprentice-evaluation/ferpa.png' alt='FERPA notice' maxWidth={1107} />
 			</StudySection>
@@ -70,7 +77,7 @@ export function ApprenticeEvaluationPage() {
 					apprentices out of the reflection.
 					<br />
 					<br />
-					Reflections can be limited by the number of required entries rather than calendar weeks, allowing programs to accommodate
+					Reflections can be <Accent>limited by the number of required entries rather than calendar weeks</Accent>, allowing programs to accommodate
 					holidays, school breaks, and other scheduling variations without changing reflection requirements.
 				</StudyBody>
 				<StudyImage size={12} src='apprentice-evaluation/reflection.gif' alt='Apprentice reflection journal' maxWidth={1000} />

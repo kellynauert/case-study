@@ -1,8 +1,10 @@
+import Box from '@mui/material/Box';
 import { StudyPage } from '../../components/case-study/StudyPage';
 import { StudySection, StudySectionTitle } from '../../components/case-study/StudySection';
 import { StudyBody } from '../../components/case-study/StudyBody';
 import { StudyBulletList } from '../../components/case-study/StudyBulletList';
 import { StudyImage } from '../../components/case-study/StudyImage';
+import { Accent } from '../../components/Accent';
 
 export function UnifiedExperiencePage() {
 	return (
@@ -17,8 +19,8 @@ export function UnifiedExperiencePage() {
 					<br />
 					<br />
 					The entire learning experience takes place within the platform, from course navigation and assignment submission to grading,
-					feedback, messaging, certificates, and progress tracking. Students never need to switch between separate applications to complete
-					coursework, communicate with instructors, or monitor their progress.
+					feedback, messaging, certificates, and progress tracking. <Accent>Students never need to switch between separate applications</Accent> to complete coursework, communicate with instructors,
+					or monitor their progress.
 					<br />
 					<br />
 					Every course follows the same Course → Section → Lesson → Page hierarchy created during authoring. Because Pages are built from
@@ -55,8 +57,12 @@ export function UnifiedExperiencePage() {
 					course structure after each session.
 					<br />
 					<br />
-					Due dates are calculated from each student's program start date rather than fixed calendar dates. Students following the same
-					program receive personalized schedules automatically without requiring manual per-student configuration.
+					Due dates are calculated from each student's program start date rather than fixed calendar dates.{' '}
+					<Accent>
+						Students following the same program receive personalized schedules automatically without requiring manual per-student
+						configuration
+					</Accent>
+					.
 				</StudyBody>
 				<StudyImage size={12} src='unified-experience/courses.gif' alt='Courses dashboard with Continue card' maxWidth={1280} />
 			</StudySection>
@@ -71,7 +77,10 @@ export function UnifiedExperiencePage() {
 					complete overview of the course.
 					<br />
 					<br />
-					When authors hide lessons or numbering, navigation adjusts automatically while preserving a predictable learning experience.
+					<Accent>
+						When authors hide lessons or numbering, navigation adjusts automatically while preserving a predictable learning experience
+					</Accent>
+					.
 					<br />
 					<br />
 					Navigation always leads directly into the next Page in the learning sequence, allowing students to progress through each lesson
@@ -124,8 +133,12 @@ export function UnifiedExperiencePage() {
 					<br />
 					<br />
 					After submission, the Page becomes the central location for reviewing work. Students can view page grades, instructor feedback,
-					previous submissions, and resubmit Pages when permitted. Keeping every stage of the learning process attached to the same Page
-					allows students to revisit work exactly as it was completed while preserving the surrounding context.
+					previous submissions, and resubmit Pages when permitted.{' '}
+					<Accent>
+						Keeping every stage of the learning process attached to the same Page allows students to revisit work exactly as it was
+						completed while preserving the surrounding context
+					</Accent>
+					.
 					<br />
 					<br />
 					The platform controls rendering for every Item type, producing consistent typography, layout, and interaction patterns throughout
@@ -161,17 +174,21 @@ export function UnifiedExperiencePage() {
 					Every Page includes a built-in conversation between students and graders.
 					<br />
 					<br />
-					Students can ask questions, respond to grading feedback, and continue discussions without leaving the submitted Page. Keeping
-					conversations attached to the Page preserves the context of the work being discussed and eliminates the need to reference
-					assignments separately through email or external messaging tools.
+					Students can ask questions, respond to grading feedback, and continue discussions without leaving the submitted Page. Keeping{' '}
+					<Accent>conversations attached to the Page</Accent> preserves the context of the work being discussed and eliminates the need to
+					reference assignments separately through email or external messaging tools.
 					<br />
 					<br />
-					The messaging system supports:
+					<Box component='span' sx={{ display: 'block', pb: 1 }}>
+						The messaging system supports:
+					</Box>
 					<StudyBulletList
 						size={12}
 						items={['Conversations between students and graders', '@mentions', 'Emoji reactions', 'Replies to Discussion Items']}
 					/>
-					Students also receive notifications when:
+					<Box component='span' sx={{ display: 'block', pt: 2 }}>
+						Students also receive notifications when:
+					</Box>
 					<StudyBulletList
 						size={12}
 						items={[

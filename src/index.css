@@ -27,6 +27,7 @@ body {
 	overflow-x: clip;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	text-wrap: pretty;
 }
 
 #root {

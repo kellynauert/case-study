@@ -4,6 +4,7 @@ import { StudyBody } from '../../components/case-study/StudyBody';
 import { StudyBulletList } from '../../components/case-study/StudyBulletList';
 import { StudyImage } from '../../components/case-study/StudyImage';
 import { StudySplit, StudyDetailTitle } from '../../components/case-study/StudyLayout';
+import { Accent } from '../../components/Accent';
 
 export function GradingPage() {
 	return (
@@ -17,7 +18,8 @@ export function GradingPage() {
 					stored with each Item, including point values, grading mode, feedback, grader notes, AI prompts, and version information.
 					<br />
 					<br />
-					Although grading behavior belongs to individual Items, students submit and instructors grade entire Pages.
+					Although grading behavior belongs to individual Items,{' '}
+					<Accent>students submit and instructors grade entire Pages</Accent>.
 					<br />
 					<br />
 					If a Page contains only automatically graded Items, grading is completed immediately when the Page is submitted. If any Item on
@@ -30,8 +32,8 @@ export function GradingPage() {
 					individual responses in isolation.
 					<br />
 					<br />
-					Scores are written back to the student's record immediately, updating progress, gradebooks, transcripts, certificates, and
-					reporting throughout the platform.
+					<Accent>Scores are written back to the student's record immediately</Accent>, updating progress, gradebooks, transcripts,
+					certificates, and reporting throughout the platform.
 				</StudyBody>
 			}>
 			<StudySection id='grading-queue' size={12}>
@@ -40,16 +42,20 @@ export function GradingPage() {
 					The grading queue is the primary workspace for reviewing student submissions.
 					<br />
 					<br />
-					Rather than grouping work by student, submissions are grouped by Page. This allows graders reviewing a large volume of work to
+					Rather than grouping work by student, submissions are <Accent>grouped by Page</Accent>. This allows graders reviewing a large volume of work to
 					remain in a single grading workflow instead of constantly switching between different Page layouts and grading criteria.
 					<br />
 					<br />
 					Submissions are ordered chronologically by default, with the oldest work appearing first. Frequently graded Pages can be starred
 					to pin them to the top of the queue.
 					<br />
-					<br />A live indicator shows when another grader currently has a submission open. Opening the same submission displays a warning
-					before grading begins, helping prevent conflicting edits without locking submissions unnecessarily. The queue can also be filtered
-					by assigned Courses or by program.
+					<br />
+					<Accent>
+						A live indicator shows when another grader currently has a submission open. Opening the same submission displays a warning
+						before grading begins
+					</Accent>
+					, helping prevent conflicting edits without locking submissions unnecessarily. The queue can also be filtered by assigned Courses
+					or by program.
 				</StudyBody>
 				<StudyImage size={12} src='grading/grading-queue.jpg' alt='Grading queue grouped by Page with program filters' />
 			</StudySection>
@@ -158,15 +164,15 @@ export function GradingPage() {
 					suggestions for individual Items or use Generate All to evaluate every AI-enabled Item on the current Page in a single request.
 					<br />
 					<br />
-					The GPT API is called only when an instructor requests suggestions. The student's response, Item content, and configured grading
-					prompt are sent at grading time rather than submission time.
+					<Accent>The GPT API is called only when an instructor requests suggestions</Accent>. The student's response, Item content, and
+					configured grading prompt are sent at grading time rather than submission time.
 					<br />
 					<br />
-					Suggestions include color-coded highlights showing which portions of the student's response the model referenced. Mismatched
+					Suggestions include <Accent>color-coded highlights showing which portions of the student's response the model referenced</Accent>. Mismatched
 					highlight colors indicate the model introduced unsupported information or failed to reference relevant source text.
 					<br />
 					<br />
-					AI suggestions assist with evaluation, but final scoring always remains with the instructor.
+					AI suggestions assist with evaluation, but <Accent>final scoring always remains with the instructor</Accent>.
 				</StudyBody>
 				<StudyImage size={12} src='grading/ai_grading.gif' alt='AI-assisted grading with color-coded text grounding' maxWidth={800} />
 			</StudySection>

@@ -42,6 +42,8 @@ const compareFieldLineHeight = 1.2;
 
 /** Shared wall-clock spin — both fields use this so they stop together. */
 const defaultReelDurationMs = 2800;
+/** Let the randomly seeded title read before the opening reels begin. */
+const initialReelHoldMs = 2000;
 /**
  * Different loop counts ⇒ different travel distance in the same duration ⇒
  * independent visual speeds with an identical stop time (no start-delay hacks).
@@ -73,11 +75,22 @@ const widthFitLeadMs = 0;
  * keeps fit-overshoot from clipping into the neighbor through a too-tight box.
  */
 const shellWidthPadPx = 2;
-/** Gap between paired spinners — must clear horizontal width overshoot / subpixel overlap. */
-const compareSpinnerGap = '8px';
+/** Gap between paired spinners — kept tight; shells allow horizontal glyph bleed during width anim. */
+const compareSpinnerGap = '4px';
 
 const autoSoloSpinMs = 15000;
 const diceWiggleDurationMs = 560;
+/** Full turns during a reel spin — decelerates with the same duration/easing as the reels. */
+const diceSpinTurns = 5;
+/**
+ * Reel ink stays pink (settled and spinning). Color morph was retired —
+ * purple is reserved for hiring-manager accents elsewhere.
+ */
+function reelInkSx() {
+	return {
+		color: tokens.accentPink,
+	} as const;
+}
 
 /**
  * Inline scrolling blank: plain text slot with reel animation (no wash / underline chrome).
@@ -88,7 +101,8 @@ const diceWiggleDurationMs = 560;
  * Alignment: shell height is locked to h1 line-height (in-flow); strut owns width/baseline.
  * Reel + settled share one absolute viewport. Settled stays mounted in the same top / height box
  * as reel rows — ready is a visibility swap only, so overflow toggle cannot remount-shift Y.
- * Row boxes use the shared line-height (px once measured) so glyphs aren’t clipped.
+ * Viewport clips top/bottom via clip-path so width overshoot can bleed horizontally (no hard X cut).
+ * Row boxes use the shared line-height (px once measured) so glyphs aren’t clipped on Y.
  */
 function HeroScrollingField({
 	options,
@@ -97,6 +111,7 @@ function HeroScrollingField({
 	finalValue,
 	onChange,
 	onSpinningChange,
+	onRequestSpin,
 	spinDelay = 0,
 	durationMs = defaultReelDurationMs,
 	loops = leftReelLoops,
@@ -109,6 +124,8 @@ function HeroScrollingField({
 	finalValue: string;
 	onChange: (next: string) => void;
 	onSpinningChange?: (spinning: boolean) => void;
+	/** Called when the settled reel is activated (click / Enter / Space). */
+	onRequestSpin?: () => void;
 	spinDelay?: number;
 	/** Wall-clock reel duration — keep identical across paired fields for simultaneous stops. */
 	durationMs?: number;
@@ -147,6 +164,7 @@ function HeroScrollingField({
 	const targetIndex = loops * options.length + finalIndex;
 	const showReel = !ready && reelArmed;
 	const rowHeightPx = spinHeightRef.current > 0 ? spinHeightRef.current : fieldHeightPx;
+	const inkSx = reelInkSx();
 
 	const setShellWidthPx = (px: number, animate: false | 'expand' | 'fit' = false) => {
 		const shell = shellRef.current;
@@ -335,23 +353,41 @@ function HeroScrollingField({
 	}, [ready, reelArmed, durationMs, easing, spinKey]); // eslint-disable-line react-hooks/exhaustive-deps -- spin once per arm; settle must not restart
 
 	const rowHeightCss = rowHeightPx > 0 ? `${rowHeightPx}px` : `${compareFieldLineHeight}em`;
+	const canSpin = Boolean(onRequestSpin) && ready;
+
+	const activateSpin = () => {
+		if (!canSpin) return;
+		onRequestSpin?.();
+	};
 
 	return (
 		<Box
 			component='span'
 			ref={shellRef}
-			aria-label={`${label}: ${displayValue}`}
+			role={onRequestSpin ? 'button' : undefined}
+			tabIndex={onRequestSpin ? 0 : undefined}
+			aria-label={onRequestSpin ? `${label}: ${displayValue}. Activate to spin.` : `${label}: ${displayValue}`}
+			aria-disabled={onRequestSpin ? !canSpin : undefined}
+			onClick={activateSpin}
+			onKeyDown={(event) => {
+				if (!canSpin) return;
+				if (event.key === 'Enter' || event.key === ' ') {
+					event.preventDefault();
+					activateSpin();
+				}
+			}}
 			sx={{
 				display: 'inline-block',
 				position: 'relative',
-				// Isolate paint so overflow clip stays in this shell during width overshoot.
-				isolation: 'isolate',
 				verticalAlign: 'baseline',
 				flexShrink: 0,
 				// Cap in-flow contribution to the title line box so wrapped flex lines stay even.
 				boxSizing: 'border-box',
 				height: `${compareFieldLineHeight}em`,
 				maxHeight: `${compareFieldLineHeight}em`,
+				// Transparent so a neighboring reel can bleed through during width overshoot.
+				bgcolor: 'transparent',
+				// Fallback ink if background-clip text isn’t applied on a child.
 				color: tokens.accentPink,
 				font: 'inherit',
 				fontSize: 'inherit',
@@ -360,11 +396,20 @@ function HeroScrollingField({
 				letterSpacing: 'inherit',
 				lineHeight: 'inherit',
 				textAlign: 'center',
+				cursor: canSpin ? 'pointer' : onRequestSpin ? 'default' : undefined,
+				outline: 'none',
+				WebkitTapHighlightColor: 'transparent',
+				'&:focus-visible': onRequestSpin
+					? {
+							outline: `2px solid ${tokens.accentPink}`,
+							outlineOffset: 3,
+							borderRadius: 0.5,
+						}
+					: undefined,
 			}}>
 			{/*
 			  Invisible strut: owns width / baseline. Height is locked on the shell to h1 line-height
 			  so spinners cannot inflate only the first wrapped flex line.
-			  Overflow clip lives only on the absolute viewport so width animation cannot shift baseline.
 			*/}
 			<Box
 				component='span'
@@ -400,9 +445,9 @@ function HeroScrollingField({
 				}}
 			/>
 			{/*
-			  Viewport — always overflow:hidden (toggling visible shifted glyph Y).
-			  Settled label stays mounted and uses the same absolute top/height/line-height box as
-			  reel rows so ready=true is a visibility swap, not a remount with different metrics.
+			  Viewport — clip top/bottom only (reel strip) via clip-path so width animation can
+			  bleed horizontally instead of hard-cutting glyphs. Avoid overflow-x/y mix: CSS
+			  forces overflow-x to auto when overflow-y is hidden, which reintroduces the hard edge.
 			*/}
 			<Box
 				component='span'
@@ -413,7 +458,9 @@ function HeroScrollingField({
 					right: 0,
 					top: 0,
 					bottom: 0,
-					overflow: 'hidden',
+					overflow: 'visible',
+					clipPath: 'inset(0 -1.5em)',
+					bgcolor: 'transparent',
 					lineHeight: 'inherit',
 					font: 'inherit',
 					letterSpacing: 'inherit',
@@ -422,6 +469,7 @@ function HeroScrollingField({
 				<Box
 					component='span'
 					ref={settledRef}
+					key={`settled-ink-${spinKey}`}
 					sx={{
 						position: 'absolute',
 						left: 0,
@@ -433,7 +481,7 @@ function HeroScrollingField({
 						minHeight: rowHeightCss,
 						maxHeight: rowHeightCss,
 						width: '100%',
-						overflow: 'hidden',
+						overflow: 'visible',
 						whiteSpace: 'nowrap',
 						font: 'inherit',
 						letterSpacing: 'inherit',
@@ -442,13 +490,14 @@ function HeroScrollingField({
 						visibility: showReel ? 'hidden' : 'visible',
 						// Horizontal width overshoot lives on the shell; never bounce this label on Y.
 						transform: 'none',
-						animation: 'none',
+						...inkSx,
 					}}>
 					{displayValue}
 				</Box>
 				{!ready && (
 					<Box
 						ref={stripRef}
+						key={`strip-ink-${spinKey}`}
 						aria-hidden
 						sx={{
 							position: 'absolute',
@@ -461,6 +510,7 @@ function HeroScrollingField({
 							willChange: 'transform',
 							visibility: showReel ? 'visible' : 'hidden',
 							pointerEvents: 'none',
+							...inkSx,
 						}}>
 						{reelItems.map((option, index) => (
 							<Box
@@ -474,12 +524,13 @@ function HeroScrollingField({
 									maxHeight: rowHeightCss,
 									width: '100%',
 									flexShrink: 0,
-									overflow: 'hidden',
+									overflow: 'visible',
 									whiteSpace: 'nowrap',
 									font: 'inherit',
 									letterSpacing: 'inherit',
 									lineHeight: rowHeightCss,
 									textAlign: 'center',
+									color: 'inherit',
 								}}>
 								{option}
 							</Box>
@@ -497,11 +548,15 @@ const initialCompareRight: HeroCompareRight = 'Engineer';
 export function LandingHero() {
 	const [spinKeyLeft, setSpinKeyLeft] = useState(0);
 	const [spinKeyRight, setSpinKeyRight] = useState(0);
-	/** First auto-spin always lands on Design Engineer; dice randomizes after that. */
+	/** Start on random labels, then let the first delayed spin land on Design Engineer. */
 	const [targetLeft, setTargetLeft] = useState<HeroCompareLeft>(initialCompareLeft);
 	const [targetRight, setTargetRight] = useState<HeroCompareRight>(initialCompareRight);
-	const [compareLeft, setCompareLeft] = useState<HeroCompareLeft>(initialCompareLeft);
-	const [compareRight, setCompareRight] = useState<HeroCompareRight>(initialCompareRight);
+	const [compareLeft, setCompareLeft] = useState<HeroCompareLeft>(() =>
+		pickDifferentOption(hero.heroCompareLeftOptions, initialCompareLeft)
+	);
+	const [compareRight, setCompareRight] = useState<HeroCompareRight>(() =>
+		pickDifferentOption(hero.heroCompareRightOptions, initialCompareRight)
+	);
 	const [spinningLeft, setSpinningLeft] = useState(true);
 	const [spinningRight, setSpinningRight] = useState(true);
 	const [diceWiggle, setDiceWiggle] = useState(false);
@@ -522,6 +577,22 @@ export function LandingHero() {
 		setSpinningLeft(true);
 		setSpinningRight(true);
 		setSpinKeyLeft((key) => key + 1);
+		setSpinKeyRight((key) => key + 1);
+	};
+
+	const spinLeftReel = () => {
+		if (spinningLeft) return;
+		const next = pickDifferentOption(hero.heroCompareLeftOptions, compareLeftRef.current);
+		setTargetLeft(next);
+		setSpinningLeft(true);
+		setSpinKeyLeft((key) => key + 1);
+	};
+
+	const spinRightReel = () => {
+		if (spinningRight) return;
+		const next = pickDifferentOption(hero.heroCompareRightOptions, compareRightRef.current);
+		setTargetRight(next);
+		setSpinningRight(true);
 		setSpinKeyRight((key) => key + 1);
 	};
 
@@ -547,7 +618,7 @@ export function LandingHero() {
 		return () => window.clearTimeout(timer);
 	}, [anySpinning]);
 
-	/** Occasional idle wiggle on the dice — paused while any spinner is active. */
+	/** Occasional idle wiggle on the dice — only while both spinners are settled. */
 	useEffect(() => {
 		if (anySpinning) {
 			setDiceWiggle(false);
@@ -581,12 +652,6 @@ export function LandingHero() {
 		};
 	}, [anySpinning]);
 
-	/** Keep last word + dice as one wrap unit (e.g. "Platform" never alone / dice never orphaned). */
-	const suffix = hero.heroCompareSuffix;
-	const suffixLastSpace = suffix.lastIndexOf(' ');
-	const suffixLead = suffixLastSpace >= 0 ? suffix.slice(0, suffixLastSpace + 1) : '';
-	const suffixLastWord = suffixLastSpace >= 0 ? suffix.slice(suffixLastSpace + 1) : suffix;
-
 	return (
 		<Box
 			id='landing-hero'
@@ -596,13 +661,13 @@ export function LandingHero() {
 				pt: { xs: 3, md: 4 },
 				pb: { xs: 3, md: 4 },
 			}}>
-			{/* Sentence title: Sole [spin] [spin] / of an Evolving SaaS Platform. [dice] */}
+			{/* Sentence title: Sole [spin] [spin] [dice] / of an Evolving SaaS Platform. */}
 			<FadeIn>
 				<Box
 					component='h1'
 					sx={{
 						m: 0,
-						mb: { xs: 2.5, md: 3 },
+						mb: { xs: 1.25, md: 1.5 },
 						fontFamily: tokens.fontDisplay,
 						fontWeight: 600,
 						letterSpacing: '-0.03em',
@@ -613,7 +678,7 @@ export function LandingHero() {
 						flexWrap: 'wrap',
 						// Baseline with strut shells: glyphs stay level when width animates.
 						alignItems: 'baseline',
-						columnGap: '8px',
+						columnGap: '4px',
 						// No rowGap — wrapped flex lines must share the same line-height rhythm.
 						rowGap: 0,
 					}}>
@@ -625,42 +690,132 @@ export function LandingHero() {
 						sx={{
 							display: 'inline-flex',
 							alignItems: 'baseline',
-							columnGap: compareSpinnerGap,
 							flexShrink: 0,
 							width: 'max-content',
 							maxWidth: '100%',
 							lineHeight: 'inherit',
 							height: `${compareFieldLineHeight}em`,
 						}}>
-						<HeroScrollingField
-							value={compareLeft}
-							finalValue={targetLeft}
-							label='Role discipline'
-							options={hero.heroCompareLeftOptions}
-							onChange={(next) => setCompareLeft(next as HeroCompareLeft)}
-							onSpinningChange={setSpinningLeft}
-							spinDelay={0}
-							durationMs={defaultReelDurationMs}
-							loops={leftReelLoops}
-							easing={leftReelEasing}
-							spinKey={spinKeyLeft}
-						/>
-						<HeroScrollingField
-							value={compareRight}
-							finalValue={targetRight}
-							label='Role title'
-							options={hero.heroCompareRightOptions}
-							onChange={(next) => setCompareRight(next as HeroCompareRight)}
-							onSpinningChange={setSpinningRight}
-							spinDelay={0}
-							durationMs={defaultReelDurationMs}
-							loops={rightReelLoops}
-							easing={rightReelEasing}
-							spinKey={spinKeyRight}
-						/>
+						<Box
+							component='span'
+							sx={{
+								display: 'inline-flex',
+								alignItems: 'baseline',
+								columnGap: compareSpinnerGap,
+								flexShrink: 0,
+								lineHeight: 'inherit',
+								height: '100%',
+							}}>
+							<HeroScrollingField
+								value={compareLeft}
+								finalValue={targetLeft}
+								label='Role discipline'
+								options={hero.heroCompareLeftOptions}
+								onChange={(next) => setCompareLeft(next as HeroCompareLeft)}
+								onSpinningChange={setSpinningLeft}
+								onRequestSpin={spinLeftReel}
+								spinDelay={spinKeyLeft === 0 ? initialReelHoldMs : 0}
+								durationMs={defaultReelDurationMs}
+								loops={leftReelLoops}
+								easing={leftReelEasing}
+								spinKey={spinKeyLeft}
+							/>
+							<HeroScrollingField
+								value={compareRight}
+								finalValue={targetRight}
+								label='Role title'
+								options={hero.heroCompareRightOptions}
+								onChange={(next) => setCompareRight(next as HeroCompareRight)}
+								onSpinningChange={setSpinningRight}
+								onRequestSpin={spinRightReel}
+								spinDelay={spinKeyRight === 0 ? initialReelHoldMs : 0}
+								durationMs={defaultReelDurationMs}
+								loops={rightReelLoops}
+								easing={rightReelEasing}
+								spinKey={spinKeyRight}
+							/>
+						</Box>
+						<Box
+							component='button'
+							type='button'
+							aria-label='Randomize title'
+							onClick={randomizeCompare}
+							sx={{
+								display: 'inline-flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								flexShrink: 0,
+								// Sit on the reel text baseline, tight to the right spinner.
+								alignSelf: 'baseline',
+								ml: '3px',
+								p: 0,
+								border: 'none',
+								borderRadius: 1,
+								bgcolor: 'transparent',
+								boxShadow: 'none',
+								color: tokens.accentPink,
+								cursor: 'pointer',
+								lineHeight: 1,
+								outline: 'none',
+								WebkitTapHighlightColor: 'transparent',
+								transition: 'color 180ms ease, background-color 180ms ease, transform 180ms ease',
+								'&:hover': {
+									color: tokens.accentPink,
+									boxShadow: 'none',
+								},
+								'&:active': {
+									transform: 'rotate(-12deg) scale(0.94)',
+									boxShadow: 'none',
+								},
+								'&:focus': {
+									outline: 'none',
+									boxShadow: 'none',
+								},
+								// Keyboard only — no ring flash from mouse focus / idle wiggle.
+								'&:focus-visible': {
+									outline: `2px solid ${tokens.accentPink}`,
+									outlineOffset: 3,
+								},
+								'@media (prefers-reduced-motion: reduce)': {
+									'&:active': { transform: 'none' },
+								},
+							}}>
+							<Box
+								key={anySpinning ? `spin-${spinKeyLeft}-${spinKeyRight}` : 'idle'}
+								component='span'
+								sx={{
+									display: 'inline-flex',
+									outline: 'none',
+									boxShadow: 'none',
+									// Optical baseline: SvgIcon bottom edge sits slightly below the glyph baseline.
+									transform: 'translateY(0.08em)',
+									'@keyframes diceIdleWiggle': {
+										'0%, 100%': { transform: 'translateY(0.08em) rotate(0deg) translateX(0)' },
+										'12%': { transform: 'translateY(0.08em) rotate(-20deg) translateX(-1.5px)' },
+										'28%': { transform: 'translateY(0.08em) rotate(18deg) translateX(1.5px)' },
+										'44%': { transform: 'translateY(0.08em) rotate(-16deg) translateX(-1px)' },
+										'60%': { transform: 'translateY(0.08em) rotate(14deg) translateX(1px)' },
+										'76%': { transform: 'translateY(0.08em) rotate(-8deg) translateX(-0.5px)' },
+									},
+									'@keyframes diceSpin': {
+										'0%': { transform: 'translateY(0.08em) rotate(0deg)' },
+										'100%': { transform: `translateY(0.08em) rotate(${diceSpinTurns * 360}deg)` },
+									},
+									// Match reel wall-clock + ease-out so the dice decelerates with the strips.
+									animation: anySpinning
+										? `diceSpin ${defaultReelDurationMs}ms ${leftReelEasing} forwards`
+										: diceWiggle
+											? `diceIdleWiggle ${diceWiggleDurationMs}ms ease-in-out`
+											: 'none',
+									'@media (prefers-reduced-motion: reduce)': {
+										animation: 'none',
+									},
+								}}>
+								<CasinoRoundedIcon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' }, display: 'block' }} />
+							</Box>
+						</Box>
 					</Box>
-					{/* Full-basis row so the suffix always starts on the line after the spinner group.
-					    Last word + dice share a nowrap unit so they never split across lines. */}
+					{/* Full-basis row so the suffix always starts on the line after the spinner group. */}
 					<Box
 						component='span'
 						sx={{
@@ -668,85 +823,7 @@ export function LandingHero() {
 							width: '100%',
 							lineHeight: 'inherit',
 						}}>
-						{suffixLead}
-						<Box
-							component='span'
-							sx={{
-								// Inline nowrap unit — same line box as surrounding suffix text (not a taller flex frame).
-								whiteSpace: 'nowrap',
-								lineHeight: 'inherit',
-							}}>
-							{suffixLastWord}
-							<Box
-								component='button'
-								type='button'
-								aria-label='Randomize title'
-								onClick={randomizeCompare}
-								sx={{
-									display: 'inline-flex',
-									alignItems: 'center',
-									justifyContent: 'center',
-									verticalAlign: 'middle',
-									// Cancel vertical padding so the hit area doesn’t inflate this line box.
-									my: -0.4,
-									mr: 0,
-									ml: 0.75,
-									p: 0.4,
-									border: 'none',
-									borderRadius: 1,
-									bgcolor: 'transparent',
-									boxShadow: 'none',
-									color: tokens.accentPink,
-									cursor: 'pointer',
-									lineHeight: 0,
-									outline: 'none',
-									WebkitTapHighlightColor: 'transparent',
-									transition: 'color 180ms ease, background-color 180ms ease, transform 180ms ease',
-									'&:hover': {
-										color: tokens.accent,
-
-										boxShadow: 'none',
-									},
-									'&:active': {
-										transform: 'rotate(-12deg) scale(0.94)',
-										boxShadow: 'none',
-									},
-									'&:focus': {
-										outline: 'none',
-										boxShadow: 'none',
-									},
-									// Keyboard only — no ring flash from mouse focus / idle wiggle.
-									'&:focus-visible': {
-										outline: `2px solid ${tokens.accentPink}`,
-										outlineOffset: 3,
-									},
-									'@media (prefers-reduced-motion: reduce)': {
-										'&:active': { transform: 'none' },
-									},
-								}}>
-								<Box
-									component='span'
-									sx={{
-										display: 'inline-flex',
-										outline: 'none',
-										boxShadow: 'none',
-										'@keyframes diceIdleWiggle': {
-											'0%, 100%': { transform: 'rotate(0deg) translateX(0)' },
-											'12%': { transform: 'rotate(-20deg) translateX(-1.5px)' },
-											'28%': { transform: 'rotate(18deg) translateX(1.5px)' },
-											'44%': { transform: 'rotate(-16deg) translateX(-1px)' },
-											'60%': { transform: 'rotate(14deg) translateX(1px)' },
-											'76%': { transform: 'rotate(-8deg) translateX(-0.5px)' },
-										},
-										animation: diceWiggle ? `diceIdleWiggle ${diceWiggleDurationMs}ms ease-in-out` : 'none',
-										'@media (prefers-reduced-motion: reduce)': {
-											animation: 'none',
-										},
-									}}>
-									<CasinoRoundedIcon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' } }} />
-								</Box>
-							</Box>
-						</Box>
+						{hero.heroCompareSuffix}
 					</Box>
 				</Box>
 			</FadeIn>
@@ -756,16 +833,16 @@ export function LandingHero() {
 					component='p'
 					sx={{
 						m: 0,
-						mb: { xs: 3, md: 3.5 },
+						mb: { xs: 2.5, md: 3 },
 						maxWidth: '38rem',
 						fontFamily: tokens.fontBody,
-						fontSize: { xs: '1.125rem', md: '1.25rem' },
+						fontSize: { xs: '1.03125rem', md: '1.28125rem' },
 						fontWeight: 500,
-						lineHeight: 1.65,
+						lineHeight: { xs: 1.5, md: 1.35 },
 						color: tokens.textPrimary,
 					}}>
 					{hero.supportingBefore}
-					<Box component='span' style={{ color: tokens.accentPink }}>
+					<Box component='span' sx={{ color: tokens.accentPink }}>
 						{hero.supportingAccent}
 					</Box>
 					{hero.supportingAfter}
@@ -826,39 +903,19 @@ export function LandingHero() {
 											justifyContent: 'center',
 											width: { xs: 36, md: 40 },
 											height: { xs: 36, md: 40 },
-											mt: 0.15,
+											// Match detailHeading half-leading so the chip top meets glyph tops.
+											mt: 'calc(1rem * 0.1)',
 											borderRadius: 1,
 											color: tokens.accentPink,
 											bgcolor: alpha(tokens.accentPink, 0.08),
-											border: `1px solid ${alpha(tokens.accentPink, 0.16)}`,
 										}}>
 										<Icon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' } }} />
 									</Box>
-									<Box sx={{ minWidth: 0, pt: 0.15 }}>
-										<Typography
-											component='p'
-											sx={{
-												m: 0,
-												mb: 0.4,
-												fontFamily: tokens.fontBody,
-												fontSize: { xs: '0.9375rem', md: '1rem' },
-												fontWeight: 700,
-												letterSpacing: '-0.01em',
-												lineHeight: 1.3,
-												color: tokens.textPrimary,
-											}}>
+									<Box sx={{ minWidth: 0 }}>
+										<Typography variant='detailHeading' sx={{ m: 0, mb: 0.15, color: tokens.textPrimary, lineHeight: 1.2 }}>
 											{capability.label}
 										</Typography>
-										<Typography
-											component='p'
-											sx={{
-												m: 0,
-												fontFamily: tokens.fontBody,
-												fontSize: { xs: '0.8125rem', md: '0.875rem' },
-												fontWeight: 450,
-												lineHeight: 1.5,
-												color: tokens.textSecondary,
-											}}>
+										<Typography variant='body2' sx={{ m: 0, lineHeight: 1.4 }}>
 											{capability.detail}
 										</Typography>
 									</Box>
