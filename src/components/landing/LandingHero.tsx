@@ -8,7 +8,6 @@ import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import AccountTreeRoundedIcon from '@mui/icons-material/AccountTreeRounded';
 import CasinoRoundedIcon from '@mui/icons-material/CasinoRounded';
 import { FadeIn } from '../Layout/FadeIn';
-import { Accent } from '../Accent';
 import { hero } from '../../lib/site';
 import { tokens } from '../../theme/theme';
 import { alpha } from '@mui/material';
@@ -110,6 +109,7 @@ function HeroScrollingField({
 	finalValue,
 	onChange,
 	onSpinningChange,
+	onRequestSpin,
 	spinDelay = 0,
 	durationMs = defaultReelDurationMs,
 	loops = leftReelLoops,
@@ -122,6 +122,8 @@ function HeroScrollingField({
 	finalValue: string;
 	onChange: (next: string) => void;
 	onSpinningChange?: (spinning: boolean) => void;
+	/** Called when the settled reel is activated (click / Enter / Space). */
+	onRequestSpin?: () => void;
 	spinDelay?: number;
 	/** Wall-clock reel duration — keep identical across paired fields for simultaneous stops. */
 	durationMs?: number;
@@ -349,12 +351,29 @@ function HeroScrollingField({
 	}, [ready, reelArmed, durationMs, easing, spinKey]); // eslint-disable-line react-hooks/exhaustive-deps -- spin once per arm; settle must not restart
 
 	const rowHeightCss = rowHeightPx > 0 ? `${rowHeightPx}px` : `${compareFieldLineHeight}em`;
+	const canSpin = Boolean(onRequestSpin) && ready;
+
+	const activateSpin = () => {
+		if (!canSpin) return;
+		onRequestSpin?.();
+	};
 
 	return (
 		<Box
 			component='span'
 			ref={shellRef}
-			aria-label={`${label}: ${displayValue}`}
+			role={onRequestSpin ? 'button' : undefined}
+			tabIndex={onRequestSpin ? 0 : undefined}
+			aria-label={onRequestSpin ? `${label}: ${displayValue}. Activate to spin.` : `${label}: ${displayValue}`}
+			aria-disabled={onRequestSpin ? !canSpin : undefined}
+			onClick={activateSpin}
+			onKeyDown={(event) => {
+				if (!canSpin) return;
+				if (event.key === 'Enter' || event.key === ' ') {
+					event.preventDefault();
+					activateSpin();
+				}
+			}}
 			sx={{
 				display: 'inline-block',
 				position: 'relative',
@@ -375,6 +394,16 @@ function HeroScrollingField({
 				letterSpacing: 'inherit',
 				lineHeight: 'inherit',
 				textAlign: 'center',
+				cursor: canSpin ? 'pointer' : onRequestSpin ? 'default' : undefined,
+				outline: 'none',
+				WebkitTapHighlightColor: 'transparent',
+				'&:focus-visible': onRequestSpin
+					? {
+							outline: `2px solid ${tokens.accentPink}`,
+							outlineOffset: 3,
+							borderRadius: 0.5,
+						}
+					: undefined,
 			}}>
 			{/*
 			  Invisible strut: owns width / baseline. Height is locked on the shell to h1 line-height
@@ -545,6 +574,22 @@ export function LandingHero() {
 		setSpinKeyRight((key) => key + 1);
 	};
 
+	const spinLeftReel = () => {
+		if (spinningLeft) return;
+		const next = pickDifferentOption(hero.heroCompareLeftOptions, compareLeftRef.current);
+		setTargetLeft(next);
+		setSpinningLeft(true);
+		setSpinKeyLeft((key) => key + 1);
+	};
+
+	const spinRightReel = () => {
+		if (spinningRight) return;
+		const next = pickDifferentOption(hero.heroCompareRightOptions, compareRightRef.current);
+		setTargetRight(next);
+		setSpinningRight(true);
+		setSpinKeyRight((key) => key + 1);
+	};
+
 	/** Every 8s after both fields are idle, spin exactly one side with a new random value. */
 	useEffect(() => {
 		if (anySpinning) return;
@@ -662,6 +707,7 @@ export function LandingHero() {
 								options={hero.heroCompareLeftOptions}
 								onChange={(next) => setCompareLeft(next as HeroCompareLeft)}
 								onSpinningChange={setSpinningLeft}
+								onRequestSpin={spinLeftReel}
 								spinDelay={0}
 								durationMs={defaultReelDurationMs}
 								loops={leftReelLoops}
@@ -675,6 +721,7 @@ export function LandingHero() {
 								options={hero.heroCompareRightOptions}
 								onChange={(next) => setCompareRight(next as HeroCompareRight)}
 								onSpinningChange={setSpinningRight}
+								onRequestSpin={spinRightReel}
 								spinDelay={0}
 								durationMs={defaultReelDurationMs}
 								loops={rightReelLoops}
