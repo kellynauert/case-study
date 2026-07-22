@@ -27,13 +27,13 @@ export function GradingPage() {
 					scores, while manually graded Items remain ready for instructor review.
 					<br />
 					<br />
-					Grading entire Pages <Accent>preserves the context surrounding each response</Accent>. Instructors can review Display Items, embedded content,
+					Grading entire Pages preserves the context surrounding each response. Instructors can review Display Items, embedded content,
 					previous questions, uploaded files, and other supporting material exactly as the student experienced them, rather than grading
 					individual responses in isolation.
 					<br />
 					<br />
-					Scores are written back to the student's record immediately, updating{' '}
-					<Accent>progress, gradebooks, transcripts, certificates, and reporting</Accent> throughout the platform.
+					<Accent>Scores are written back to the student's record immediately</Accent>, updating progress, gradebooks, transcripts,
+					certificates, and reporting throughout the platform.
 				</StudyBody>
 			}>
 			<StudySection id='grading-queue' size={12}>
@@ -49,9 +49,13 @@ export function GradingPage() {
 					Submissions are ordered chronologically by default, with the oldest work appearing first. Frequently graded Pages can be starred
 					to pin them to the top of the queue.
 					<br />
-					<br />A live indicator shows when another grader currently has a submission open. Opening the same submission displays a warning
-					before grading begins, helping prevent conflicting edits without locking submissions unnecessarily. The queue can also be filtered
-					by assigned Courses or by program.
+					<br />
+					<Accent>
+						A live indicator shows when another grader currently has a submission open. Opening the same submission displays a warning
+						before grading begins
+					</Accent>
+					, helping prevent conflicting edits without locking submissions unnecessarily. The queue can also be filtered by assigned Courses
+					or by program.
 				</StudyBody>
 				<StudyImage size={12} src='grading/grading-queue.jpg' alt='Grading queue grouped by Page with program filters' />
 			</StudySection>
@@ -59,7 +63,7 @@ export function GradingPage() {
 			<StudySection id='gradebooks' size={12}>
 				<StudyBody size={5}>
 					<StudySectionTitle id='gradebooks' title='Gradebooks' />
-					The platform provides <Accent>two gradebook views</Accent> designed around different grading workflows.
+					The platform provides two gradebook views designed around different grading workflows.
 					<br />
 					<br />
 					<b>Course Gradebook </b>
@@ -160,8 +164,8 @@ export function GradingPage() {
 					suggestions for individual Items or use Generate All to evaluate every AI-enabled Item on the current Page in a single request.
 					<br />
 					<br />
-					The GPT API is called only when an instructor requests suggestions. The student's response, Item content, and configured grading
-					prompt are sent at grading time rather than submission time.
+					<Accent>The GPT API is called only when an instructor requests suggestions</Accent>. The student's response, Item content, and
+					configured grading prompt are sent at grading time rather than submission time.
 					<br />
 					<br />
 					Suggestions include <Accent>color-coded highlights showing which portions of the student's response the model referenced</Accent>. Mismatched

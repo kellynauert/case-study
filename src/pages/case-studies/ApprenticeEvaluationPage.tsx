@@ -56,9 +56,12 @@ export function ApprenticeEvaluationPage() {
 					<br />
 					<br />
 					The tracker can be accessed through unique links, allowing mentors to{' '}
-					<Accent>complete observations without creating an account</Accent>. When
-					accessing the tracker while signed out, mentors acknowledge a privacy notice and identify themselves before submitting ratings.
-					Every submission is recorded in an <Accent>audit trail</Accent> to preserve reviewer history.
+					<Accent>complete observations without creating an account</Accent>.{' '}
+					<Accent>
+						When accessing the tracker while signed out, mentors acknowledge a privacy notice and identify themselves before submitting
+						ratings
+					</Accent>
+					. <Accent>Every submission is recorded in an audit trail to preserve reviewer history</Accent>.
 				</StudyBody>
 				<StudyImage size={12} src='apprentice-evaluation/ferpa.png' alt='FERPA notice' maxWidth={1107} />
 			</StudySection>

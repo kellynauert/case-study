@@ -54,8 +54,8 @@ export function LandingPage() {
 								<Typography variant='body1' sx={{ m: 0 }}>
 									MathTrack Institute is an education startup where I spent{' '}
 									<Accent>five years as the sole designer and engineer</Accent> of its education operations platform. During that
-									time, I <Accent>created, adapted, and retired entire systems</Accent> within this platform to support the company
-									as it evolved.
+									time, I <Accent>created, adapted, and retired entire systems</Accent> within this platform{' '}
+									<Accent>to support the company as it evolved</Accent>.
 								</Typography>
 							</Box>
 

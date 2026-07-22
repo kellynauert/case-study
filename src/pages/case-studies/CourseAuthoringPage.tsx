@@ -19,8 +19,12 @@ export function CourseAuthoringPage() {
 				<>
 					<StudyBody size={12}>
 						MathTrack Institute prepares aspiring teachers to earn their teaching license and bachelor's degree through a series of online
-						courses delivered through the MathTrack app. Rather than relying on a separate curriculum authoring application, every course
-						is <Accent>created and maintained directly within the platform</Accent>.
+						courses delivered through the MathTrack app.{' '}
+						<Accent>
+							Rather than relying on a separate curriculum authoring application, every course is created and maintained directly within
+							the platform
+						</Accent>
+						.
 						<br />
 						<br />
 						The authoring system is built around a simple hierarchy:
@@ -38,9 +42,9 @@ export function CourseAuthoringPage() {
 					</StudyCell>
 					<StudyBody size={12}>
 						<Accent>Pages are the primary unit of learning</Accent>, and every page is assembled from configurable Items. Rather than
-						treating reading pages, quizzes, assignments, discussions, and file uploads as separate entities with different editors,{' '}
-						<Accent>every learning activity is built by combining Item types on a single page</Accent>. This allows instructional content and student interaction to exist
-						together within the same editing workflow.
+						treating reading pages, quizzes, assignments, discussions, and file uploads as separate entities with different editors, every
+						learning activity is built by combining Item types on a single page. This allows instructional content and student interaction
+						to exist together within the same editing workflow.
 					</StudyBody>
 				</>
 			}>
@@ -82,7 +86,7 @@ export function CourseAuthoringPage() {
 				<StudySectionTitle id='departments' title='Departments' />
 				<StudyBody size={12}>
 					Departments control which programs have enrollment access to a course and can also be configured for automatic enrollment. Colors
-					are configurable, while secondary colors and contrast text are generated automatically using <Accent>APCA-W3</Accent>.
+					are configurable, while secondary colors and contrast text are generated automatically using APCA-W3.
 				</StudyBody>
 				<StudyImage size={{ xs: 12, md: 12 }} src='course-authoring/departments.jpg' alt='Department configuration' />
 
@@ -134,7 +138,7 @@ export function CourseAuthoringPage() {
 							Courses can be cloned for variants across states and programs.
 							<br />
 							<br />
-							When cloning a course, authors choose whether Items retain their original IDs or receive new Item IDs.
+							<Accent>When cloning a course, authors choose whether Items retain their original IDs or receive new Item IDs</Accent>.
 							<br />
 							<br />
 							Courses cloned with original Item IDs continue sharing those Items. Courses cloned with new Item IDs can evolve

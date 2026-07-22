@@ -13,9 +13,8 @@ export function UnifiedExperiencePage() {
 			subtitle='A unified learning experience across every course in the program.'
 			intro={
 				<StudyBody size={12}>
-					Students access every part of the learning experience through a{' '}
-					<Accent>single interface</Accent> that includes a personalized dashboard, course catalog, notifications, progress tracking,
-					grading feedback, and communication with instructors.
+					Students access every part of the learning experience through a single interface that includes a personalized dashboard, course
+					catalog, notifications, progress tracking, grading feedback, and communication with instructors.
 					<br />
 					<br />
 					The entire learning experience takes place within the platform, from course navigation and assignment submission to grading,
@@ -53,12 +52,16 @@ export function UnifiedExperiencePage() {
 					stand across multiple courses.
 					<br />
 					<br />
-					A <Accent>Continue card returns students directly to the last Page</Accent> they were working on, eliminating the need to
-					navigate back through the course structure after each session.
+					A Continue card returns students directly to the last Page they were working on, eliminating the need to navigate back through the
+					course structure after each session.
 					<br />
 					<br />
-					Due dates are calculated from <Accent>each student's program start date</Accent> rather than fixed calendar dates. Students following the same
-					program receive personalized schedules automatically without requiring manual per-student configuration.
+					Due dates are calculated from each student's program start date rather than fixed calendar dates.{' '}
+					<Accent>
+						Students following the same program receive personalized schedules automatically without requiring manual per-student
+						configuration
+					</Accent>
+					.
 				</StudyBody>
 				<StudyImage size={12} src='unified-experience/courses.gif' alt='Courses dashboard with Continue card' maxWidth={1280} />
 			</StudySection>
@@ -73,7 +76,10 @@ export function UnifiedExperiencePage() {
 					complete overview of the course.
 					<br />
 					<br />
-					When authors hide lessons or numbering, navigation adjusts automatically while preserving a predictable learning experience.
+					<Accent>
+						When authors hide lessons or numbering, navigation adjusts automatically while preserving a predictable learning experience
+					</Accent>
+					.
 					<br />
 					<br />
 					Navigation always leads directly into the next Page in the learning sequence, allowing students to progress through each lesson
@@ -117,7 +123,7 @@ export function UnifiedExperiencePage() {
 					<br />
 					Rather than separating reading material, assignments, discussions, and quizzes into different areas of the application, every Page
 					presents content exactly as it was assembled during authoring. Display Items, questions, discussions, file uploads, and other Item
-					types appear together in a <Accent>single, continuous learning experience</Accent>.
+					types appear together in a single, continuous learning experience.
 					<br />
 					<br />
 					As students work through a Page, they interact directly with each Item in sequence. Reading content, answering questions,
@@ -126,8 +132,12 @@ export function UnifiedExperiencePage() {
 					<br />
 					<br />
 					After submission, the Page becomes the central location for reviewing work. Students can view page grades, instructor feedback,
-					previous submissions, and resubmit Pages when permitted. Keeping every stage of the learning process attached to the same Page
-					allows students to revisit work exactly as it was completed while preserving the surrounding context.
+					previous submissions, and resubmit Pages when permitted.{' '}
+					<Accent>
+						Keeping every stage of the learning process attached to the same Page allows students to revisit work exactly as it was
+						completed while preserving the surrounding context
+					</Accent>
+					.
 					<br />
 					<br />
 					The platform controls rendering for every Item type, producing consistent typography, layout, and interaction patterns throughout
@@ -151,8 +161,8 @@ export function UnifiedExperiencePage() {
 					throughout the platform, providing a consistent experience regardless of Item type.
 					<br />
 					<br />
-					Because <Accent>instructors grade entire Pages rather than individual Items</Accent>, students review feedback in the same context
-					in which the work was originally completed.
+					Because instructors grade entire Pages rather than individual Items, students review feedback in the same context in which the
+					work was originally completed.
 				</StudyBody>
 				<StudyImage size={8} src='unified-experience/passed-quiz.jpg' alt='Passed quiz' />
 			</StudySection>
