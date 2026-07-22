@@ -159,7 +159,6 @@ function HeroScrollingField({
 	const fromIndex = Math.max(0, options.indexOf(value || settledValue));
 	const targetIndex = loops * options.length + finalIndex;
 	const showReel = !ready && reelArmed;
-	const spinning = !ready;
 	const rowHeightPx = spinHeightRef.current > 0 ? spinHeightRef.current : fieldHeightPx;
 	const inkSx = reelInkSx();
 
