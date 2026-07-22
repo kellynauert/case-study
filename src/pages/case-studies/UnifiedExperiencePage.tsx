@@ -186,7 +186,9 @@ export function UnifiedExperiencePage() {
 						size={12}
 						items={['Conversations between students and graders', '@mentions', 'Emoji reactions', 'Replies to Discussion Items']}
 					/>
-					Students also receive notifications when:
+					<Box component='span' sx={{ display: 'block', pt: 2 }}>
+						Students also receive notifications when:
+					</Box>
 					<StudyBulletList
 						size={12}
 						items={[
