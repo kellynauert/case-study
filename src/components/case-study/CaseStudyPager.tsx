@@ -70,6 +70,7 @@ export function CaseStudyPager({ slug }: CaseStudyPagerProps) {
 
 	return (
 		<Box
+			data-scroll-top-avoid
 			sx={{
 				display: 'grid',
 				gridTemplateColumns: '1fr 1fr',
