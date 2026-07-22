@@ -832,7 +832,7 @@ export function LandingHero() {
 						fontFamily: tokens.fontBody,
 						fontSize: { xs: '1.03125rem', md: '1.28125rem' },
 						fontWeight: 500,
-						lineHeight: { xs: 1.65, md: 1.45 },
+						lineHeight: { xs: 1.5, md: 1.35 },
 						color: tokens.textPrimary,
 					}}>
 					{hero.supportingBefore}
