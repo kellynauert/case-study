@@ -82,25 +82,12 @@ const diceWiggleDurationMs = 560;
 /** Full turns during a reel spin — decelerates with the same duration/easing as the reels. */
 const diceSpinTurns = 5;
 /**
- * Settled = purple. While spinning: pink while the strip is fast, then back to
- * purple as it decelerates — same wall-clock as the reel, no pale mid stop.
+ * Reel ink stays pink (settled and spinning). Color morph was retired —
+ * purple is reserved for hiring-manager accents elsewhere.
  */
-function reelInkSx(spinning: boolean, durationMs: number) {
-	const inkMid = `color-mix(in oklab, ${tokens.accentPink} 55%, ${tokens.accent} 45%)`;
+function reelInkSx() {
 	return {
-		color: tokens.accent,
-		'@keyframes reelInkDuringSpin': {
-			'0%': { color: tokens.accent },
-			'10%': { color: tokens.accentPink },
-			'48%': { color: tokens.accentPink },
-			'74%': { color: inkMid },
-			'100%': { color: tokens.accent },
-		},
-		animation: spinning ? `reelInkDuringSpin ${durationMs}ms linear forwards` : 'none',
-		'@media (prefers-reduced-motion: reduce)': {
-			animation: 'none',
-			color: tokens.accent,
-		},
+		color: tokens.accentPink,
 	} as const;
 }
 
@@ -174,7 +161,7 @@ function HeroScrollingField({
 	const showReel = !ready && reelArmed;
 	const spinning = !ready;
 	const rowHeightPx = spinHeightRef.current > 0 ? spinHeightRef.current : fieldHeightPx;
-	const inkSx = reelInkSx(spinning, durationMs);
+	const inkSx = reelInkSx();
 
 	const setShellWidthPx = (px: number, animate: false | 'expand' | 'fit' = false) => {
 		const shell = shellRef.current;
@@ -381,7 +368,7 @@ function HeroScrollingField({
 				// Transparent so a neighboring reel can bleed through during width overshoot.
 				bgcolor: 'transparent',
 				// Fallback ink if background-clip text isn’t applied on a child.
-				color: tokens.accent,
+				color: tokens.accentPink,
 				font: 'inherit',
 				fontSize: 'inherit',
 				fontWeight: 'inherit',
