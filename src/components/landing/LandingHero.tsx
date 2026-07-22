@@ -619,39 +619,49 @@ export function LandingHero() {
 						sx={{
 							display: 'inline-flex',
 							alignItems: 'baseline',
-							columnGap: compareSpinnerGap,
 							flexShrink: 0,
 							width: 'max-content',
 							maxWidth: '100%',
 							lineHeight: 'inherit',
 							height: `${compareFieldLineHeight}em`,
 						}}>
-						<HeroScrollingField
-							value={compareLeft}
-							finalValue={targetLeft}
-							label='Role discipline'
-							options={hero.heroCompareLeftOptions}
-							onChange={(next) => setCompareLeft(next as HeroCompareLeft)}
-							onSpinningChange={setSpinningLeft}
-							spinDelay={0}
-							durationMs={defaultReelDurationMs}
-							loops={leftReelLoops}
-							easing={leftReelEasing}
-							spinKey={spinKeyLeft}
-						/>
-						<HeroScrollingField
-							value={compareRight}
-							finalValue={targetRight}
-							label='Role title'
-							options={hero.heroCompareRightOptions}
-							onChange={(next) => setCompareRight(next as HeroCompareRight)}
-							onSpinningChange={setSpinningRight}
-							spinDelay={0}
-							durationMs={defaultReelDurationMs}
-							loops={rightReelLoops}
-							easing={rightReelEasing}
-							spinKey={spinKeyRight}
-						/>
+						<Box
+							component='span'
+							sx={{
+								display: 'inline-flex',
+								alignItems: 'baseline',
+								columnGap: compareSpinnerGap,
+								flexShrink: 0,
+								lineHeight: 'inherit',
+								height: '100%',
+							}}>
+							<HeroScrollingField
+								value={compareLeft}
+								finalValue={targetLeft}
+								label='Role discipline'
+								options={hero.heroCompareLeftOptions}
+								onChange={(next) => setCompareLeft(next as HeroCompareLeft)}
+								onSpinningChange={setSpinningLeft}
+								spinDelay={0}
+								durationMs={defaultReelDurationMs}
+								loops={leftReelLoops}
+								easing={leftReelEasing}
+								spinKey={spinKeyLeft}
+							/>
+							<HeroScrollingField
+								value={compareRight}
+								finalValue={targetRight}
+								label='Role title'
+								options={hero.heroCompareRightOptions}
+								onChange={(next) => setCompareRight(next as HeroCompareRight)}
+								onSpinningChange={setSpinningRight}
+								spinDelay={0}
+								durationMs={defaultReelDurationMs}
+								loops={rightReelLoops}
+								easing={rightReelEasing}
+								spinKey={spinKeyRight}
+							/>
+						</Box>
 						<Box
 							component='button'
 							type='button'
@@ -661,17 +671,18 @@ export function LandingHero() {
 								display: 'inline-flex',
 								alignItems: 'center',
 								justifyContent: 'center',
-								alignSelf: 'center',
 								flexShrink: 0,
-								ml: 0.25,
-								p: 0.4,
+								// Sit on the reel text baseline, tight to the right spinner.
+								alignSelf: 'baseline',
+								ml: '3px',
+								p: 0,
 								border: 'none',
 								borderRadius: 1,
 								bgcolor: 'transparent',
 								boxShadow: 'none',
 								color: tokens.accentPink,
 								cursor: 'pointer',
-								lineHeight: 0,
+								lineHeight: 1,
 								outline: 'none',
 								WebkitTapHighlightColor: 'transparent',
 								transition: 'color 180ms ease, background-color 180ms ease, transform 180ms ease',
@@ -702,20 +713,22 @@ export function LandingHero() {
 									display: 'inline-flex',
 									outline: 'none',
 									boxShadow: 'none',
+									// Optical baseline: SvgIcon bottom edge sits slightly below the glyph baseline.
+									transform: 'translateY(0.08em)',
 									'@keyframes diceIdleWiggle': {
-										'0%, 100%': { transform: 'rotate(0deg) translateX(0)' },
-										'12%': { transform: 'rotate(-20deg) translateX(-1.5px)' },
-										'28%': { transform: 'rotate(18deg) translateX(1.5px)' },
-										'44%': { transform: 'rotate(-16deg) translateX(-1px)' },
-										'60%': { transform: 'rotate(14deg) translateX(1px)' },
-										'76%': { transform: 'rotate(-8deg) translateX(-0.5px)' },
+										'0%, 100%': { transform: 'translateY(0.08em) rotate(0deg) translateX(0)' },
+										'12%': { transform: 'translateY(0.08em) rotate(-20deg) translateX(-1.5px)' },
+										'28%': { transform: 'translateY(0.08em) rotate(18deg) translateX(1.5px)' },
+										'44%': { transform: 'translateY(0.08em) rotate(-16deg) translateX(-1px)' },
+										'60%': { transform: 'translateY(0.08em) rotate(14deg) translateX(1px)' },
+										'76%': { transform: 'translateY(0.08em) rotate(-8deg) translateX(-0.5px)' },
 									},
 									animation: diceWiggle ? `diceIdleWiggle ${diceWiggleDurationMs}ms ease-in-out` : 'none',
 									'@media (prefers-reduced-motion: reduce)': {
 										animation: 'none',
 									},
 								}}>
-								<CasinoRoundedIcon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' } }} />
+								<CasinoRoundedIcon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' }, display: 'block' }} />
 							</Box>
 						</Box>
 					</Box>
