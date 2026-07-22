@@ -901,9 +901,9 @@ export function LandingHero() {
 											// Match label half-leading so the chip top meets glyph tops, not the line-box top.
 											mt: { xs: 'calc(0.9375rem * 0.15)', md: 'calc(1rem * 0.15)' },
 											borderRadius: 1,
-											color: tokens.accent,
-											bgcolor: alpha(tokens.accent, 0.08),
-											border: `1px solid ${alpha(tokens.accent, 0.16)}`,
+											color: tokens.accentPink,
+											bgcolor: alpha(tokens.accentPink, 0.08),
+											border: `1px solid ${alpha(tokens.accentPink, 0.16)}`,
 										}}>
 										<Icon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' } }} />
 									</Box>
