@@ -79,7 +79,7 @@ const compareSpinnerGap = '2px';
 const autoSoloSpinMs = 15000;
 const diceWiggleDurationMs = 560;
 /** Full rotation duration while any reel is spinning. */
-const diceSpinDurationMs = 700;
+const diceSpinDurationMs = 420;
 
 /**
  * Inline scrolling blank: plain text slot with reel animation (no wash / underline chrome).
