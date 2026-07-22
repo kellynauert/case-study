@@ -13,7 +13,7 @@ export const hero = {
 	headline: author.name,
 	roleLine: `${author.role}`,
 	/** Spinning title blanks — each reel has its own list. */
-	heroCompareLeftOptions: ['UI/UX', 'Design', 'Full-Stack', 'Systems'] as const,
+	heroCompareLeftOptions: ['UI/UX', 'Design', 'Product', 'Full-Stack', 'Systems'] as const,
 	heroCompareRightOptions: ['Engineer', 'Developer', 'Architect'] as const,
 	heroComparePrefix: 'Sole',
 	heroCompareSuffix: 'of an Evolving SaaS Platform',

@@ -43,7 +43,7 @@ const compareFieldLineHeight = 1.2;
 /** Shared wall-clock spin — both fields use this so they stop together. */
 const defaultReelDurationMs = 2800;
 /** Let the randomly seeded title read before the opening reels begin. */
-const initialReelHoldMs = 2000;
+const initialReelHoldMs = 1500;
 /**
  * Different loop counts ⇒ different travel distance in the same duration ⇒
  * independent visual speeds with an identical stop time (no start-delay hacks).
@@ -111,6 +111,7 @@ function HeroScrollingField({
 	finalValue,
 	onChange,
 	onSpinningChange,
+	onMotionStart,
 	onRequestSpin,
 	spinDelay = 0,
 	durationMs = defaultReelDurationMs,
@@ -124,6 +125,8 @@ function HeroScrollingField({
 	finalValue: string;
 	onChange: (next: string) => void;
 	onSpinningChange?: (spinning: boolean) => void;
+	/** Called when the reel strip actually begins moving (after any opening hold). */
+	onMotionStart?: () => void;
 	/** Called when the settled reel is activated (click / Enter / Space). */
 	onRequestSpin?: () => void;
 	spinDelay?: number;
@@ -140,6 +143,8 @@ function HeroScrollingField({
 	onChangeRef.current = onChange;
 	const onSpinningChangeRef = useRef(onSpinningChange);
 	onSpinningChangeRef.current = onSpinningChange;
+	const onMotionStartRef = useRef(onMotionStart);
+	onMotionStartRef.current = onMotionStart;
 
 	const shellRef = useRef<HTMLSpanElement | null>(null);
 	const viewportRef = useRef<HTMLSpanElement | null>(null);
@@ -312,6 +317,7 @@ function HeroScrollingField({
 				strip.style.transform = `translate3d(0, -${startY}px, 0)`;
 				void strip.offsetHeight;
 
+				onMotionStartRef.current?.();
 				strip.style.transition = `transform ${durationMs}ms ${easing}`;
 				strip.style.transform = `translate3d(0, -${endY}px, 0)`;
 
@@ -559,6 +565,7 @@ export function LandingHero() {
 	);
 	const [spinningLeft, setSpinningLeft] = useState(true);
 	const [spinningRight, setSpinningRight] = useState(true);
+	const [hasReelMotionStarted, setHasReelMotionStarted] = useState(false);
 	const [diceWiggle, setDiceWiggle] = useState(false);
 
 	const compareLeftRef = useRef(compareLeft);
@@ -567,6 +574,7 @@ export function LandingHero() {
 	compareRightRef.current = compareRight;
 
 	const anySpinning = spinningLeft || spinningRight;
+	const diceSpinning = anySpinning && hasReelMotionStarted;
 
 	const randomizeCompare = () => {
 		const nextLeft = pickRandomOption(hero.heroCompareLeftOptions);
@@ -713,6 +721,7 @@ export function LandingHero() {
 								options={hero.heroCompareLeftOptions}
 								onChange={(next) => setCompareLeft(next as HeroCompareLeft)}
 								onSpinningChange={setSpinningLeft}
+								onMotionStart={() => setHasReelMotionStarted(true)}
 								onRequestSpin={spinLeftReel}
 								spinDelay={spinKeyLeft === 0 ? initialReelHoldMs : 0}
 								durationMs={defaultReelDurationMs}
@@ -727,6 +736,7 @@ export function LandingHero() {
 								options={hero.heroCompareRightOptions}
 								onChange={(next) => setCompareRight(next as HeroCompareRight)}
 								onSpinningChange={setSpinningRight}
+								onMotionStart={() => setHasReelMotionStarted(true)}
 								onRequestSpin={spinRightReel}
 								spinDelay={spinKeyRight === 0 ? initialReelHoldMs : 0}
 								durationMs={defaultReelDurationMs}
@@ -781,7 +791,7 @@ export function LandingHero() {
 								},
 							}}>
 							<Box
-								key={anySpinning ? `spin-${spinKeyLeft}-${spinKeyRight}` : 'idle'}
+								key={diceSpinning ? `spin-${spinKeyLeft}-${spinKeyRight}` : 'idle'}
 								component='span'
 								sx={{
 									display: 'inline-flex',
@@ -802,7 +812,7 @@ export function LandingHero() {
 										'100%': { transform: `translateY(0.08em) rotate(${diceSpinTurns * 360}deg)` },
 									},
 									// Match reel wall-clock + ease-out so the dice decelerates with the strips.
-									animation: anySpinning
+									animation: diceSpinning
 										? `diceSpin ${defaultReelDurationMs}ms ${leftReelEasing} forwards`
 										: diceWiggle
 											? `diceIdleWiggle ${diceWiggleDurationMs}ms ease-in-out`
