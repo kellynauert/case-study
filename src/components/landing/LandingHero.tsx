@@ -906,10 +906,10 @@ export function LandingHero() {
 										<Icon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' } }} />
 									</Box>
 									<Box sx={{ minWidth: 0 }}>
-										<Typography variant='detailHeading' sx={{ m: 0, mb: 0.15, color: tokens.textPrimary }}>
+										<Typography variant='detailHeading' sx={{ m: 0, mb: 0.15, color: tokens.textPrimary, lineHeight: 1.2 }}>
 											{capability.label}
 										</Typography>
-										<Typography variant='body2' sx={{ m: 0 }}>
+										<Typography variant='body2' sx={{ m: 0, lineHeight: 1.4 }}>
 											{capability.detail}
 										</Typography>
 									</Box>
