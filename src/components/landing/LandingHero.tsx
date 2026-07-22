@@ -899,7 +899,9 @@ export function LandingHero() {
 											height: { xs: 36, md: 40 },
 											// Match detailHeading half-leading so the chip top meets glyph tops.
 											mt: 'calc(1rem * 0.15)',
+											borderRadius: 1,
 											color: tokens.accentPink,
+											border: `1px solid ${alpha(tokens.accentPink, 0.16)}`,
 										}}>
 										<Icon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' } }} />
 									</Box>
