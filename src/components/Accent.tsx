@@ -5,7 +5,7 @@ import { tokens } from '../theme/theme';
 /** Inline purple accent for hiring-manager highlights in body copy. */
 export function Accent({ children }: { children: ReactNode }) {
 	return (
-		<Box component='span' sx={{ color: tokens.accent }}>
+		<Box component='span' sx={{ color: tokens.accent, fontWeight: 700 }}>
 			{children}
 		</Box>
 	);
