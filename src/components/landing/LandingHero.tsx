@@ -844,7 +844,7 @@ export function LandingHero() {
 										display: 'grid',
 										gridTemplateColumns: 'auto 1fr',
 										columnGap: 1.5,
-										alignItems: 'start',
+										alignItems: 'center',
 										minWidth: 0,
 										opacity: 0,
 										animation: 'capabilityIn 480ms ease forwards',
@@ -866,7 +866,6 @@ export function LandingHero() {
 											justifyContent: 'center',
 											width: { xs: 36, md: 40 },
 											height: { xs: 36, md: 40 },
-											mt: 0.15,
 											borderRadius: 1,
 											color: tokens.accentPink,
 											bgcolor: alpha(tokens.accentPink, 0.08),
@@ -874,7 +873,7 @@ export function LandingHero() {
 										}}>
 										<Icon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' } }} />
 									</Box>
-									<Box sx={{ minWidth: 0, pt: 0.15 }}>
+									<Box sx={{ minWidth: 0 }}>
 										<Typography
 											component='p'
 											sx={{
