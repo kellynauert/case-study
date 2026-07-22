@@ -43,7 +43,7 @@ const compareFieldLineHeight = 1.2;
 /** Shared wall-clock spin — both fields use this so they stop together. */
 const defaultReelDurationMs = 2800;
 /** Let the randomly seeded title read before the opening reels begin. */
-const initialReelHoldMs = 2000;
+const initialReelHoldMs = 1500;
 /**
  * Different loop counts ⇒ different travel distance in the same duration ⇒
  * independent visual speeds with an identical stop time (no start-delay hacks).
