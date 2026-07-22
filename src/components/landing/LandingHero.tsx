@@ -74,7 +74,7 @@ const widthFitLeadMs = 0;
  */
 const shellWidthPadPx = 2;
 /** Gap between paired spinners — kept tight; shells allow horizontal glyph bleed during width anim. */
-const compareSpinnerGap = '2px';
+const compareSpinnerGap = '1px';
 
 const autoSoloSpinMs = 15000;
 const diceWiggleDurationMs = 560;
@@ -643,7 +643,7 @@ export function LandingHero() {
 						flexWrap: 'wrap',
 						// Baseline with strut shells: glyphs stay level when width animates.
 						alignItems: 'baseline',
-						columnGap: '3px',
+						columnGap: '1px',
 						// No rowGap — wrapped flex lines must share the same line-height rhythm.
 						rowGap: 0,
 					}}>
