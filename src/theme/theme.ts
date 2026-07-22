@@ -145,6 +145,7 @@ export const theme = createTheme({
 		body1: {
 			fontSize: '0.9375rem',
 			lineHeight: 1.7,
+			fontWeight: 500,
 			color: textSecondary,
 			'@media (min-width:900px)': {
 				fontSize: '1rem',
@@ -153,6 +154,7 @@ export const theme = createTheme({
 		body2: {
 			fontSize: '0.9375rem',
 			lineHeight: 1.65,
+			fontWeight: 500,
 			color: textSecondary,
 		},
 		subtitle1: {
