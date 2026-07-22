@@ -901,7 +901,7 @@ export function LandingHero() {
 											mt: 'calc(1rem * 0.15)',
 											borderRadius: 1,
 											color: tokens.accentPink,
-											border: `1px solid ${alpha(tokens.accentPink, 0.16)}`,
+											bgcolor: alpha(tokens.accentPink, 0.08),
 										}}>
 										<Icon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' } }} />
 									</Box>
