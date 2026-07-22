@@ -90,7 +90,8 @@ const diceSpinWiggleDurationMs = 420;
  * Alignment: shell height is locked to h1 line-height (in-flow); strut owns width/baseline.
  * Reel + settled share one absolute viewport. Settled stays mounted in the same top / height box
  * as reel rows — ready is a visibility swap only, so overflow toggle cannot remount-shift Y.
- * Row boxes use the shared line-height (px once measured) so glyphs aren’t clipped.
+ * Viewport clips top/bottom via clip-path so width overshoot can bleed horizontally (no hard X cut).
+ * Row boxes use the shared line-height (px once measured) so glyphs aren’t clipped on Y.
  */
 function HeroScrollingField({
 	options,
@@ -610,7 +611,7 @@ export function LandingHero() {
 						flexWrap: 'wrap',
 						// Baseline with strut shells: glyphs stay level when width animates.
 						alignItems: 'baseline',
-						columnGap: '8px',
+						columnGap: '3px',
 						// No rowGap — wrapped flex lines must share the same line-height rhythm.
 						rowGap: 0,
 					}}>
