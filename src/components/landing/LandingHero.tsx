@@ -78,8 +78,8 @@ const compareSpinnerGap = '2px';
 
 const autoSoloSpinMs = 15000;
 const diceWiggleDurationMs = 560;
-/** Full rotation duration while any reel is spinning. */
-const diceSpinDurationMs = 420;
+/** Full turns during a reel spin — decelerates with the same duration/easing as the reels. */
+const diceSpinTurns = 5;
 
 /**
  * Inline scrolling blank: plain text slot with reel animation (no wash / underline chrome).
@@ -712,6 +712,7 @@ export function LandingHero() {
 								},
 							}}>
 							<Box
+								key={anySpinning ? `spin-${spinKeyLeft}-${spinKeyRight}` : 'idle'}
 								component='span'
 								sx={{
 									display: 'inline-flex',
@@ -729,10 +730,11 @@ export function LandingHero() {
 									},
 									'@keyframes diceSpin': {
 										'0%': { transform: 'translateY(0.08em) rotate(0deg)' },
-										'100%': { transform: 'translateY(0.08em) rotate(360deg)' },
+										'100%': { transform: `translateY(0.08em) rotate(${diceSpinTurns * 360}deg)` },
 									},
+									// Match reel wall-clock + ease-out so the dice decelerates with the strips.
 									animation: anySpinning
-										? `diceSpin ${diceSpinDurationMs}ms linear infinite`
+										? `diceSpin ${defaultReelDurationMs}ms ${leftReelEasing} forwards`
 										: diceWiggle
 											? `diceIdleWiggle ${diceWiggleDurationMs}ms ease-in-out`
 											: 'none',
