@@ -80,6 +80,34 @@ const autoSoloSpinMs = 15000;
 const diceWiggleDurationMs = 560;
 /** Full turns during a reel spin — decelerates with the same duration/easing as the reels. */
 const diceSpinTurns = 5;
+/** Pink ↔ purple ink morph while spinning — eases along the brand gradient. */
+const reelInkTransitionMs = 640;
+
+/**
+ * Settled = pink, spinning = purple. Keyframes pass through accentLight so the
+ * morph follows the brand gradient instead of a muddy RGB mid-blend / hard cut.
+ */
+function reelInkSx(spinning: boolean) {
+	return {
+		color: spinning ? tokens.accent : tokens.accentPink,
+		'@keyframes reelInkToPurple': {
+			'0%': { color: tokens.accentPink },
+			'45%': { color: tokens.accentLight },
+			'100%': { color: tokens.accent },
+		},
+		'@keyframes reelInkToPink': {
+			'0%': { color: tokens.accent },
+			'45%': { color: tokens.accentLight },
+			'100%': { color: tokens.accentPink },
+		},
+		animation: spinning
+			? `reelInkToPurple ${reelInkTransitionMs}ms ${leftReelEasing} forwards`
+			: `reelInkToPink ${reelInkTransitionMs}ms ${leftReelEasing} forwards`,
+		'@media (prefers-reduced-motion: reduce)': {
+			animation: 'none',
+		},
+	} as const;
+}
 
 /**
  * Inline scrolling blank: plain text slot with reel animation (no wash / underline chrome).
@@ -149,7 +177,9 @@ function HeroScrollingField({
 	const fromIndex = Math.max(0, options.indexOf(value || settledValue));
 	const targetIndex = loops * options.length + finalIndex;
 	const showReel = !ready && reelArmed;
+	const spinning = !ready;
 	const rowHeightPx = spinHeightRef.current > 0 ? spinHeightRef.current : fieldHeightPx;
+	const inkSx = reelInkSx(spinning);
 
 	const setShellWidthPx = (px: number, animate: false | 'expand' | 'fit' = false) => {
 		const shell = shellRef.current;
@@ -355,7 +385,8 @@ function HeroScrollingField({
 				maxHeight: `${compareFieldLineHeight}em`,
 				// Transparent so a neighboring reel can bleed through during width overshoot.
 				bgcolor: 'transparent',
-				color: tokens.accentPink,
+				// Fallback ink if background-clip text isn’t applied on a child.
+				color: ready ? tokens.accentPink : tokens.accent,
 				font: 'inherit',
 				fontSize: 'inherit',
 				fontWeight: 'inherit',
@@ -447,6 +478,7 @@ function HeroScrollingField({
 						// Horizontal width overshoot lives on the shell; never bounce this label on Y.
 						transform: 'none',
 						animation: 'none',
+						...inkSx,
 					}}>
 					{displayValue}
 				</Box>
@@ -484,6 +516,7 @@ function HeroScrollingField({
 									letterSpacing: 'inherit',
 									lineHeight: rowHeightCss,
 									textAlign: 'center',
+									...inkSx,
 								}}>
 								{option}
 							</Box>
@@ -684,12 +717,12 @@ export function LandingHero() {
 								borderRadius: 1,
 								bgcolor: 'transparent',
 								boxShadow: 'none',
-								color: tokens.accentPink,
+								...reelInkSx(anySpinning),
 								cursor: 'pointer',
 								lineHeight: 1,
 								outline: 'none',
 								WebkitTapHighlightColor: 'transparent',
-								transition: 'color 180ms ease, background-color 180ms ease, transform 180ms ease',
+								transition: 'background-color 180ms ease, transform 180ms ease',
 								'&:hover': {
 									color: tokens.accent,
 									boxShadow: 'none',
@@ -708,6 +741,7 @@ export function LandingHero() {
 									outlineOffset: 3,
 								},
 								'@media (prefers-reduced-motion: reduce)': {
+									animation: 'none',
 									'&:active': { transform: 'none' },
 								},
 							}}>
