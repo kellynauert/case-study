@@ -771,7 +771,6 @@ export function LandingHero() {
 						fontWeight: 500,
 						lineHeight: 1.65,
 						color: tokens.textPrimary,
-						textWrap: 'balance',
 					}}>
 					{hero.supportingBefore}
 					<Box component='span' style={{ color: tokens.accentPink }}>
