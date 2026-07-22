@@ -173,7 +173,7 @@ export function UnifiedExperiencePage() {
 					Every Page includes a built-in conversation between students and graders.
 					<br />
 					<br />
-					Students can ask questions, respond to grading feedback, and continue discussions without leaving the submitted Page. Keeping
+					Students can ask questions, respond to grading feedback, and continue discussions without leaving the submitted Page. Keeping{' '}
 					<Accent>conversations attached to the Page</Accent> preserves the context of the work being discussed and eliminates the need to
 					reference assignments separately through email or external messaging tools.
 					<br />
