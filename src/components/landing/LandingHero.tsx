@@ -910,7 +910,7 @@ export function LandingHero() {
 										<Typography variant='detailHeading' sx={{ m: 0, mb: 0.4, color: tokens.textPrimary }}>
 											{capability.label}
 										</Typography>
-										<Typography variant='caption' component='p' sx={{ m: 0, display: 'block', color: tokens.textSecondary }}>
+										<Typography variant='body2' sx={{ m: 0 }}>
 											{capability.detail}
 										</Typography>
 									</Box>
