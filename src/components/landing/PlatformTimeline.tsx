@@ -14,6 +14,7 @@ import type { SvgIconProps } from '@mui/material/SvgIcon';
 import { platformStory } from '../../lib/site';
 import { scrollMarginTop } from '../../lib/styles';
 import { tokens } from '../../theme/theme';
+import { Accent } from '../Accent';
 
 type TimelineItem = Omit<(typeof platformStory.timeline)[number], 'end'> & {
 	/** `null` = still ongoing (“Present”). */
@@ -134,7 +135,9 @@ export function PlatformTimeline() {
 	return (
 		<Box id='platform-timeline' aria-label='Platform evolution' sx={{ scrollMarginTop }}>
 			<Typography variant='body1' sx={{ m: 0, mb: 1.75 }}>
-				{platformStory.timelineIntro}
+				In an effort to show the scale of the platform, I've put together a rough timeline of how it was used and where my development
+				efforts were focused over the years. This website will focus on just the{' '}
+				<Accent>two most recent systems that are still in production</Accent>.
 			</Typography>
 
 			<Box

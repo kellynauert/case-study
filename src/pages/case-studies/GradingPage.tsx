@@ -4,6 +4,7 @@ import { StudyBody } from '../../components/case-study/StudyBody';
 import { StudyBulletList } from '../../components/case-study/StudyBulletList';
 import { StudyImage } from '../../components/case-study/StudyImage';
 import { StudySplit, StudyDetailTitle } from '../../components/case-study/StudyLayout';
+import { Accent } from '../../components/Accent';
 
 export function GradingPage() {
 	return (
@@ -17,7 +18,8 @@ export function GradingPage() {
 					stored with each Item, including point values, grading mode, feedback, grader notes, AI prompts, and version information.
 					<br />
 					<br />
-					Although grading behavior belongs to individual Items, students submit and instructors grade entire Pages.
+					Although grading behavior belongs to individual Items,{' '}
+					<Accent>students submit and instructors grade entire Pages</Accent>.
 					<br />
 					<br />
 					If a Page contains only automatically graded Items, grading is completed immediately when the Page is submitted. If any Item on
@@ -25,13 +27,13 @@ export function GradingPage() {
 					scores, while manually graded Items remain ready for instructor review.
 					<br />
 					<br />
-					Grading entire Pages preserves the context surrounding each response. Instructors can review Display Items, embedded content,
+					Grading entire Pages <Accent>preserves the context surrounding each response</Accent>. Instructors can review Display Items, embedded content,
 					previous questions, uploaded files, and other supporting material exactly as the student experienced them, rather than grading
 					individual responses in isolation.
 					<br />
 					<br />
-					Scores are written back to the student's record immediately, updating progress, gradebooks, transcripts, certificates, and
-					reporting throughout the platform.
+					Scores are written back to the student's record immediately, updating{' '}
+					<Accent>progress, gradebooks, transcripts, certificates, and reporting</Accent> throughout the platform.
 				</StudyBody>
 			}>
 			<StudySection id='grading-queue' size={12}>
@@ -40,7 +42,7 @@ export function GradingPage() {
 					The grading queue is the primary workspace for reviewing student submissions.
 					<br />
 					<br />
-					Rather than grouping work by student, submissions are grouped by Page. This allows graders reviewing a large volume of work to
+					Rather than grouping work by student, submissions are <Accent>grouped by Page</Accent>. This allows graders reviewing a large volume of work to
 					remain in a single grading workflow instead of constantly switching between different Page layouts and grading criteria.
 					<br />
 					<br />
@@ -57,7 +59,7 @@ export function GradingPage() {
 			<StudySection id='gradebooks' size={12}>
 				<StudyBody size={5}>
 					<StudySectionTitle id='gradebooks' title='Gradebooks' />
-					The platform provides two gradebook views designed around different grading workflows.
+					The platform provides <Accent>two gradebook views</Accent> designed around different grading workflows.
 					<br />
 					<br />
 					<b>Course Gradebook </b>
@@ -162,11 +164,11 @@ export function GradingPage() {
 					prompt are sent at grading time rather than submission time.
 					<br />
 					<br />
-					Suggestions include color-coded highlights showing which portions of the student's response the model referenced. Mismatched
+					Suggestions include <Accent>color-coded highlights showing which portions of the student's response the model referenced</Accent>. Mismatched
 					highlight colors indicate the model introduced unsupported information or failed to reference relevant source text.
 					<br />
 					<br />
-					AI suggestions assist with evaluation, but final scoring always remains with the instructor.
+					AI suggestions assist with evaluation, but <Accent>final scoring always remains with the instructor</Accent>.
 				</StudyBody>
 				<StudyImage size={12} src='grading/ai_grading.gif' alt='AI-assisted grading with color-coded text grounding' maxWidth={800} />
 			</StudySection>

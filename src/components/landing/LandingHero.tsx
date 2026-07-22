@@ -8,6 +8,7 @@ import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import AccountTreeRoundedIcon from '@mui/icons-material/AccountTreeRounded';
 import CasinoRoundedIcon from '@mui/icons-material/CasinoRounded';
 import { FadeIn } from '../Layout/FadeIn';
+import { Accent } from '../Accent';
 import { hero } from '../../lib/site';
 import { tokens } from '../../theme/theme';
 import { alpha } from '@mui/material';
@@ -802,9 +803,7 @@ export function LandingHero() {
 						color: tokens.textPrimary,
 					}}>
 					{hero.supportingBefore}
-					<Box component='span' style={{ color: tokens.accent }}>
-						{hero.supportingAccent}
-					</Box>
+					<Accent>{hero.supportingAccent}</Accent>
 					{hero.supportingAfter}
 				</Typography>
 			</FadeIn>

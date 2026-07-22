@@ -10,6 +10,7 @@ import { StudyCell } from '../components/case-study/StudyCell';
 import { FeatureShowcaseList } from '../components/landing/FeatureShowcaseList';
 import { LandingHero } from '../components/landing/LandingHero';
 import { PlatformTimeline } from '../components/landing/PlatformTimeline';
+import { Accent } from '../components/Accent';
 
 export function LandingPage() {
 	const systemGroups = getCaseStudiesBySystemGroup();
@@ -50,20 +51,15 @@ export function LandingPage() {
 							</Typography>
 
 							<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 2 }}>
-								{platformStory.paragraphs.map((paragraph) => (
-									<Typography key={paragraph.slice(0, 40)} variant='body1' sx={{ m: 0 }}>
-										{paragraph}
-									</Typography>
-								))}
+								<Typography variant='body1' sx={{ m: 0 }}>
+									MathTrack Institute is an education startup where I spent{' '}
+									<Accent>five years as the sole designer and engineer</Accent> of its education operations platform. During that
+									time, I <Accent>created, adapted, and retired entire systems</Accent> within this platform to support the company
+									as it evolved.
+								</Typography>
 							</Box>
 
 							<PlatformTimeline />
-
-							{platformStory.closing.map((paragraph) => (
-								<Typography key={paragraph.slice(0, 40)} variant='body1' sx={{ m: 0, mt: 2 }}>
-									{paragraph}
-								</Typography>
-							))}
 						</StudyCell>
 					</StudyGrid>
 
