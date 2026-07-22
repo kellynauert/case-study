@@ -27,7 +27,11 @@ export function ScrollToTopButton() {
 			aria-label='Back to top'
 			sx={{
 				position: 'fixed',
-				bottom: { xs: 'max(20px, env(safe-area-inset-bottom))', md: 28 },
+				// Sit above the case-study pager on mobile so Next stays tappable
+				bottom: {
+					xs: 'max(6.75rem, calc(5.5rem + env(safe-area-inset-bottom)))',
+					md: 28,
+				},
 				right: { xs: 'max(16px, env(safe-area-inset-right))', md: 28 },
 				zIndex: 20,
 				width: 44,
