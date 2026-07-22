@@ -789,7 +789,9 @@ export function LandingHero() {
 						color: tokens.textPrimary,
 					}}>
 					{hero.supportingBefore}
-					<Accent>{hero.supportingAccent}</Accent>
+					<Box component='span' sx={{ color: tokens.accentPink, fontWeight: 600 }}>
+						{hero.supportingAccent}
+					</Box>
 					{hero.supportingAfter}
 				</Typography>
 			</FadeIn>
