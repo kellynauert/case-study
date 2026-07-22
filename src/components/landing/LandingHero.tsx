@@ -796,7 +796,7 @@ export function LandingHero() {
 						mb: { xs: 1.5, md: 1.75 },
 						maxWidth: '38rem',
 						fontFamily: tokens.fontBody,
-						fontSize: { xs: '1.125rem', md: '1.25rem' },
+						fontSize: { xs: '1rem', md: '1.25rem' },
 						fontWeight: 500,
 						lineHeight: 1.65,
 						color: tokens.textPrimary,
