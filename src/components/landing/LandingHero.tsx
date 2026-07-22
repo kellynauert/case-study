@@ -898,7 +898,7 @@ export function LandingHero() {
 											width: { xs: 36, md: 40 },
 											height: { xs: 36, md: 40 },
 											// Match detailHeading half-leading so the chip top meets glyph tops.
-											mt: 'calc(1rem * 0.15)',
+											mt: 'calc(1rem * 0.1)',
 											borderRadius: 1,
 											color: tokens.accentPink,
 											bgcolor: alpha(tokens.accentPink, 0.08),
