@@ -1,8 +1,8 @@
 import { createTheme, alpha } from '@mui/material/styles';
 
-export const accent = '#6F5F9C';
+export const accent = '#7A57D1';
 export const accentPink = '#DB2777';
-export const accentLight = '#9B8BC4';
+export const accentLight = '#A48AE8';
 export const green = '#22C55E';
 export const background = '#FDFBFF';
 export const surface = '#FFFFFF';
