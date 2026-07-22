@@ -1,3 +1,4 @@
+import Box from '@mui/material/Box';
 import { StudyPage } from '../../components/case-study/StudyPage';
 import { StudySection, StudySectionTitle } from '../../components/case-study/StudySection';
 import { StudyBody } from '../../components/case-study/StudyBody';
@@ -178,7 +179,9 @@ export function UnifiedExperiencePage() {
 					reference assignments separately through email or external messaging tools.
 					<br />
 					<br />
-					The messaging system supports:
+					<Box component='span' sx={{ display: 'block', pb: 1 }}>
+						The messaging system supports:
+					</Box>
 					<StudyBulletList
 						size={12}
 						items={['Conversations between students and graders', '@mentions', 'Emoji reactions', 'Replies to Discussion Items']}
