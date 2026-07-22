@@ -1,14 +1,14 @@
 import { createTheme, alpha } from '@mui/material/styles';
 
-export const accent = '#5B6BD9';
+export const accent = '#6A58D4';
 export const accentPink = '#DB2777';
-export const accentLight = '#8B96EB';
+export const accentLight = '#9A8AEA';
 export const green = '#22C55E';
 export const background = '#FDFBFF';
 export const surface = '#FFFFFF';
 export const surfaceRaised = '#F8F5FF';
 export const fieldBackground = '#cf3aed27';
-export const border = alpha('#3D4A9E', 0.1);
+export const border = alpha('#4C1D95', 0.1);
 export const borderHover = alpha(accent, 0.28);
 export const textPrimary = '#1E1033';
 export const textSecondary = '#5B4A6F';
