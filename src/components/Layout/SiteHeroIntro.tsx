@@ -21,7 +21,7 @@ export function SiteHeroIntro({ onNavigate }: SiteHeroIntroProps) {
 				sx={{
 					display: 'block',
 					m: 0,
-					mb: 0,
+					mb: 0.75,
 					lineHeight: '36px',
 					fontSize: { xs: '2.5rem', md: '3rem' },
 					color: tokens.textPrimary,
@@ -37,7 +37,7 @@ export function SiteHeroIntro({ onNavigate }: SiteHeroIntroProps) {
 			<Box
 				sx={{
 					display: 'flex',
-					flexWrap: { xs: 'wrap', md: 'nowrap' },
+					flexWrap: 'nowrap',
 					alignItems: 'center',
 					columnGap: 2,
 					rowGap: 1,
@@ -48,7 +48,7 @@ export function SiteHeroIntro({ onNavigate }: SiteHeroIntroProps) {
 					sx={{
 						m: 0,
 						flexShrink: 0,
-						whiteSpace: { xs: 'normal', md: 'nowrap' },
+						whiteSpace: 'nowrap',
 						fontSize: { xs: '0.9375rem', md: '1rem' },
 						lineHeight: 1.4,
 						fontWeight: 500,
