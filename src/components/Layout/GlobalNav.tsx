@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { alpha } from '@mui/material/styles';
 import { getCaseStudiesBySystemGroup, getCaseStudyNavTitle } from '../../lib/caseStudyRegistry';
 import type { TocHeading } from '../../lib/caseStudyTypes';
@@ -319,8 +320,14 @@ function NavContent({
 					to='/'
 					onClick={onNavigate}
 					aria-current={isHomeActive ? 'page' : undefined}
-					sx={navLinkSx(isHomeActive, 'primary')}>
-					Home
+					sx={{
+						...navLinkSx(isHomeActive, 'primary'),
+						display: 'flex',
+						alignItems: 'center',
+						gap: 0.75,
+					}}>
+					<HomeOutlinedIcon aria-hidden sx={{ fontSize: '1.125rem' }} />
+					Overview
 				</Box>
 			</Box>
 
