@@ -25,6 +25,25 @@
 		</script>
 	</head>
 	<body>
+		<script>
+			(function () {
+				try {
+					var raw = localStorage.getItem('portfolio-a11y-preferences');
+					if (!raw) return;
+					var prefs = JSON.parse(raw);
+					var root = document.documentElement;
+					if (typeof prefs.fontScale === 'number') {
+						root.style.setProperty('--a11y-font-scale', String(prefs.fontScale / 100));
+					}
+					if (prefs.highContrast) root.dataset.a11yContrast = 'high';
+					if (prefs.reduceMotion) root.dataset.a11yMotion = 'reduce';
+					if (prefs.underlineLinks) root.dataset.a11yUnderline = 'on';
+					if (prefs.readableSpacing) root.dataset.a11ySpacing = 'on';
+				} catch (e) {
+					/* ignore */
+				}
+			})();
+		</script>
 		<div id="root"></div>
 		<script type="module" src="/src/main.tsx"></script>
 	</body>
