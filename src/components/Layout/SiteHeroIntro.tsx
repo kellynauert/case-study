@@ -8,9 +8,11 @@ import { ResumeDownloadLink } from './ResumeDownloadLink';
 interface SiteHeroIntroProps {
 	/** Called when the name link is clicked — e.g. close mobile drawer */
 	onNavigate?: () => void;
+	/** Show mobile-only intro actions when rendered inside the navigation drawer. */
+	inDrawer?: boolean;
 }
 
-export function SiteHeroIntro({ onNavigate }: SiteHeroIntroProps) {
+export function SiteHeroIntro({ onNavigate, inDrawer = false }: SiteHeroIntroProps) {
 	return (
 		<Box sx={{ px: 1, pt: 2, mb: 5.5 }}>
 			<Typography
@@ -21,7 +23,7 @@ export function SiteHeroIntro({ onNavigate }: SiteHeroIntroProps) {
 				sx={{
 					display: 'block',
 					m: 0,
-					mb: 0,
+					mb: inDrawer ? 0.75 : 0,
 					lineHeight: '36px',
 					fontSize: { xs: '2.5rem', md: '3rem' },
 					color: tokens.textPrimary,
@@ -57,8 +59,12 @@ export function SiteHeroIntro({ onNavigate }: SiteHeroIntroProps) {
 					{hero.roleLine}
 				</Typography>
 
-				{/* Download lives in the mobile top bar; keep it in the desktop sidebar. */}
-				<ResumeDownloadLink sx={{ display: { xs: 'none', md: 'inline-flex' }, flexShrink: 0 }} />
+				<ResumeDownloadLink
+					sx={{
+						display: { xs: inDrawer ? 'inline-flex' : 'none', md: 'inline-flex' },
+						flexShrink: 0,
+					}}
+				/>
 			</Box>
 		</Box>
 	);

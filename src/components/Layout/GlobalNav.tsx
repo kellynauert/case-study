@@ -309,7 +309,7 @@ function NavContent({
 			}}>
 			{showHeroIntro && (
 				<Box sx={{ display: { xs: isHomeActive && !inDrawer ? 'none' : 'block', md: 'block' } }}>
-					<SiteHeroIntro onNavigate={onNavigate} />
+					<SiteHeroIntro onNavigate={onNavigate} inDrawer={inDrawer} />
 				</Box>
 			)}
 
