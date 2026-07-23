@@ -181,10 +181,11 @@ export function AccessibilityMenu() {
 				aria-expanded={open}
 				aria-controls={open ? panelId : undefined}
 				aria-haspopup='dialog'
+				data-scroll-top-avoid
 				sx={{
 					position: 'fixed',
 					bottom: { xs: 'max(20px, env(safe-area-inset-bottom))', md: 28 },
-					left: { xs: 'max(16px, env(safe-area-inset-left))', md: 28 },
+					right: { xs: 'max(16px, env(safe-area-inset-right))', md: 28 },
 					zIndex: 1300,
 					width: BUTTON_SIZE,
 					height: BUTTON_SIZE,
@@ -223,7 +224,7 @@ export function AccessibilityMenu() {
 							xs: `calc(${BUTTON_SIZE}px + max(20px, env(safe-area-inset-bottom)) + 12px)`,
 							md: `calc(${BUTTON_SIZE}px + 28px + 12px)`,
 						},
-						left: { xs: 'max(16px, env(safe-area-inset-left))', md: 28 },
+						right: { xs: 'max(16px, env(safe-area-inset-right))', md: 28 },
 						zIndex: 1300,
 						width: `min(${PANEL_WIDTH}px, calc(100vw - 32px))`,
 						maxHeight: 'min(70vh, 520px)',
