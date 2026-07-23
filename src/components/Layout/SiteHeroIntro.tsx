@@ -21,7 +21,7 @@ export function SiteHeroIntro({ onNavigate }: SiteHeroIntroProps) {
 				sx={{
 					display: 'block',
 					m: 0,
-					mb: 0.75,
+					mb: 0,
 					lineHeight: '36px',
 					fontSize: { xs: '2.5rem', md: '3rem' },
 					color: tokens.textPrimary,
