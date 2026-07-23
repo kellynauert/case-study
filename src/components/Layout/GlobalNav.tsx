@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { alpha } from '@mui/material/styles';
 import { getCaseStudiesBySystemGroup, getCaseStudyNavTitle } from '../../lib/caseStudyRegistry';
 import type { TocHeading } from '../../lib/caseStudyTypes';
@@ -159,7 +160,7 @@ const systemSubgroupLabelSx = {
 	mb: 0.5,
 	mt: 1.25,
 	fontFamily: tokens.fontBody,
-	fontSize: '0.8125rem',
+	fontSize: '0.75rem',
 	fontWeight: 600,
 	letterSpacing: '0.04em',
 	color: tokens.textMuted,
@@ -175,6 +176,7 @@ function navLinkSx(active: boolean, level: 'primary' | 'sub' = 'primary') {
 		minHeight: 44,
 		textDecoration: 'none',
 		borderLeft: `2px solid ${active ? tokens.accent : 'transparent'}`,
+		fontFamily: tokens.fontBody,
 		fontSize: level === 'sub' ? '0.8125rem' : '0.9375rem',
 		fontWeight:
 			active ? 600
@@ -319,14 +321,20 @@ function NavContent({
 					to='/'
 					onClick={onNavigate}
 					aria-current={isHomeActive ? 'page' : undefined}
-					sx={navLinkSx(isHomeActive, 'primary')}>
-					Home
+					sx={{
+						...navLinkSx(isHomeActive, 'primary'),
+						display: 'flex',
+						alignItems: 'center',
+						gap: 0.75,
+					}}>
+					<HomeOutlinedIcon aria-hidden sx={{ fontSize: '1.125rem' }} />
+					Overview
 				</Box>
 			</Box>
 
 			{systemGroups.map(({ group, studies }) => (
 				<Box key={group} sx={{ display: 'flex', flexDirection: 'column', gap: 0.25 }}>
-					<Typography component='p' sx={{ ...systemSubgroupLabelSx, mt: group === systemGroups[0]?.group ? 0.5 : 1.75 }}>
+					<Typography component='p' sx={{ ...systemSubgroupLabelSx, mt: group === systemGroups[0]?.group ? 0.5 : 2.75 }}>
 						{group}
 					</Typography>
 
@@ -364,8 +372,9 @@ function NavContent({
 										className='global-nav-title'
 										sx={{
 											m: 0,
-											fontSize: '0.8125rem',
-											fontWeight: isActive ? 600 : 400,
+											fontFamily: tokens.fontBody,
+											fontSize: '0.9375rem',
+											fontWeight: isActive ? 600 : 500,
 											lineHeight: 1.45,
 											color: isActive ? tokens.accent : tokens.textNav,
 											transition: 'color 200ms ease',

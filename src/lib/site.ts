@@ -24,7 +24,7 @@ export const hero = {
 	capabilities: [
 		{
 			label: 'UX Design',
-			detail: 'Anticipating and responding to real-world behavior.',
+			detail: 'Anticipating real-world behavior and designing accessible experiences.',
 			icon: 'ui',
 		},
 		{

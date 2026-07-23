@@ -37,7 +37,7 @@ export function SiteHeroIntro({ onNavigate }: SiteHeroIntroProps) {
 			<Box
 				sx={{
 					display: 'flex',
-					flexWrap: { xs: 'wrap', md: 'nowrap' },
+					flexWrap: 'nowrap',
 					alignItems: 'center',
 					columnGap: 2,
 					rowGap: 1,
@@ -48,7 +48,7 @@ export function SiteHeroIntro({ onNavigate }: SiteHeroIntroProps) {
 					sx={{
 						m: 0,
 						flexShrink: 0,
-						whiteSpace: { xs: 'normal', md: 'nowrap' },
+						whiteSpace: 'nowrap',
 						fontSize: { xs: '0.9375rem', md: '1rem' },
 						lineHeight: 1.4,
 						fontWeight: 500,
@@ -57,8 +57,7 @@ export function SiteHeroIntro({ onNavigate }: SiteHeroIntroProps) {
 					{hero.roleLine}
 				</Typography>
 
-				{/* Download lives in the mobile top bar; keep it in the desktop sidebar. */}
-				<ResumeDownloadLink sx={{ display: { xs: 'none', md: 'inline-flex' }, flexShrink: 0 }} />
+				<ResumeDownloadLink sx={{ flexShrink: 0 }} />
 			</Box>
 		</Box>
 	);
