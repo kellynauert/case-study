@@ -160,7 +160,7 @@ const systemSubgroupLabelSx = {
 	mb: 0.5,
 	mt: 1.25,
 	fontFamily: tokens.fontBody,
-	fontSize: '0.8125rem',
+	fontSize: '0.75rem',
 	fontWeight: 600,
 	letterSpacing: '0.04em',
 	color: tokens.textMuted,
@@ -176,6 +176,7 @@ function navLinkSx(active: boolean, level: 'primary' | 'sub' = 'primary') {
 		minHeight: 44,
 		textDecoration: 'none',
 		borderLeft: `2px solid ${active ? tokens.accent : 'transparent'}`,
+		fontFamily: tokens.fontBody,
 		fontSize: level === 'sub' ? '0.8125rem' : '0.9375rem',
 		fontWeight:
 			active ? 600
@@ -371,8 +372,9 @@ function NavContent({
 										className='global-nav-title'
 										sx={{
 											m: 0,
-											fontSize: '0.8125rem',
-											fontWeight: isActive ? 600 : 400,
+											fontFamily: tokens.fontBody,
+											fontSize: '0.9375rem',
+											fontWeight: isActive ? 600 : 500,
 											lineHeight: 1.45,
 											color: isActive ? tokens.accent : tokens.textNav,
 											transition: 'color 200ms ease',
