@@ -333,7 +333,7 @@ function NavContent({
 
 			{systemGroups.map(({ group, studies }) => (
 				<Box key={group} sx={{ display: 'flex', flexDirection: 'column', gap: 0.25 }}>
-					<Typography component='p' sx={{ ...systemSubgroupLabelSx, mt: group === systemGroups[0]?.group ? 0.5 : 1.75 }}>
+					<Typography component='p' sx={{ ...systemSubgroupLabelSx, mt: group === systemGroups[0]?.group ? 0.5 : 2.75 }}>
 						{group}
 					</Typography>
 
