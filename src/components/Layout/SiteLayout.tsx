@@ -1,6 +1,7 @@
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
+import { AccessibilityMenu } from './AccessibilityMenu';
 import { Footer } from './Footer';
 import { MobileStickyNavBar, NavDrawerProvider } from './GlobalNav';
 import { PageTocProvider } from './PageTocContext';
@@ -91,6 +92,8 @@ export function SiteLayout({ children, showFooter = true }: SiteLayoutProps) {
 							{showFooter && <Footer />}
 						</Grid>
 					</Grid>
+
+					<AccessibilityMenu />
 				</Box>
 			</NavDrawerProvider>
 		</PageTocProvider>

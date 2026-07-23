@@ -5,6 +5,8 @@
 }
 
 html {
+	--a11y-font-scale: 1;
+	font-size: calc(100% * var(--a11y-font-scale));
 	scroll-behavior: smooth;
 	scroll-padding-top: 5rem;
 	overflow-x: clip;
@@ -20,6 +22,59 @@ html {
 	html {
 		scroll-behavior: auto;
 	}
+}
+
+html[data-a11y-motion='reduce'] {
+	scroll-behavior: auto;
+}
+
+html[data-a11y-motion='reduce'] *,
+html[data-a11y-motion='reduce'] *::before,
+html[data-a11y-motion='reduce'] *::after {
+	animation-duration: 0.01ms !important;
+	animation-iteration-count: 1 !important;
+	transition-duration: 0.01ms !important;
+	scroll-behavior: auto !important;
+}
+
+html[data-a11y-contrast='high'] body {
+	background-color: #ffffff !important;
+	color: #0b0b0b !important;
+}
+
+html[data-a11y-contrast='high'] :is(p, li, h1, h2, h3, h4, h5, h6, label, figcaption, td, th) {
+	color: #0b0b0b !important;
+}
+
+html[data-a11y-contrast='high'] :is(a, button) {
+	color: #0b0b0b !important;
+}
+
+html[data-a11y-contrast='high'] :is(a, button):hover,
+html[data-a11y-contrast='high'] :is(a, button):focus-visible {
+	color: #1d4ed8 !important;
+}
+
+html[data-a11y-underline='on'] a {
+	text-decoration: underline !important;
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.18em;
+}
+
+html[data-a11y-spacing='on'] body {
+	letter-spacing: 0.04em;
+	word-spacing: 0.1em;
+	line-height: 1.8;
+}
+
+/* Keep heading line-heights intact (hero reels lock to designed em metrics). */
+html[data-a11y-spacing='on'] :is(p, li) {
+	line-height: 1.75 !important;
+	letter-spacing: 0.03em;
+}
+
+html[data-a11y-spacing='on'] :is(h1, h2, h3, h4, h5, h6) {
+	letter-spacing: 0.03em;
 }
 
 body {
