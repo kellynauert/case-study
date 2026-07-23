@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useContext, useLayoutEffect, useState, type ReactNode } from 'react';
 import {
 	applyA11yToDocument,
 	DEFAULT_A11Y_PREFERENCES,
@@ -34,7 +34,8 @@ function readInitialPreferences(): A11yPreferences {
 export function A11yProvider({ children }: { children: ReactNode }) {
 	const [prefs, setPrefs] = useState<A11yPreferences>(readInitialPreferences);
 
-	useEffect(() => {
+	// Layout phase so consumers remasuring in useEffect see updated font metrics.
+	useLayoutEffect(() => {
 		writeA11yPreferences(prefs);
 		applyA11yToDocument(prefs);
 	}, [prefs]);

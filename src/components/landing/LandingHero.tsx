@@ -8,6 +8,7 @@ import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import AccountTreeRoundedIcon from '@mui/icons-material/AccountTreeRounded';
 import CasinoRoundedIcon from '@mui/icons-material/CasinoRounded';
 import { FadeIn } from '../Layout/FadeIn';
+import { useA11y } from '../../context/A11yContext';
 import { hero } from '../../lib/site';
 import { tokens } from '../../theme/theme';
 import { alpha } from '@mui/material';
@@ -146,6 +147,7 @@ function HeroScrollingField({
 	const onMotionStartRef = useRef(onMotionStart);
 	onMotionStartRef.current = onMotionStart;
 
+	const { prefs: a11yPrefs } = useA11y();
 	const shellRef = useRef<HTMLSpanElement | null>(null);
 	const viewportRef = useRef<HTMLSpanElement | null>(null);
 	const stripRef = useRef<HTMLDivElement | null>(null);
@@ -159,6 +161,8 @@ function HeroScrollingField({
 	const [reelArmed, setReelArmed] = useState(false);
 	/** Measured viewport height in px — must equal each reel row height. */
 	const [fieldHeightPx, setFieldHeightPx] = useState(0);
+	const readyRef = useRef(ready);
+	readyRef.current = ready;
 
 	const finalIndex = Math.max(0, options.indexOf(finalValue));
 	const settledValue = options[finalIndex] ?? finalValue;
@@ -215,6 +219,22 @@ function HeroScrollingField({
 	useEffect(() => {
 		measureMaxWidth();
 	}, [options]); // eslint-disable-line react-hooks/exhaustive-deps -- remasure when option list identity changes
+
+	/**
+	 * Shell widths are cached in px. When accessibility text size / spacing (or browser zoom)
+	 * changes font metrics, remasure so settled glyphs and spin shells don't overflow into
+	 * the neighboring reel or randomize control.
+	 */
+	useEffect(() => {
+		maxWidthRef.current = 0;
+		const maxW = measureMaxWidth();
+		if (readyRef.current) {
+			syncShellToSettled(false);
+		} else if (maxW > 0) {
+			setShellWidthPx(maxW, false);
+		}
+		// a11yPrefs drives remasure after document font metrics update (see A11yProvider layout effect).
+	}, [a11yPrefs.fontScale, a11yPrefs.readableSpacing, options]); // eslint-disable-line react-hooks/exhaustive-deps -- width sync helpers close over latest refs/DOM
 
 	/** Keep reel row height in sync with the title font (em-based viewport → px for transforms). */
 	useEffect(() => {
