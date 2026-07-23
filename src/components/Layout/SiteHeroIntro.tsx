@@ -39,10 +39,11 @@ export function SiteHeroIntro({ onNavigate, inDrawer = false }: SiteHeroIntroPro
 			<Box
 				sx={{
 					display: 'flex',
-					flexWrap: { xs: 'wrap', md: 'nowrap' },
-					alignItems: 'center',
+					flexDirection: { xs: inDrawer ? 'column' : 'row', md: 'row' },
+					flexWrap: { xs: inDrawer ? 'nowrap' : 'wrap', md: 'nowrap' },
+					alignItems: { xs: inDrawer ? 'flex-start' : 'center', md: 'center' },
 					columnGap: 2,
-					rowGap: 1,
+					rowGap: inDrawer ? 0.25 : 1,
 					mb: 0,
 				}}>
 				<Typography
