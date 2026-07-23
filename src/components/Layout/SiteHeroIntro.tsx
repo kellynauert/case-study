@@ -8,11 +8,9 @@ import { ResumeDownloadLink } from './ResumeDownloadLink';
 interface SiteHeroIntroProps {
 	/** Called when the name link is clicked — e.g. close mobile drawer */
 	onNavigate?: () => void;
-	/** Show mobile-only intro actions when rendered inside the navigation drawer. */
-	inDrawer?: boolean;
 }
 
-export function SiteHeroIntro({ onNavigate, inDrawer = false }: SiteHeroIntroProps) {
+export function SiteHeroIntro({ onNavigate }: SiteHeroIntroProps) {
 	return (
 		<Box sx={{ px: 1, pt: 2, mb: 5.5 }}>
 			<Typography
@@ -23,7 +21,7 @@ export function SiteHeroIntro({ onNavigate, inDrawer = false }: SiteHeroIntroPro
 				sx={{
 					display: 'block',
 					m: 0,
-					mb: inDrawer ? 0.75 : 0,
+					mb: 0,
 					lineHeight: '36px',
 					fontSize: { xs: '2.5rem', md: '3rem' },
 					color: tokens.textPrimary,
@@ -39,11 +37,10 @@ export function SiteHeroIntro({ onNavigate, inDrawer = false }: SiteHeroIntroPro
 			<Box
 				sx={{
 					display: 'flex',
-					flexDirection: { xs: inDrawer ? 'column' : 'row', md: 'row' },
-					flexWrap: { xs: inDrawer ? 'nowrap' : 'wrap', md: 'nowrap' },
-					alignItems: { xs: inDrawer ? 'flex-start' : 'center', md: 'center' },
+					flexWrap: { xs: 'wrap', md: 'nowrap' },
+					alignItems: 'center',
 					columnGap: 2,
-					rowGap: inDrawer ? 0.25 : 1,
+					rowGap: 1,
 					mb: 0,
 				}}>
 				<Typography
@@ -60,12 +57,7 @@ export function SiteHeroIntro({ onNavigate, inDrawer = false }: SiteHeroIntroPro
 					{hero.roleLine}
 				</Typography>
 
-				<ResumeDownloadLink
-					sx={{
-						display: { xs: inDrawer ? 'inline-flex' : 'none', md: 'inline-flex' },
-						flexShrink: 0,
-					}}
-				/>
+				<ResumeDownloadLink sx={{ flexShrink: 0 }} />
 			</Box>
 		</Box>
 	);
